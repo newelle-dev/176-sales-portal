@@ -5,23 +5,24 @@ change.
 
 ## Current Phase
 
-- None yet.
+- V1 Core Setup
 
 ## Current Goal
 
-- None yet.
+- Build foundation & implement authentication/database integration
 
 ## Completed
 
-- None yet.
+- Set up design system and UI primitive components (Button, Card, Dialog, Input, ScrollArea, Tabs, TextArea) and `lib/utils.ts` `cn()` helper.
+- Set up Supabase project, database schema (Profiles & Transactions tables), triggers, RLS policies, and configured client/server/admin/middleware integration.
 
 ## In Progress
 
-- None yet.
+- None.
 
 ## Next Up
 
-- Integrate navbar and sidebar into app layout.
+- Authentication screens, stylist dashboard layout, and user session management custom hooks.
 
 ## Open Questions
 
@@ -29,8 +30,11 @@ change.
 
 ## Architecture Decisions
 
-- None yet.
+- Built design system using shadcn/ui components customized for Tailwind v4 and the dark theme.
+- Utilized Next.js 16's updated `proxy.ts` convention (which deprecates `middleware.ts`) for session management and route guards at the root level.
+- Built triggers to sync `auth.users` to `public.profiles` and cache roles inside JWT `app_metadata` to avoid database queries on every route request in `proxy.ts`.
 
 ## Session Notes
 
-- None yet.
+- Verified all primitives and connection modules compile and build successfully using `npm run build`.
+
