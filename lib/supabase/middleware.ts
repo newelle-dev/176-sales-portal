@@ -43,7 +43,7 @@ export async function updateSession(request: NextRequest) {
         url.pathname = '/admin';
         return NextResponse.redirect(url);
       } else {
-        url.pathname = '/stylist';
+        url.pathname = '/dashboard';
         return NextResponse.redirect(url);
       }
     } else {
@@ -60,13 +60,13 @@ export async function updateSession(request: NextRequest) {
     }
     const role = user.app_metadata?.role;
     if (role !== 'admin') {
-      url.pathname = role === 'stylist' ? '/stylist' : '/login';
+      url.pathname = role === 'stylist' ? '/dashboard' : '/login';
       return NextResponse.redirect(url);
     }
   }
 
-  // Protect /stylist routes
-  if (url.pathname.startsWith('/stylist')) {
+  // Protect /dashboard routes
+  if (url.pathname.startsWith('/dashboard')) {
     if (!user) {
       url.pathname = '/login';
       return NextResponse.redirect(url);
@@ -85,7 +85,7 @@ export async function updateSession(request: NextRequest) {
   // Prevent logged in users from visiting /login
   if (url.pathname === '/login' && user) {
     const role = user.app_metadata?.role;
-    url.pathname = role === 'admin' ? '/admin' : '/stylist';
+    url.pathname = role === 'admin' ? '/admin' : '/dashboard';
     return NextResponse.redirect(url);
   }
 

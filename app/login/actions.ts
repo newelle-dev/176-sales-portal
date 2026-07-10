@@ -36,6 +36,12 @@ export async function loginAction(prevState: ActionState | null, formData: FormD
   if (role === 'admin') {
     redirect('/admin');
   } else {
-    redirect('/stylist');
+    redirect('/dashboard');
   }
+}
+
+export async function logoutAction() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect('/login');
 }
