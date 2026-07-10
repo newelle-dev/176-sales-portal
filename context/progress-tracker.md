@@ -15,6 +15,7 @@ change.
 
 - Set up design system and UI primitive components (Button, Card, Dialog, Input, ScrollArea, Tabs, TextArea) and `lib/utils.ts` `cn()` helper.
 - Set up Supabase project, database schema (Profiles & Transactions tables), triggers, RLS policies, and configured client/server/admin/middleware integration.
+- Implemented Email/Password authentication screens (Login page & Server Actions with role-based redirection).
 
 ## In Progress
 
@@ -22,7 +23,7 @@ change.
 
 ## Next Up
 
-- Authentication screens, stylist dashboard layout, and user session management custom hooks.
+- Stylist dashboard layout and user session management custom hooks.
 
 ## Open Questions
 
