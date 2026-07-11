@@ -96,6 +96,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_distinct_employee_names: {
+        Args: never
+        Returns: {
+          employee_name: string
+        }[]
+      }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {

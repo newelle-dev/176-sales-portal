@@ -22,6 +22,7 @@ change.
 - Removed the Employee Alignment & Critical Safeguard import halting rule during CSV upload, allowing transactions for matched stylists to be imported directly, while skipping rows with unmatched employees without halting the process or throwing validation errors.
 - Added `branch` and `employee_name` columns to the `transactions` table, made `profile_id` nullable, and updated foreign key constraints to `ON DELETE SET NULL`. Integrated branch resolution based on reference number suffixes (Bangsar, SS2, KLGCC) and implemented unique suffixing on tickets to support multiple transaction items per ticket. Bulk-imported 2,496 transactions from your three CSV files.
 - Implemented WessConnect CSV name alias matching in Team Management. Added a GIN-indexed `wess_names` (`text[]`) column to `public.profiles` and a Postgres trigger `tr_link_transactions_on_profile_change` to retroactively link unlinked transactions when profiles are added or updated. Updated Team Manager forms and Server Actions to manage matches, and synced the main CSV upload action and local import scripts to support alias resolution.
+- Replaced the manual text input for WessConnect CSV name alias matches in the Team Manager's Add and Edit dialogs with a searchable multi-select UI. Admin can now select from a list of unique names loaded directly from the `transactions` table using a newly created `get_distinct_employee_names()` RPC database function. Added support for adding custom names dynamically if not present in the database.
 
 ## In Progress
 

@@ -26,9 +26,10 @@ interface Stylist {
 
 interface TeamManagerProps {
   initialStylists: Stylist[];
+  transactionNames: string[];
 }
 
-export default function TeamManager({ initialStylists }: TeamManagerProps) {
+export default function TeamManager({ initialStylists, transactionNames }: TeamManagerProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -37,6 +38,10 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
   
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  // State for WessConnect CSV name matches selector
+  const [wessSearch, setWessSearch] = useState('');
+  const [selectedWessNames, setSelectedWessNames] = useState<string[]>([]);
 
   // Filter stylists based on search query
   const filteredStylists = initialStylists.filter(
@@ -110,6 +115,8 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
         <Button
           onClick={() => {
             setError(null);
+            setWessSearch('');
+            setSelectedWessNames([]);
             setIsAddOpen(true);
           }}
           className="w-full sm:w-auto bg-black text-white hover:bg-slate-800 gap-1.5 h-9 px-4 text-xs font-semibold shadow-sm transition-all"
@@ -172,6 +179,8 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
                           onClick={() => {
                             setError(null);
                             setSelectedStylist(stylist);
+                            setWessSearch('');
+                            setSelectedWessNames(stylist.wess_names || []);
                             setIsEditOpen(true);
                           }}
                           title="Edit Stylist"
@@ -213,8 +222,13 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
         </div>
       </Card>
 
-      {/* Add Stylist Dialog */}
-      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+      <Dialog open={isAddOpen} onOpenChange={(open) => {
+        setIsAddOpen(open);
+        if (!open) {
+          setWessSearch('');
+          setSelectedWessNames([]);
+        }
+      }}>
         <DialogContent className="bg-white border border-gray-200 rounded-xl p-6 max-w-md w-full gap-0 select-none">
           <form onSubmit={handleAddSubmit}>
             <DialogHeader className="mb-4">
@@ -269,17 +283,106 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
-                  WessConnect CSV Name Matches <span className="text-gray-400 font-normal normal-case">(Comma-separated)</span>
+                  WessConnect CSV Name Matches
                 </label>
-                <Input
-                  name="wess_names"
-                  type="text"
-                  placeholder="e.g. Sven, Sven Tan"
-                  className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                  disabled={isPending}
-                />
+
+                {/* Selected Matches as Badges */}
+                <div className="flex flex-wrap gap-1.5 mb-2 max-h-24 overflow-y-auto p-1.5 border border-dashed border-gray-200 rounded-lg bg-gray-50/30">
+                  {selectedWessNames.length > 0 ? (
+                    selectedWessNames.map((name) => (
+                      <span
+                        key={name}
+                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-gray-100 text-gray-800 border border-gray-250 select-none"
+                      >
+                        {name}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedWessNames(selectedWessNames.filter((n) => n !== name))}
+                          className="text-gray-400 hover:text-gray-650 focus:outline-none font-bold text-xs"
+                          disabled={isPending}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-gray-400 text-[10px] italic select-none p-1">No names selected. Choose from the list below.</span>
+                  )}
+                </div>
+
+                {/* Search and List */}
+                <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                  <div className="relative border-b border-gray-150">
+                    <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Search transaction names..."
+                      value={wessSearch}
+                      onChange={(e) => setWessSearch(e.target.value)}
+                      className="pl-8 border-0 bg-transparent h-8.5 text-xs focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 rounded-none w-full"
+                      disabled={isPending}
+                    />
+                  </div>
+
+                  <div className="max-h-36 overflow-y-auto divide-y divide-gray-100 text-xs">
+                    {/* Filtered names */}
+                    {transactionNames
+                      .filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase()))
+                      .map((name) => {
+                        const isSelected = selectedWessNames.includes(name.toLowerCase());
+                        return (
+                          <button
+                            key={name}
+                            type="button"
+                            disabled={isPending}
+                            onClick={() => {
+                              if (isSelected) {
+                                setSelectedWessNames(selectedWessNames.filter((n) => n !== name.toLowerCase()));
+                              } else {
+                                setSelectedWessNames([...selectedWessNames, name.toLowerCase()]);
+                              }
+                            }}
+                            className={`w-full text-left px-3 py-2 flex items-center justify-between transition-colors cursor-pointer ${
+                              isSelected ? 'bg-gray-50 font-semibold text-black' : 'hover:bg-gray-50 text-gray-600'
+                            }`}
+                          >
+                            <span>{name}</span>
+                            {isSelected && <span className="text-[10px] text-emerald-600 font-bold select-none">✓ Selected</span>}
+                          </button>
+                        );
+                      })}
+
+                    {/* Option to add custom name */}
+                    {wessSearch.trim() &&
+                      !transactionNames.some((name) => name.toLowerCase() === wessSearch.trim().toLowerCase()) && (
+                        <button
+                          type="button"
+                          disabled={isPending}
+                          onClick={() => {
+                            const newName = wessSearch.trim().toLowerCase();
+                            if (!selectedWessNames.includes(newName)) {
+                              setSelectedWessNames([...selectedWessNames, newName]);
+                            }
+                            setWessSearch('');
+                          }}
+                          className="w-full text-left px-3 py-2 text-emerald-600 hover:text-emerald-700 hover:bg-gray-50 font-medium flex items-center gap-1.5 transition-colors border-t border-dashed border-gray-150 cursor-pointer"
+                        >
+                          <Plus className="h-3 w-3" />
+                          <span>Add "{wessSearch.trim()}" as custom match</span>
+                        </button>
+                      )}
+
+                    {transactionNames.filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase())).length === 0 &&
+                      !wessSearch.trim() && (
+                        <div className="px-3 py-4 text-center text-gray-400 italic">No transaction names available.</div>
+                      )}
+                  </div>
+                </div>
+
+                {/* Hidden input to submit to backend */}
+                <input type="hidden" name="wess_names" value={selectedWessNames.join(', ')} />
               </div>
             </div>
 
@@ -287,7 +390,11 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setIsAddOpen(false)}
+                onClick={() => {
+                  setIsAddOpen(false);
+                  setWessSearch('');
+                  setSelectedWessNames([]);
+                }}
                 className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
                 disabled={isPending}
               >
@@ -311,13 +418,14 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Stylist Dialog */}
       <Dialog
         open={isEditOpen}
         onOpenChange={(open) => {
           if (!open) {
             setIsEditOpen(false);
             setSelectedStylist(null);
+            setWessSearch('');
+            setSelectedWessNames([]);
           }
         }}
       >
@@ -377,52 +485,142 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
                   />
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
-                    WessConnect CSV Name Matches <span className="text-gray-400 font-normal normal-case">(Comma-separated)</span>
+                    WessConnect CSV Name Matches
                   </label>
-                  <Input
-                    name="wess_names"
-                    type="text"
-                    placeholder="e.g. Sven, Sven Tan"
-                    defaultValue={selectedStylist?.wess_names?.join(', ') || ''}
-                    className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                    disabled={isPending}
-                  />
-                </div>
-              </div>
 
-              <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setIsEditOpen(false);
-                    setSelectedStylist(null);
-                  }}
-                  className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
-                  disabled={isPending}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className="bg-black text-white hover:bg-slate-800 h-9 px-4 gap-1 text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
-                  disabled={isPending}
-                >
-                  {isPending ? (
-                    <>
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving...
-                    </>
+                  {/* Selected Matches as Badges */}
+                  <div className="flex flex-wrap gap-1.5 mb-2 max-h-24 overflow-y-auto p-1.5 border border-dashed border-gray-200 rounded-lg bg-gray-50/30">
+                    {selectedWessNames.length > 0 ? (
+                      selectedWessNames.map((name) => (
+                        <span
+                          key={name}
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-gray-100 text-gray-800 border border-gray-250 select-none"
+                        >
+                          {name}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedWessNames(selectedWessNames.filter((n) => n !== name))}
+                            className="text-gray-400 hover:text-gray-650 focus:outline-none font-bold text-xs"
+                            disabled={isPending}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))
                   ) : (
-                    'Save Changes'
+                    <span className="text-gray-400 text-[10px] italic select-none p-1">No names selected. Choose from the list below.</span>
                   )}
-                </Button>
-              </DialogFooter>
-            </form>
-          )}
-        </DialogContent>
-      </Dialog>
+                </div>
+
+                {/* Search and List */}
+                <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                  <div className="relative border-b border-gray-150">
+                    <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Search transaction names..."
+                      value={wessSearch}
+                      onChange={(e) => setWessSearch(e.target.value)}
+                      className="pl-8 border-0 bg-transparent h-8.5 text-xs focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 rounded-none w-full"
+                      disabled={isPending}
+                    />
+                  </div>
+
+                  <div className="max-h-36 overflow-y-auto divide-y divide-gray-100 text-xs">
+                    {/* Filtered names */}
+                    {transactionNames
+                      .filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase()))
+                      .map((name) => {
+                        const isSelected = selectedWessNames.includes(name.toLowerCase());
+                        return (
+                          <button
+                            key={name}
+                            type="button"
+                            disabled={isPending}
+                            onClick={() => {
+                              if (isSelected) {
+                                setSelectedWessNames(selectedWessNames.filter((n) => n !== name.toLowerCase()));
+                              } else {
+                                setSelectedWessNames([...selectedWessNames, name.toLowerCase()]);
+                              }
+                            }}
+                            className={`w-full text-left px-3 py-2 flex items-center justify-between transition-colors cursor-pointer ${
+                              isSelected ? 'bg-gray-50 font-semibold text-black' : 'hover:bg-gray-50 text-gray-600'
+                            }`}
+                          >
+                            <span>{name}</span>
+                            {isSelected && <span className="text-[10px] text-emerald-600 font-bold select-none">✓ Selected</span>}
+                          </button>
+                        );
+                      })}
+
+                    {/* Option to add custom name */}
+                    {wessSearch.trim() &&
+                      !transactionNames.some((name) => name.toLowerCase() === wessSearch.trim().toLowerCase()) && (
+                        <button
+                          type="button"
+                          disabled={isPending}
+                          onClick={() => {
+                            const newName = wessSearch.trim().toLowerCase();
+                            if (!selectedWessNames.includes(newName)) {
+                              setSelectedWessNames([...selectedWessNames, newName]);
+                            }
+                            setWessSearch('');
+                          }}
+                          className="w-full text-left px-3 py-2 text-emerald-600 hover:text-emerald-700 hover:bg-gray-50 font-medium flex items-center gap-1.5 transition-colors border-t border-dashed border-gray-150 cursor-pointer"
+                        >
+                          <Plus className="h-3 w-3" />
+                          <span>Add "{wessSearch.trim()}" as custom match</span>
+                        </button>
+                      )}
+
+                    {transactionNames.filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase())).length === 0 &&
+                      !wessSearch.trim() && (
+                        <div className="px-3 py-4 text-center text-gray-400 italic">No transaction names available.</div>
+                      )}
+                  </div>
+                </div>
+
+                {/* Hidden input to submit to backend */}
+                <input type="hidden" name="wess_names" value={selectedWessNames.join(', ')} />
+              </div>
+            </div>
+
+            <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setIsEditOpen(false);
+                  setSelectedStylist(null);
+                  setWessSearch('');
+                  setSelectedWessNames([]);
+                }}
+                className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
+                disabled={isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="bg-black text-white hover:bg-slate-800 h-9 px-4 gap-1 text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving...
+                  </>
+                ) : (
+                  'Save Changes'
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        )}
+      </DialogContent>
+    </Dialog>
 
       {/* Delete Stylist Dialog */}
       <Dialog

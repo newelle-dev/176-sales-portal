@@ -14,11 +14,19 @@ export default async function TeamPage() {
   }
 
   // Fetch all profiles where role is stylist
-  const { data: stylists, error } = await supabase
+  const { data: stylists } = await supabase
     .from('profiles')
     .select('*')
     .eq('role', 'stylist')
     .order('name', { ascending: true });
+
+  // Fetch distinct employee names from transactions
+  const { data: dbEmployeeNames } = await supabase
+    .rpc('get_distinct_employee_names');
+
+  const transactionNames = dbEmployeeNames
+    ? (dbEmployeeNames as { employee_name: string }[]).map((row) => row.employee_name)
+    : [];
 
   return (
     <main className="max-w-6xl w-full mx-auto px-6 py-10 space-y-8">
@@ -27,7 +35,7 @@ export default async function TeamPage() {
         <p className="text-sm text-gray-500">Manage stylist profiles, credentials, and access.</p>
       </div>
 
-      <TeamManager initialStylists={stylists || []} />
+      <TeamManager initialStylists={stylists || []} transactionNames={transactionNames} />
     </main>
   );
 }
