@@ -12,10 +12,15 @@ export async function createStylistAction(prevState: ActionState | null, formDat
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  const wessNamesRaw = formData.get('wess_names') as string;
 
   if (!name || !email || !password) {
     return { error: 'All fields are required.' };
   }
+
+  const wessNamesArray = wessNamesRaw
+    ? wessNamesRaw.split(',').map((n) => n.trim().toLowerCase()).filter((n) => n.length > 0)
+    : [];
 
   try {
     const adminClient = createAdminClient();
@@ -30,6 +35,17 @@ export async function createStylistAction(prevState: ActionState | null, formDat
 
     if (error) {
       return { error: error.message };
+    }
+
+    if (data.user) {
+      const { error: dbUpdateError } = await adminClient
+        .from('profiles')
+        .update({ wess_names: wessNamesArray })
+        .eq('id', data.user.id);
+      
+      if (dbUpdateError) {
+        return { error: `Account created, but failed to save CSV matches: ${dbUpdateError.message}` };
+      }
     }
 
     revalidatePath('/admin/team');
@@ -47,10 +63,15 @@ export async function updateStylistAction(
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string; // Optional
+  const wessNamesRaw = formData.get('wess_names') as string;
 
   if (!name || !email) {
     return { error: 'Name and email are required.' };
   }
+
+  const wessNamesArray = wessNamesRaw
+    ? wessNamesRaw.split(',').map((n) => n.trim().toLowerCase()).filter((n) => n.length > 0)
+    : [];
 
   try {
     const adminClient = createAdminClient();
@@ -94,10 +115,10 @@ export async function updateStylistAction(
       }
     }
 
-    // Update name in profiles
+    // Update name and wess_names in profiles
     const { error: nameError } = await adminClient
       .from('profiles')
-      .update({ name })
+      .update({ name, wess_names: wessNamesArray })
       .eq('id', id);
 
     if (nameError) {

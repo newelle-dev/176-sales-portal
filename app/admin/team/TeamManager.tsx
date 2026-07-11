@@ -20,6 +20,7 @@ interface Stylist {
   name: string;
   email: string;
   role: string;
+  wess_names?: string[];
   created_at: string;
 }
 
@@ -139,7 +140,14 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
                         <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center border border-gray-200 text-gray-700 font-bold text-xs select-none">
                           {stylist.name[0].toUpperCase()}
                         </div>
-                        <div className="font-semibold text-gray-900 text-sm">{stylist.name}</div>
+                        <div>
+                          <div className="font-semibold text-gray-900 text-sm">{stylist.name}</div>
+                          {stylist.wess_names && stylist.wess_names.length > 0 && (
+                            <div className="text-[10px] text-gray-400 font-medium select-all mt-0.5">
+                              Matches: {stylist.wess_names.join(', ')}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-3.5 text-gray-500">{stylist.email}</td>
@@ -260,6 +268,19 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
                   disabled={isPending}
                 />
               </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                  WessConnect CSV Name Matches <span className="text-gray-400 font-normal normal-case">(Comma-separated)</span>
+                </label>
+                <Input
+                  name="wess_names"
+                  type="text"
+                  placeholder="e.g. Sven, Sven Tan"
+                  className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
+                  disabled={isPending}
+                />
+              </div>
             </div>
 
             <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
@@ -351,6 +372,20 @@ export default function TeamManager({ initialStylists }: TeamManagerProps) {
                     type="password"
                     minLength={6}
                     placeholder="Leave blank to keep current"
+                    className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
+                    disabled={isPending}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                    WessConnect CSV Name Matches <span className="text-gray-400 font-normal normal-case">(Comma-separated)</span>
+                  </label>
+                  <Input
+                    name="wess_names"
+                    type="text"
+                    placeholder="e.g. Sven, Sven Tan"
+                    defaultValue={selectedStylist?.wess_names?.join(', ') || ''}
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                     disabled={isPending}
                   />

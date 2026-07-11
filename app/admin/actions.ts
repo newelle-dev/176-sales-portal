@@ -142,7 +142,7 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
     const adminClient = createAdminClient();
     const { data: dbProfiles, error: profilesError } = await adminClient
       .from('profiles')
-      .select('id, name');
+      .select('id, name, wess_names');
 
     if (profilesError || !dbProfiles) {
       return { error: `Failed to fetch profiles: ${profilesError?.message || 'Unknown error'}` };
@@ -151,8 +151,19 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
     // Build a map of normalized names to profile IDs
     const profileMap = new Map<string, string>();
     dbProfiles.forEach((p) => {
-      const normalized = normalizeName(p.name);
-      profileMap.set(normalized, p.id);
+      // Map the primary name
+      const primaryNormalized = normalizeName(p.name);
+      profileMap.set(primaryNormalized, p.id);
+
+      // Map each alias name in the wess_names array
+      if (p.wess_names && Array.isArray(p.wess_names)) {
+        p.wess_names.forEach((aliasName) => {
+          const aliasNormalized = normalizeName(aliasName);
+          if (aliasNormalized) {
+            profileMap.set(aliasNormalized, p.id);
+          }
+        });
+      }
     });
 
     // Default indices which we will auto-detect from header rows

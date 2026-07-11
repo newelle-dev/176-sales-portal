@@ -105,7 +105,7 @@ async function run() {
   console.log('Fetching active profiles...');
   const { data: profiles, error: profilesError } = await supabase
     .from('profiles')
-    .select('id, name');
+    .select('id, name, wess_names');
 
   if (profilesError) {
     console.error('Failed to fetch profiles:', profilesError.message);
@@ -114,7 +114,19 @@ async function run() {
 
   const profileMap = new Map<string, string>();
   profiles?.forEach((p) => {
-    profileMap.set(normalizeName(p.name), p.id);
+    // Map the primary name
+    const primaryNormalized = normalizeName(p.name);
+    profileMap.set(primaryNormalized, p.id);
+
+    // Map each alias name in the wess_names array
+    if (p.wess_names && Array.isArray(p.wess_names)) {
+      p.wess_names.forEach((aliasName) => {
+        const aliasNormalized = normalizeName(aliasName);
+        if (aliasNormalized) {
+          profileMap.set(aliasNormalized, p.id);
+        }
+      });
+    }
   });
 
   const files = [
