@@ -173,7 +173,8 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
     let custIdx = 4;
     let itemIdx = 5;
     let typeIdx = 6;
-    let totalIdx = 8;
+    let nettIdx = 12; // Default index for Nett
+    let deductionIdx = 13; // Default index for Deduction
 
     const transactionsToInsert: any[] = [];
     const refCounts = new Map<string, number>();
@@ -191,7 +192,15 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
         custIdx = cleanRow.indexOf('Customer');
         itemIdx = cleanRow.indexOf('Item');
         typeIdx = cleanRow.indexOf('Type');
-        totalIdx = cleanRow.indexOf('Total');
+        
+        const foundNett = cleanRow.indexOf('Nett');
+        if (foundNett === -1) {
+          return { error: "Failed to parse CSV: Required column 'Nett' not found." };
+        }
+        nettIdx = foundNett;
+
+        const foundDeduction = cleanRow.indexOf('Deduction');
+        deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
         continue;
       }
 
@@ -225,11 +234,13 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
       const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawTotal = row[totalIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+      const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+      const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
 
       try {
         const transactionDate = parseTransactionDate(rawDate);
-        const amount = parseFloat(rawTotal.replace(/,/g, '')) || 0;
+        const amount = parseFloat(rawNett.replace(/,/g, '')) || 0;
+        const deduction = parseFloat(rawDeduction.replace(/,/g, '')) || 0;
         const branch = getBranchFromRef(rawRef);
 
         // Generate unique reference number per item in ticket to prevent duplicates in bulk uploads
@@ -250,6 +261,7 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
           item_description: rawItem,
           type: rawType,
           amount: amount,
+          deduction: deduction,
         });
       } catch (err: any) {
         return { error: `Row ${i + 1} parsing error: ${err.message || err}` };

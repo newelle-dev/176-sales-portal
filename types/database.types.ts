@@ -44,6 +44,7 @@ export type Database = {
       transactions: {
         Row: {
           amount: number
+          deduction: number
           created_at: string
           customer_name: string
           id: string
@@ -57,6 +58,7 @@ export type Database = {
         }
         Insert: {
           amount: number
+          deduction?: number
           created_at?: string
           customer_name: string
           id?: string
@@ -70,6 +72,7 @@ export type Database = {
         }
         Update: {
           amount?: number
+          deduction?: number
           created_at?: string
           customer_name?: string
           id?: string

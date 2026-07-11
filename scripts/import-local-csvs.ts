@@ -158,7 +158,8 @@ async function run() {
     let custIdx = 4;
     let itemIdx = 5;
     let typeIdx = 6;
-    let totalIdx = 8;
+    let nettIdx = 12; // Default index for Nett
+    let deductionIdx = 13; // Default index for Deduction
 
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
@@ -172,7 +173,16 @@ async function run() {
         custIdx = cleanRow.indexOf('Customer');
         itemIdx = cleanRow.indexOf('Item');
         typeIdx = cleanRow.indexOf('Type');
-        totalIdx = cleanRow.indexOf('Total');
+        
+        const foundNett = cleanRow.indexOf('Nett');
+        if (foundNett === -1) {
+          console.error(`Error: Required column 'Nett' not found in CSV file ${fileInfo.path}`);
+          process.exit(1);
+        }
+        nettIdx = foundNett;
+
+        const foundDeduction = cleanRow.indexOf('Deduction');
+        deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
         continue;
       }
 
@@ -197,11 +207,13 @@ async function run() {
       const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawTotal = row[totalIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+      const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+      const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
 
       try {
         const transactionDate = parseTransactionDate(rawDate);
-        const amount = parseFloat(rawTotal.replace(/,/g, '')) || 0;
+        const amount = parseFloat(rawNett.replace(/,/g, '')) || 0;
+        const deduction = parseFloat(rawDeduction.replace(/,/g, '')) || 0;
         const branch = getBranchFromRef(rawRef);
 
         // Generate unique reference number per item in ticket to prevent duplicates in bulk uploads
@@ -222,6 +234,7 @@ async function run() {
           item_description: rawItem,
           type: rawType,
           amount: amount,
+          deduction: deduction,
         });
         totalParsed++;
       } catch (err: any) {
