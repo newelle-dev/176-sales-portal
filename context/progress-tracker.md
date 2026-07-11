@@ -19,6 +19,8 @@ change.
 - Completed a comprehensive typography, spacing, and monochromatic light-theme overhaul across all pages (Login page, Admin dashboards, Team manager, Dialogs, Tables, and Stylist views) while preserving files in `components/ui`. Corrected the circular `--font-sans` reference to load Geist Sans correctly.
 - Implemented Server Action `uploadCsvAction` using PapaParse to parse, clean, filter, and upsert WessConnect CSV transaction records. Added employee name mapping/normalization logic to link rows to `profile_id`s, and determined branches dynamically based on transaction reference numbers. Created a responsive, monochromatic drag-and-drop `UploadZone` client interface displaying import statistics and missing profile validation alerts.
 - Bulk-imported 63 unique stylists and assistants parsed from the WessConnect CSV files into Supabase Auth and synced to the database profiles table, resolving all "Missing employee profile" import warnings.
+- Removed the Employee Alignment & Critical Safeguard import halting rule during CSV upload, allowing transactions for matched stylists to be imported directly, while skipping rows with unmatched employees without halting the process or throwing validation errors.
+- Added `branch` and `employee_name` columns to the `transactions` table, made `profile_id` nullable, and updated foreign key constraints to `ON DELETE SET NULL`. Integrated branch resolution based on reference number suffixes (Bangsar, SS2, KLGCC) and implemented unique suffixing on tickets to support multiple transaction items per ticket. Bulk-imported 2,496 transactions from your three CSV files.
 
 ## In Progress
 

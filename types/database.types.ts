@@ -45,10 +45,12 @@ export type Database = {
           customer_name: string
           id: string
           item_description: string
-          profile_id: string
+          profile_id: string | null
           reference_no: string
           transaction_date: string
           type: string
+          employee_name: string
+          branch: string | null
         }
         Insert: {
           amount: number
@@ -56,10 +58,12 @@ export type Database = {
           customer_name: string
           id?: string
           item_description: string
-          profile_id: string
+          profile_id?: string | null
           reference_no: string
           transaction_date: string
           type: string
+          employee_name: string
+          branch?: string | null
         }
         Update: {
           amount?: number
@@ -67,10 +71,12 @@ export type Database = {
           customer_name?: string
           id?: string
           item_description?: string
-          profile_id?: string
+          profile_id?: string | null
           reference_no?: string
           transaction_date?: string
           type?: string
+          employee_name?: string
+          branch?: string | null
         }
         Relationships: [
           {

@@ -1,31 +1,43 @@
-'use server';
-
-import { createAdminClient } from '@/lib/supabase/admin';
-import { createClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
+import fs from 'fs';
+import path from 'path';
 import Papa from 'papaparse';
+import { createClient } from '@supabase/supabase-js';
 
-export type UploadState = {
-  success?: boolean;
-  insertedCount?: number;
-  error?: string;
-};
+// 1. Load environment variables from .env.local
+const envPath = path.resolve(process.cwd(), '.env.local');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split('\n').forEach((line) => {
+    const match = line.trim().match(/^([^#=]+)=(.*)$/);
+    if (match) {
+      const key = match[1].trim();
+      let val = match[2].trim();
+      if (val.startsWith('"') && val.endsWith('"')) {
+        val = val.substring(1, val.length - 1);
+      }
+      process.env[key] = val;
+    }
+  });
+}
 
-// Normalize names for fuzzy/clean matching between CSV and DB
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error('Error: NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is missing from .env.local');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+// 2. Name normalization logic (matching actions.ts)
 function normalizeName(name: string): string {
   if (!name) return '';
   let normalized = name.toLowerCase().trim();
-
-  // Normalize assist abbreviations
   normalized = normalized.replace(/\((assist|assistant)\)/gi, 'assist');
   normalized = normalized.replace(/\basst\b\.?/gi, 'assist');
-
-  // Strip other text in parentheses (e.g., role titles like (Manicurist))
   normalized = normalized.replace(/\s*\(.*?\)\s*/g, ' ');
-
-  // Collapse multiple spaces and trim
   normalized = normalized.replace(/\s+/g, ' ').trim();
-
   return normalized;
 }
 
@@ -37,11 +49,9 @@ const NAME_OVERRIDES: Record<string, string> = {
   'williamassist': 'william assist',
 };
 
-// Safe date parser for "DD-MM-YYYY hh:mm A" and similar formats
+// 3. Date parser (matching actions.ts)
 function parseTransactionDate(dateStr: string): string {
   const trimmed = dateStr.trim();
-
-  // Match "DD-MM-YYYY hh:mm A" (e.g. 07-06-2026 01:47 PM)
   const match1 = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})\s*(AM|PM)$/i);
   if (match1) {
     let [_, day, month, year, hoursStr, minutesStr, ampm] = match1;
@@ -55,7 +65,6 @@ function parseTransactionDate(dateStr: string): string {
     return `${year}-${month}-${day}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
   }
 
-  // Match "DD-MM-YYYY HH:mm" (24h)
   const match2 = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})$/);
   if (match2) {
     const [_, day, month, year, hours, minutes] = match2;
@@ -66,10 +75,10 @@ function parseTransactionDate(dateStr: string): string {
   if (!isNaN(parsed.getTime())) {
     return parsed.toISOString();
   }
-
   throw new Error(`Invalid date format: ${dateStr}`);
 }
 
+// 4. Branch resolution helper
 function getBranchFromRef(refNo: string): string {
   const trimmed = refNo.trim();
   if (/:/.test(trimmed)) {
@@ -83,79 +92,54 @@ function getBranchFromRef(refNo: string): string {
       }
     }
   }
-
   const match = trimmed.match(/-(\d+)$/);
   if (match) {
     const suffix = match[1];
     if (suffix === '2') return 'SS2';
     if (suffix === '3') return 'KLGCC';
   }
-
   return 'Bangsar';
 }
 
-export async function uploadCsvAction(formData: FormData): Promise<UploadState> {
-  try {
-    // 1. Authenticate user and verify admin role
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+async function run() {
+  console.log('Fetching active profiles...');
+  const { data: profiles, error: profilesError } = await supabase
+    .from('profiles')
+    .select('id, name');
 
-    if (!user) {
-      return { error: 'Unauthorized: No active session.' };
+  if (profilesError) {
+    console.error('Failed to fetch profiles:', profilesError.message);
+    process.exit(1);
+  }
+
+  const profileMap = new Map<string, string>();
+  profiles?.forEach((p) => {
+    profileMap.set(normalizeName(p.name), p.id);
+  });
+
+  const files = [
+    { path: 'public/Employee Received Detail.csv' },
+    { path: 'public/Employee Received Detail (1).csv' },
+    { path: 'public/Employee Received Detail (2).csv' }
+  ];
+
+  let totalParsed = 0;
+  let totalImported = 0;
+  const transactionsToInsert: any[] = [];
+  const refCounts = new Map<string, number>();
+
+  for (const fileInfo of files) {
+    const absolutePath = path.resolve(process.cwd(), fileInfo.path);
+    if (!fs.existsSync(absolutePath)) {
+      console.warn(`File not found: ${fileInfo.path}, skipping...`);
+      continue;
     }
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single();
-
-    if (!profile || profile.role !== 'admin') {
-      return { error: 'Unauthorized: Only admins can upload files.' };
-    }
-
-    // 2. Read file from FormData
-    const file = formData.get('file') as File;
-    if (!file) {
-      return { error: 'No file provided.' };
-    }
-
-    const csvText = await file.text();
-
-    // 3. Parse CSV with PapaParse
-    const parseResult = Papa.parse<string[]>(csvText, {
-      skipEmptyLines: true,
-    });
-
-    if (parseResult.errors.length > 0) {
-      return { error: `Failed to parse CSV: ${parseResult.errors[0].message}` };
-    }
-
+    console.log(`Parsing file: ${fileInfo.path}...`);
+    const csvContent = fs.readFileSync(absolutePath, 'utf8');
+    const parseResult = Papa.parse<string[]>(csvContent, { skipEmptyLines: true });
     const rows = parseResult.data;
-    if (rows.length === 0) {
-      return { error: 'The uploaded file is empty.' };
-    }
 
-    // 4. Fetch all user profiles for name matching
-    const adminClient = createAdminClient();
-    const { data: dbProfiles, error: profilesError } = await adminClient
-      .from('profiles')
-      .select('id, name');
-
-    if (profilesError || !dbProfiles) {
-      return { error: `Failed to fetch profiles: ${profilesError?.message || 'Unknown error'}` };
-    }
-
-    // Build a map of normalized names to profile IDs
-    const profileMap = new Map<string, string>();
-    dbProfiles.forEach((p) => {
-      const normalized = normalizeName(p.name);
-      profileMap.set(normalized, p.id);
-    });
-
-    // Default indices which we will auto-detect from header rows
     let dateIdx = 1;
     let refIdx = 2;
     let empIdx = 3;
@@ -164,14 +148,10 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
     let typeIdx = 6;
     let totalIdx = 8;
 
-    const transactionsToInsert: any[] = [];
-    const refCounts = new Map<string, number>();
-
-    // 5. Parse row-by-row
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
 
-      // Detect header row and update indices dynamically
+      // Auto-detect header row
       if (row.includes('Reference No.') && row.includes('Employee')) {
         const cleanRow = row.map((cell) => cell.trim().replace(/^["']|["']$/g, ''));
         dateIdx = cleanRow.indexOf('Date');
@@ -184,23 +164,15 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
         continue;
       }
 
-      // Check if it is a transaction row (starts with a row number)
+      // Check if transaction row
       const isTransactionRow = /^\d+$/.test(row[0]?.trim());
-      if (!isTransactionRow) {
-        continue; // skip totals, metadata, empty lines
-      }
+      if (!isTransactionRow) continue;
 
-      // Extract transaction type and filter (only keep S, G, C, P)
       const rawType = row[typeIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      if (!['S', 'G', 'C', 'P'].includes(rawType)) {
-        continue; // Filter out other non-matching types
-      }
+      if (!['S', 'G', 'C', 'P'].includes(rawType)) continue;
 
-      // Extract and normalize employee name
       const rawEmployeeName = row[empIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      if (!rawEmployeeName) {
-        continue;
-      }
+      if (!rawEmployeeName) continue;
 
       let normalizedEmp = normalizeName(rawEmployeeName);
       if (NAME_OVERRIDES[normalizedEmp]) {
@@ -209,7 +181,6 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
 
       const profileId = profileMap.get(normalizedEmp) || null;
 
-      // Parse other fields
       const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
@@ -240,27 +211,32 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
           type: rawType,
           amount: amount,
         });
+        totalParsed++;
       } catch (err: any) {
-        return { error: `Row ${i + 1} parsing error: ${err.message || err}` };
+        console.error(`Error in file ${fileInfo.path} row ${i + 1}:`, err.message || err);
       }
     }
-
-    if (transactionsToInsert.length === 0) {
-      return { success: true, insertedCount: 0 };
-    }
-
-    // 7. Upsert into public.transactions (onConflict 'reference_no')
-    const { error: insertError } = await adminClient
-      .from('transactions')
-      .upsert(transactionsToInsert, { onConflict: 'reference_no' });
-
-    if (insertError) {
-      return { error: `Failed to insert transactions: ${insertError.message}` };
-    }
-
-    revalidatePath('/admin');
-    return { success: true, insertedCount: transactionsToInsert.length };
-  } catch (error: any) {
-    return { error: error.message || 'An unexpected error occurred during import.' };
   }
+
+  console.log(`Parsed ${totalParsed} transactions from CSV files.`);
+
+  // 6. Bulk upsert in chunks of 200 rows
+  const chunkSize = 200;
+  for (let i = 0; i < transactionsToInsert.length; i += chunkSize) {
+    const chunk = transactionsToInsert.slice(i, i + chunkSize);
+    const { error } = await supabase
+      .from('transactions')
+      .upsert(chunk, { onConflict: 'reference_no' });
+
+    if (error) {
+      console.error(`Failed to insert chunk starting at index ${i}:`, error.message);
+    } else {
+      totalImported += chunk.length;
+      console.log(`Successfully upserted transactions ${i + 1} to ${Math.min(i + chunkSize, transactionsToInsert.length)}...`);
+    }
+  }
+
+  console.log(`Import completed. Total successfully imported/updated: ${totalImported} / ${totalParsed}`);
 }
+
+run();

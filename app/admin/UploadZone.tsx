@@ -4,7 +4,6 @@ import React, { useState, useRef, useTransition } from 'react';
 import { uploadCsvAction, UploadState } from './actions';
 import { Button } from '@/components/ui/button';
 import { Loader2, CheckCircle2, AlertCircle, FileSpreadsheet, UploadCloud } from 'lucide-react';
-import Link from 'next/link';
 
 export default function UploadZone() {
   const [isDragActive, setIsDragActive] = useState(false);
@@ -175,29 +174,6 @@ export default function UploadZone() {
               <div className="space-y-1.5 w-full">
                 <p className="text-xs font-bold text-red-850">Import Failed</p>
                 <p className="text-xs font-medium text-red-750">{result.error}</p>
-
-                {result.missingEmployees && result.missingEmployees.length > 0 && (
-                  <div className="mt-2 bg-white/70 border border-red-100 rounded-lg p-3 space-y-2">
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                      Missing Stylist Profiles ({result.missingEmployees.length}):
-                    </p>
-                    <ul className="text-xs list-disc pl-4 space-y-1 font-semibold text-gray-700 max-h-32 overflow-y-auto">
-                      {result.missingEmployees.map((emp) => (
-                        <li key={emp}>{emp}</li>
-                      ))}
-                    </ul>
-                    <p className="text-[11px] text-gray-500 leading-normal">
-                      Please create accounts matching these exact names in the{' '}
-                      <Link
-                        href="/admin/team"
-                        className="text-black font-bold underline hover:text-slate-800"
-                      >
-                        Team Manager
-                      </Link>{' '}
-                      before uploading again.
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           )}
