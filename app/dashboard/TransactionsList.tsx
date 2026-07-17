@@ -62,6 +62,7 @@ export default function TransactionsList({ transactions }: TransactionsListProps
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
+        timeZone: 'Asia/Kuala_Lumpur',
       });
     } catch {
       return dateStr;
@@ -84,8 +85,12 @@ export default function TransactionsList({ transactions }: TransactionsListProps
 
     // 2. Tab/Category filtering
     if (activeFilter === 'all') return true;
-    if (activeFilter === 'alacarte') return tx.type === 'S' && tx.amount > 0;
-    if (activeFilter === 'packages') return (tx.type === 'G' || tx.type === 'C') && tx.amount > 0;
+    if (activeFilter === 'alacarte') {
+      return (tx.type === 'S' && tx.amount !== 0) || (tx.type === 'C' && tx.amount < 0);
+    }
+    if (activeFilter === 'packages') {
+      return (tx.type === 'G' || tx.type === 'C') && tx.amount > 0;
+    }
     if (activeFilter === 'products') return tx.type === 'P' && tx.amount > 0;
     if (activeFilter === 'deductions') return tx.deduction > 0;
 
@@ -97,9 +102,16 @@ export default function TransactionsList({ transactions }: TransactionsListProps
   filteredTransactions.forEach((tx) => {
     try {
       const date = new Date(tx.transaction_date);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Kuala_Lumpur',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      const parts = formatter.formatToParts(date);
+      const year = parts.find((p) => p.type === 'year')?.value || '1970';
+      const month = parts.find((p) => p.type === 'month')?.value || '01';
+      const day = parts.find((p) => p.type === 'day')?.value || '01';
       const dateKey = `${year}-${month}-${day}`;
       
       if (!groupsMap[dateKey]) {
@@ -125,12 +137,13 @@ export default function TransactionsList({ transactions }: TransactionsListProps
     if (dateKey === 'unknown') return 'Unknown Date';
     try {
       const [year, month, day] = dateKey.split('-').map(Number);
-      const date = new Date(year, month - 1, day);
+      const date = new Date(Date.UTC(year, month - 1, day));
       return date.toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'short',
         day: 'numeric',
         year: 'numeric',
+        timeZone: 'UTC',
       });
     } catch {
       return dateKey;
@@ -139,7 +152,17 @@ export default function TransactionsList({ transactions }: TransactionsListProps
 
   const groupedDays = sortedDates.map((dateKey) => {
     const txs = groupsMap[dateKey];
-    const dailyTotal = txs.reduce((sum, tx) => sum + (Number(tx.amount) || 0) + (Number(tx.deduction) || 0), 0);
+    const dailyTotal = txs.reduce((sum, tx) => {
+      const amt = Number(tx.amount) || 0;
+      const ded = Number(tx.deduction) || 0;
+      if (activeFilter === 'deductions') {
+        return sum + ded;
+      }
+      if (activeFilter === 'alacarte' || activeFilter === 'packages' || activeFilter === 'products') {
+        return sum + amt;
+      }
+      return sum + amt + ded;
+    }, 0);
     return {
       dateKey,
       formattedDate: getFormattedDate(dateKey),

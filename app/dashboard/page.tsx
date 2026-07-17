@@ -63,9 +63,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const [selYear, selMonth] = selectedMonthStr.split('-').map(Number);
 
-  // Date bounds for the selected month (timezone aware ISO boundaries)
-  const startOfMonth = new Date(selYear, selMonth - 1, 1).toISOString();
-  const startOfNextMonth = new Date(selYear, selMonth, 1).toISOString();
+  const startOfMonth = `${selYear}-${selMonth.toString().padStart(2, '0')}-01T00:00:00+08:00`;
+  const nextMonthYear = selMonth === 12 ? selYear + 1 : selYear;
+  const nextMonthVal = selMonth === 12 ? 1 : selMonth + 1;
+  const startOfNextMonth = `${nextMonthYear}-${nextMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
 
   // Fetch transactions for the selected month
   const { data: transactions } = await supabase
@@ -98,10 +99,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       deductionCount++;
     }
 
-    if (tx.type === 'S') {
+    if (tx.type === 'S' || (tx.type === 'C' && amt < 0)) {
       alacarteSum += amt;
       if (amt !== 0) alacarteCount++;
-    } else if (tx.type === 'G' || tx.type === 'C') {
+    } else if (tx.type === 'G' || (tx.type === 'C' && amt >= 0)) {
       packageSum += amt;
       if (amt !== 0) packageCount++;
     } else if (tx.type === 'P') {

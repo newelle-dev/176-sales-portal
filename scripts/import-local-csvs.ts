@@ -71,14 +71,14 @@ function parseTransactionDate(dateStr: string): string {
     } else if (ampm.toUpperCase() === 'AM' && hours === 12) {
       hours = 0;
     }
-    return `${year}-${month}-${day}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+    return `${year}-${month}-${day}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00+08:00`;
   }
 
   // Match "DD-MM-YYYY HH:mm" or "DD/MM/YYYY HH:mm" (24h)
   const match2 = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})\s+(\d{2}):(\d{2})$/);
   if (match2) {
     const [_, day, month, year, hours, minutes] = match2;
-    return `${year}-${month}-${day}T${hours}:${minutes}:00`;
+    return `${year}-${month}-${day}T${hours}:${minutes}:00+08:00`;
   }
 
   const parsed = new Date(trimmed);
