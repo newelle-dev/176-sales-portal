@@ -71,6 +71,7 @@ function aggregateTransactions(
   return {
     sums: [alacarteSum, packageSum, productSum, deductionSum],
     counts: [alacarteCount, packageCount, productCount, deductionCount],
+    // Deductions represent real revenue from deduction transactions and are intentionally included in total sales
     totalSales: alacarteSum + packageSum + productSum + deductionSum,
   };
 }

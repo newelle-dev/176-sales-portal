@@ -215,7 +215,7 @@ export default function UploadZone() {
                 <div className="space-y-1">
                   <p className="text-xs font-bold">Import Completed Successfully</p>
                   <p className="text-xs font-medium text-emerald-700">
-                    Imported/updated a total of **{result.insertedCount}** transaction records.
+                    Imported/updated a total of <strong>{result.insertedCount}</strong> transaction records.
                   </p>
                 </div>
               </div>
@@ -250,7 +250,7 @@ export default function UploadZone() {
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-amber-900">Unmapped Employees Found</p>
                       <p className="text-xs text-amber-800 leading-relaxed">
-                        The following employee names from your CSV files were imported, but are **not linked** to any active stylist profile in the portal. Stylists won't see these transactions on their dashboards until they are linked in the Team Manager.
+                        The following employee names from your CSV files were imported, but are <strong>not linked</strong> to any active stylist profile in the portal. Stylists won't see these transactions on their dashboards until they are linked in the Team Manager.
                       </p>
                     </div>
                   </div>

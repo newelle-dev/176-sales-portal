@@ -15,17 +15,7 @@ The findings below focus on the **gap between "good" and "excellent"** — mostl
 
 ## 🟠 Important Issues
 
-### 4. `totalSales` Calculation Incorrectly Adds Deductions
-**File:** [`app/dashboard/page.tsx` L74](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/dashboard/page.tsx#L74)
 
-```ts
-// ❌ Current — deductionSum is added to totalSales, inflating it
-totalSales: alacarteSum + packageSum + productSum + deductionSum,
-```
-
-Deductions are separate from sales revenue. The "Total Monthly Sales" KPI card will be misleading if deductions are counted as positive sales. If deductions are meant to be added (e.g. they represent real revenue from deduction transactions), this needs a comment explaining why. If not, remove `+ deductionSum`.
-
----
 
 ### 5. `aggregateTransactions` Uses Raw `txList` but Page Passes `resolvedTxList` to Child
 **File:** [`app/dashboard/page.tsx` L155–L161](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/dashboard/page.tsx#L155-L161)
@@ -70,54 +60,7 @@ The "X" remove-file button has no `aria-label`. Screen readers will announce "bu
 
 ---
 
-### 8. Edit Dialog `onOpenChange` Does Not Handle Open Case
-**File:** [`app/admin/team/TeamManager.tsx` L343–L353](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/team/TeamManager.tsx#L343-L353)
 
-```ts
-// ❌ Current — handler is asymmetric: only runs cleanup on close
-onOpenChange={(open) => {
-  if (!open) {
-    setIsEditOpen(false);
-    ...
-  }
-}}
-```
-
-Compare to the Add dialog which calls `setIsAddOpen(open)` (the correct pattern). The Edit dialog never calls `setIsEditOpen(true)` from `onOpenChange`, which means if the dialog is closed externally (e.g. pressing Escape), it calls `setIsEditOpen(false)` but then the condition `if (!open)` would block setting `open` to true. This is a subtle asymmetry — while it works because `setIsEditOpen(true)` is called from the edit button click, it's fragile.
-
-```ts
-// ✅ Fix
-onOpenChange={(open) => {
-  setIsEditOpen(open);
-  if (!open) {
-    setSelectedStylist(null);
-    setWessSearch('');
-    setSelectedWessNames([]);
-    setEditError(null);
-  }
-}}
-```
-
----
-
-### 9. Success Message Uses Markdown in JSX (Not Rendered)
-**File:** [`app/admin/UploadZone.tsx` L218](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/UploadZone.tsx#L218)
-
-```tsx
-// ❌ Current — ** bold markers appear as literal text in the browser
-<p>Imported/updated a total of **{result.insertedCount}** transaction records.</p>
-
-// ✅ Fix — use JSX bold
-<p>Imported/updated a total of <strong>{result.insertedCount}</strong> transaction records.</p>
-```
-
-Same issue at line 253:
-```tsx
-// ❌ are **not linked** to any active stylist...
-// ✅ are <strong>not linked</strong> to any active stylist...
-```
-
----
 
 ### 10. `WessNameSelector` Missing `htmlFor` on Label
 **File:** [`components/admin/WessNameSelector.tsx` L69](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/components/admin/WessNameSelector.tsx#L69)
@@ -335,12 +278,9 @@ The loading skeleton should communicate its state:
 
 | # | Severity | Area | File | Issue |
 |---|----------|------|------|-------|
-| 4 | 🟠 Important | Business Logic | `dashboard/page.tsx:74` | Deductions added to Total Monthly Sales |
 | 5 | 🟠 Important | Code Clarity | `dashboard/page.tsx:155` | Silent `txList` vs `resolvedTxList` split |
 | 6 | 🟠 Important | Maintainability | `dashboard/page.tsx:102` | Hardcoded `startYear = 2026` |
 | 7 | 🟠 Important | Accessibility | `admin/UploadZone.tsx:170` | Missing `aria-label` on remove-file button |
-| 8 | 🟠 Important | Bug | `admin/team/TeamManager.tsx:343` | Edit dialog `onOpenChange` asymmetry |
-| 9 | 🟠 Important | UI Bug | `admin/UploadZone.tsx:218` | Markdown `**bold**` renders as literal text |
 | 10 | 🟠 Important | Accessibility | `WessNameSelector.tsx:69` | `<label>` missing `htmlFor` |
 | 11 | 🟠 Important | Accessibility | `TransactionsList.tsx:167` | Incomplete ARIA tab pattern |
 | 12 | 🟡 Suggestion | Code Quality | `dashboard/page.tsx:96` | Extract month-gen to utility |

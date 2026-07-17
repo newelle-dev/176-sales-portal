@@ -343,8 +343,8 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
       <Dialog
         open={isEditOpen}
         onOpenChange={(open) => {
+          setIsEditOpen(open);
           if (!open) {
-            setIsEditOpen(false);
             setSelectedStylist(null);
             setWessSearch('');
             setSelectedWessNames([]);
