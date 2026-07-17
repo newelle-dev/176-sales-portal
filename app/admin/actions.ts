@@ -4,11 +4,21 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import Papa from 'papaparse';
+import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
 
 export type UploadState = {
   success?: boolean;
   insertedCount?: number;
   error?: string;
+  filesProcessed?: {
+    name: string;
+    insertedCount: number;
+    branchDetected: string;
+  }[];
+  unmappedEmployees?: {
+    name: string;
+    count: number;
+  }[];
 };
 
 // Normalize names for fuzzy/clean matching between CSV and DB
@@ -16,8 +26,9 @@ function normalizeName(name: string): string {
   if (!name) return '';
   let normalized = name.toLowerCase().trim();
 
-  // Normalize assist abbreviations
-  normalized = normalized.replace(/\((assist|assistant)\)/gi, 'assist');
+  // Normalize assist/asst abbreviations within parentheses first
+  normalized = normalized.replace(/\s*\((assist|assistant|asst)\.?\)/gi, ' assist');
+  // Normalize stand-alone asst abbreviations
   normalized = normalized.replace(/\basst\b\.?/gi, 'assist');
 
   // Strip other text in parentheses (e.g., role titles like (Manicurist))
@@ -37,12 +48,12 @@ const NAME_OVERRIDES: Record<string, string> = {
   'williamassist': 'william assist',
 };
 
-// Safe date parser for "DD-MM-YYYY hh:mm A" and similar formats
+// Safe date parser for "DD-MM-YYYY hh:mm A", "DD/MM/YYYY hh:mm A", and similar formats
 function parseTransactionDate(dateStr: string): string {
   const trimmed = dateStr.trim();
 
-  // Match "DD-MM-YYYY hh:mm A" (e.g. 07-06-2026 01:47 PM)
-  const match1 = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})\s*(AM|PM)$/i);
+  // Match "DD-MM-YYYY hh:mm A" or "DD/MM/YYYY hh:mm A" (e.g. 07-06-2026 01:47 PM)
+  const match1 = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})\s+(\d{2}):(\d{2})\s*(AM|PM)$/i);
   if (match1) {
     let [_, day, month, year, hoursStr, minutesStr, ampm] = match1;
     let hours = parseInt(hoursStr, 10);
@@ -55,8 +66,8 @@ function parseTransactionDate(dateStr: string): string {
     return `${year}-${month}-${day}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
   }
 
-  // Match "DD-MM-YYYY HH:mm" (24h)
-  const match2 = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})$/);
+  // Match "DD-MM-YYYY HH:mm" or "DD/MM/YYYY HH:mm" (24h)
+  const match2 = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})\s+(\d{2}):(\d{2})$/);
   if (match2) {
     const [_, day, month, year, hours, minutes] = match2;
     return `${year}-${month}-${day}T${hours}:${minutes}:00`;
@@ -78,8 +89,8 @@ function getBranchFromRef(refNo: string): string {
       const match = part.trim().match(/-(\d+)$/);
       if (match) {
         const suffix = match[1];
-        if (suffix === '2') return 'SS2';
-        if (suffix === '3') return 'KLGCC';
+        if (suffix === '2') return 'KLGCC';
+        if (suffix === '3') return 'SS2';
       }
     }
   }
@@ -87,8 +98,8 @@ function getBranchFromRef(refNo: string): string {
   const match = trimmed.match(/-(\d+)$/);
   if (match) {
     const suffix = match[1];
-    if (suffix === '2') return 'SS2';
-    if (suffix === '3') return 'KLGCC';
+    if (suffix === '2') return 'KLGCC';
+    if (suffix === '3') return 'SS2';
   }
 
   return 'Bangsar';
@@ -116,29 +127,13 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
       return { error: 'Unauthorized: Only admins can upload files.' };
     }
 
-    // 2. Read file from FormData
-    const file = formData.get('file') as File;
-    if (!file) {
-      return { error: 'No file provided.' };
+    // 2. Read files from FormData
+    const files = formData.getAll('files') as File[];
+    if (!files || files.length === 0) {
+      return { error: 'No files provided.' };
     }
 
-    const csvText = await file.text();
-
-    // 3. Parse CSV with PapaParse
-    const parseResult = Papa.parse<string[]>(csvText, {
-      skipEmptyLines: true,
-    });
-
-    if (parseResult.errors.length > 0) {
-      return { error: `Failed to parse CSV: ${parseResult.errors[0].message}` };
-    }
-
-    const rows = parseResult.data;
-    if (rows.length === 0) {
-      return { error: 'The uploaded file is empty.' };
-    }
-
-    // 4. Fetch all user profiles for name matching
+    // 3. Fetch all user profiles for name matching
     const adminClient = createAdminClient();
     const { data: dbProfiles, error: profilesError } = await adminClient
       .from('profiles')
@@ -166,123 +161,202 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
       }
     });
 
-    // Default indices which we will auto-detect from header rows
-    let dateIdx = 1;
-    let refIdx = 2;
-    let empIdx = 3;
-    let custIdx = 4;
-    let itemIdx = 5;
-    let typeIdx = 6;
-    let nettIdx = 12; // Default index for Nett
-    let deductionIdx = 13; // Default index for Deduction
-
     const transactionsToInsert: any[] = [];
     const refCounts = new Map<string, number>();
+    const filesProcessed: { name: string; insertedCount: number; branchDetected: string }[] = [];
+    const unmappedEmployeeMap = new Map<string, number>();
 
-    // 5. Parse row-by-row
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
+    // 4. Parse file-by-file
+    for (const file of files) {
+      let csvText = await file.text();
+      // Remove UTF-8 BOM if present
+      if (csvText.startsWith('\ufeff')) {
+        csvText = csvText.slice(1);
+      }
 
-      // Detect header row and update indices dynamically
-      if (row.includes('Reference No.') && row.includes('Employee')) {
-        const cleanRow = row.map((cell) => cell.trim().replace(/^["']|["']$/g, ''));
-        dateIdx = cleanRow.indexOf('Date');
-        refIdx = cleanRow.indexOf('Reference No.');
-        empIdx = cleanRow.indexOf('Employee');
-        custIdx = cleanRow.indexOf('Customer');
-        itemIdx = cleanRow.indexOf('Item');
-        typeIdx = cleanRow.indexOf('Type');
-        
-        const foundNett = cleanRow.indexOf('Nett');
-        if (foundNett === -1) {
-          return { error: "Failed to parse CSV: Required column 'Nett' not found." };
-        }
-        nettIdx = foundNett;
+      // Parse CSV with PapaParse
+      const parseResult = Papa.parse<string[]>(csvText, {
+        skipEmptyLines: true,
+      });
 
-        const foundDeduction = cleanRow.indexOf('Deduction');
-        deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
+      if (parseResult.errors.length > 0) {
+        return { error: `Failed to parse CSV file "${file.name}": ${parseResult.errors[0].message}` };
+      }
+
+      const rows = parseResult.data;
+      if (rows.length === 0) {
         continue;
       }
 
-      // Check if it is a transaction row (starts with a row number)
-      const isTransactionRow = /^\d+$/.test(row[0]?.trim());
-      if (!isTransactionRow) {
-        continue; // skip totals, metadata, empty lines
-      }
+      // Default indices which we will auto-detect from header rows
+      let dateIdx = 1;
+      let refIdx = 2;
+      let empIdx = 3;
+      let custIdx = 4;
+      let itemIdx = 5;
+      let typeIdx = 6;
+      let nettIdx = 12; // Default index for Nett
+      let deductionIdx = 13; // Default index for Deduction
 
-      // Extract transaction type and filter (only keep S, G, C, P)
-      const rawType = row[typeIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      if (!['S', 'G', 'C', 'P'].includes(rawType)) {
-        continue; // Filter out other non-matching types
-      }
+      let fileInsertedCount = 0;
+      const branchesInFile = new Set<string>();
 
-      // Extract and normalize employee name
-      const rawEmployeeName = row[empIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      if (!rawEmployeeName) {
-        continue;
-      }
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
 
-      let normalizedEmp = normalizeName(rawEmployeeName);
-      if (NAME_OVERRIDES[normalizedEmp]) {
-        normalizedEmp = NAME_OVERRIDES[normalizedEmp];
-      }
+        // Detect header row and update indices dynamically, trimming cell values beforehand
+        const trimmedRow = row.map((cell) => cell?.trim() || '');
+        const lowerRow = trimmedRow.map((cell) => cell.replace(/^["']|["']$/g, '').toLowerCase());
+        if (
+          (lowerRow.includes('reference no.') || lowerRow.includes('reference no')) &&
+          lowerRow.includes('employee')
+        ) {
+          const foundDate = lowerRow.indexOf('date');
+          if (foundDate !== -1) dateIdx = foundDate;
 
-      const profileId = profileMap.get(normalizedEmp) || null;
+          const foundRef = lowerRow.includes('reference no.') ? lowerRow.indexOf('reference no.') : lowerRow.indexOf('reference no');
+          if (foundRef !== -1) refIdx = foundRef;
 
-      // Parse other fields
-      const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
-      const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+          const foundEmp = lowerRow.indexOf('employee');
+          if (foundEmp !== -1) empIdx = foundEmp;
 
-      try {
-        const transactionDate = parseTransactionDate(rawDate);
-        const amount = parseFloat(rawNett.replace(/,/g, '')) || 0;
-        const deduction = parseFloat(rawDeduction.replace(/,/g, '')) || 0;
-        const branch = getBranchFromRef(rawRef);
+          const foundCust = lowerRow.indexOf('customer');
+          if (foundCust !== -1) custIdx = foundCust;
 
-        // Generate unique reference number per item in ticket to prevent duplicates in bulk uploads
-        let dbRef = rawRef;
-        if (rawRef) {
-          const count = refCounts.get(rawRef) || 0;
-          refCounts.set(rawRef, count + 1);
-          dbRef = `${rawRef}_${count + 1}`;
+          const foundType = lowerRow.indexOf('type');
+          if (foundType !== -1) typeIdx = foundType;
+
+          // Look for 'item' or similar column header
+          let foundItem = lowerRow.indexOf('item');
+          if (foundItem === -1) {
+            foundItem = lowerRow.findIndex((cell) => cell.includes('item') || cell.includes('description') || cell.includes('service'));
+          }
+          if (foundItem !== -1) itemIdx = foundItem;
+          
+          const foundNett = lowerRow.indexOf('nett');
+          if (foundNett === -1) {
+            return { error: `Failed to parse CSV file "${file.name}": Required column 'Nett' not found.` };
+          }
+          nettIdx = foundNett;
+
+          const foundDeduction = lowerRow.indexOf('deduction');
+          deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
+          continue;
         }
 
-        transactionsToInsert.push({
-          profile_id: profileId,
-          employee_name: rawEmployeeName,
-          branch: branch,
-          transaction_date: transactionDate,
-          reference_no: dbRef,
-          customer_name: rawCustomer,
-          item_description: rawItem,
-          type: rawType,
-          amount: amount,
-          deduction: deduction,
-        });
-      } catch (err: any) {
-        return { error: `Row ${i + 1} parsing error: ${err.message || err}` };
+        // Check if it is a transaction row (starts with a row number)
+        const isTransactionRow = /^\d+$/.test(row[0]?.trim());
+        if (!isTransactionRow) {
+          continue; // skip totals, metadata, empty lines
+        }
+
+        // Extract transaction type and filter (only keep S, G, C, P)
+        const rawType = row[typeIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+        if (!['S', 'G', 'C', 'P'].includes(rawType)) {
+          continue; // Filter out other non-matching types
+        }
+
+        // Extract and normalize employee name
+        const rawEmployeeName = row[empIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+        if (!rawEmployeeName) {
+          continue;
+        }
+
+        let normalizedEmp = normalizeName(rawEmployeeName);
+        if (NAME_OVERRIDES[normalizedEmp]) {
+          normalizedEmp = NAME_OVERRIDES[normalizedEmp];
+        }
+
+        const profileId = profileMap.get(normalizedEmp) || null;
+
+        // If unmapped, track it
+        if (!profileId) {
+          const currentCount = unmappedEmployeeMap.get(rawEmployeeName) || 0;
+          unmappedEmployeeMap.set(rawEmployeeName, currentCount + 1);
+        }
+
+        // Parse other fields
+        const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+        const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+        const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+        let rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+        if (rawItem && !rawItem.includes(':') && ITEM_DICTIONARY[rawItem]) {
+          rawItem = ITEM_DICTIONARY[rawItem];
+        }
+        const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+        const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+
+        try {
+          const transactionDate = parseTransactionDate(rawDate);
+          const amount = parseFloat(rawNett.replace(/,/g, '')) || 0;
+          const deduction = parseFloat(rawDeduction.replace(/,/g, '')) || 0;
+          const branch = getBranchFromRef(rawRef);
+          branchesInFile.add(branch);
+
+          // Generate unique reference number per item in ticket to prevent duplicates in bulk uploads
+          let dbRef = rawRef;
+          if (rawRef) {
+            const count = refCounts.get(rawRef) || 0;
+            refCounts.set(rawRef, count + 1);
+            dbRef = `${rawRef}_${count + 1}`;
+          }
+
+          transactionsToInsert.push({
+            profile_id: profileId,
+            employee_name: rawEmployeeName,
+            branch: branch,
+            transaction_date: transactionDate,
+            reference_no: dbRef,
+            customer_name: rawCustomer,
+            item_description: rawItem,
+            type: rawType,
+            amount: amount,
+            deduction: deduction,
+          });
+          fileInsertedCount++;
+        } catch (err: any) {
+          return { error: `File "${file.name}", Row ${i + 1} parsing error: ${err.message || err}` };
+        }
       }
+
+      filesProcessed.push({
+        name: file.name,
+        insertedCount: fileInsertedCount,
+        branchDetected: Array.from(branchesInFile).join(', ') || 'Bangsar',
+      });
     }
 
     if (transactionsToInsert.length === 0) {
-      return { success: true, insertedCount: 0 };
+      return { success: true, insertedCount: 0, filesProcessed, unmappedEmployees: [] };
     }
 
-    // 7. Upsert into public.transactions (onConflict 'reference_no')
-    const { error: insertError } = await adminClient
-      .from('transactions')
-      .upsert(transactionsToInsert, { onConflict: 'reference_no' });
+    // 5. Upsert into public.transactions (onConflict 'reference_no') in chunks of 300 to avoid limits/timeouts
+    const chunkSize = 300;
+    for (let i = 0; i < transactionsToInsert.length; i += chunkSize) {
+      const chunk = transactionsToInsert.slice(i, i + chunkSize);
+      const { error: insertError } = await adminClient
+        .from('transactions')
+        .upsert(chunk, { onConflict: 'reference_no' });
 
-    if (insertError) {
-      return { error: `Failed to insert transactions: ${insertError.message}` };
+      if (insertError) {
+        return { error: `Failed to insert transactions chunk starting at index ${i}: ${insertError.message}` };
+      }
     }
+
+    // Convert map to array of objects
+    const unmappedEmployees = Array.from(unmappedEmployeeMap.entries()).map(([name, count]) => ({
+      name,
+      count,
+    })).sort((a, b) => b.count - a.count);
 
     revalidatePath('/admin');
-    return { success: true, insertedCount: transactionsToInsert.length };
+    revalidatePath('/dashboard');
+    return {
+      success: true,
+      insertedCount: transactionsToInsert.length,
+      filesProcessed,
+      unmappedEmployees,
+    };
   } catch (error: any) {
     return { error: error.message || 'An unexpected error occurred during import.' };
   }

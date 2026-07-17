@@ -2,9 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
 import { createClient } from '@supabase/supabase-js';
+import { ITEM_DICTIONARY } from '../lib/item-dictionary';
 
 // 1. Load environment variables from .env.local
-const envPath = path.resolve(process.cwd(), '.env.local');
+let envPath = path.resolve(process.cwd(), '.env.local');
+if (!fs.existsSync(envPath)) {
+  envPath = path.resolve(process.cwd(), '.env');
+}
 if (fs.existsSync(envPath)) {
   const envContent = fs.readFileSync(envPath, 'utf8');
   envContent.split('\n').forEach((line) => {
@@ -34,9 +38,13 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 function normalizeName(name: string): string {
   if (!name) return '';
   let normalized = name.toLowerCase().trim();
-  normalized = normalized.replace(/\((assist|assistant)\)/gi, 'assist');
+  // Normalize assist/asst abbreviations within parentheses first
+  normalized = normalized.replace(/\s*\((assist|assistant|asst)\.?\)/gi, ' assist');
+  // Normalize stand-alone asst abbreviations
   normalized = normalized.replace(/\basst\b\.?/gi, 'assist');
+  // Strip other text in parentheses (e.g., role titles like (Manicurist))
   normalized = normalized.replace(/\s*\(.*?\)\s*/g, ' ');
+  // Collapse multiple spaces and trim
   normalized = normalized.replace(/\s+/g, ' ').trim();
   return normalized;
 }
@@ -52,7 +60,8 @@ const NAME_OVERRIDES: Record<string, string> = {
 // 3. Date parser (matching actions.ts)
 function parseTransactionDate(dateStr: string): string {
   const trimmed = dateStr.trim();
-  const match1 = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})\s*(AM|PM)$/i);
+  // Match "DD-MM-YYYY hh:mm A" or "DD/MM/YYYY hh:mm A" (e.g. 07-06-2026 01:47 PM)
+  const match1 = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})\s+(\d{2}):(\d{2})\s*(AM|PM)$/i);
   if (match1) {
     let [_, day, month, year, hoursStr, minutesStr, ampm] = match1;
     let hours = parseInt(hoursStr, 10);
@@ -65,7 +74,8 @@ function parseTransactionDate(dateStr: string): string {
     return `${year}-${month}-${day}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
   }
 
-  const match2 = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})$/);
+  // Match "DD-MM-YYYY HH:mm" or "DD/MM/YYYY HH:mm" (24h)
+  const match2 = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})\s+(\d{2}):(\d{2})$/);
   if (match2) {
     const [_, day, month, year, hours, minutes] = match2;
     return `${year}-${month}-${day}T${hours}:${minutes}:00`;
@@ -87,16 +97,16 @@ function getBranchFromRef(refNo: string): string {
       const match = part.trim().match(/-(\d+)$/);
       if (match) {
         const suffix = match[1];
-        if (suffix === '2') return 'SS2';
-        if (suffix === '3') return 'KLGCC';
+        if (suffix === '2') return 'KLGCC';
+        if (suffix === '3') return 'SS2';
       }
     }
   }
   const match = trimmed.match(/-(\d+)$/);
   if (match) {
     const suffix = match[1];
-    if (suffix === '2') return 'SS2';
-    if (suffix === '3') return 'KLGCC';
+    if (suffix === '2') return 'KLGCC';
+    if (suffix === '3') return 'SS2';
   }
   return 'Bangsar';
 }
@@ -164,24 +174,43 @@ async function run() {
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
 
-      // Auto-detect header row
-      if (row.includes('Reference No.') && row.includes('Employee')) {
-        const cleanRow = row.map((cell) => cell.trim().replace(/^["']|["']$/g, ''));
-        dateIdx = cleanRow.indexOf('Date');
-        refIdx = cleanRow.indexOf('Reference No.');
-        empIdx = cleanRow.indexOf('Employee');
-        custIdx = cleanRow.indexOf('Customer');
-        itemIdx = cleanRow.indexOf('Item');
-        typeIdx = cleanRow.indexOf('Type');
+      // Auto-detect header row, trimming cell values beforehand
+      const trimmedRow = row.map((cell) => cell?.trim() || '');
+      const lowerRow = trimmedRow.map((cell) => cell.replace(/^["']|["']$/g, '').toLowerCase());
+      if (
+        (lowerRow.includes('reference no.') || lowerRow.includes('reference no')) &&
+        lowerRow.includes('employee')
+      ) {
+        const foundDate = lowerRow.indexOf('date');
+        if (foundDate !== -1) dateIdx = foundDate;
+
+        const foundRef = lowerRow.includes('reference no.') ? lowerRow.indexOf('reference no.') : lowerRow.indexOf('reference no');
+        if (foundRef !== -1) refIdx = foundRef;
+
+        const foundEmp = lowerRow.indexOf('employee');
+        if (foundEmp !== -1) empIdx = foundEmp;
+
+        const foundCust = lowerRow.indexOf('customer');
+        if (foundCust !== -1) custIdx = foundCust;
+
+        const foundType = lowerRow.indexOf('type');
+        if (foundType !== -1) typeIdx = foundType;
+
+        // Look for 'item' or similar column header
+        let foundItem = lowerRow.indexOf('item');
+        if (foundItem === -1) {
+          foundItem = lowerRow.findIndex((cell) => cell.includes('item') || cell.includes('description') || cell.includes('service'));
+        }
+        if (foundItem !== -1) itemIdx = foundItem;
         
-        const foundNett = cleanRow.indexOf('Nett');
+        const foundNett = lowerRow.indexOf('nett');
         if (foundNett === -1) {
           console.error(`Error: Required column 'Nett' not found in CSV file ${fileInfo.path}`);
           process.exit(1);
         }
         nettIdx = foundNett;
 
-        const foundDeduction = cleanRow.indexOf('Deduction');
+        const foundDeduction = lowerRow.indexOf('deduction');
         deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
         continue;
       }
@@ -206,7 +235,10 @@ async function run() {
       const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
       const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-      const rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+      let rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+      if (rawItem && !rawItem.includes(':') && ITEM_DICTIONARY[rawItem]) {
+        rawItem = ITEM_DICTIONARY[rawItem];
+      }
       const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
       const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
 

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Search, Sparkles, Scissors, Package, ShoppingBag, Percent, MapPin, Calendar, ChevronDown } from 'lucide-react';
+import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
 
 interface Transaction {
   id: string;
@@ -42,8 +43,13 @@ export default function TransactionsList({ transactions }: TransactionsListProps
   // Helper to clean item description (optional formatting)
   const cleanItemDescription = (desc: string) => {
     if (!desc) return '';
+    // If the description is just a code (like HSCS07), map it to the full description
+    let fullDesc = desc;
+    if (!desc.includes(':') && ITEM_DICTIONARY[desc]) {
+      fullDesc = ITEM_DICTIONARY[desc];
+    }
     // Strip prefixes like "HSCS08: A La Carte -"
-    return desc.replace(/^[^:]+:\s*(?:A La Carte|Package|Product)?\s*-\s*/i, '').trim();
+    return fullDesc.replace(/^[^:]+:\s*(?:A La Carte|Package|Product)?\s*-\s*/i, '').trim();
   };
 
   // Helper to format date
