@@ -98,12 +98,21 @@ export default function UploadZone() {
     <div className="space-y-6 select-none">
       {/* Drag & Drop Area */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Upload CSV files — click or drag and drop"
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
         onClick={triggerFileInput}
-        className={`h-48 flex flex-col items-center justify-center border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 p-6 text-center ${
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            triggerFileInput();
+          }
+        }}
+        className={`h-48 flex flex-col items-center justify-center border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 p-6 text-center focus:outline-none focus:ring-2 focus:ring-black/20 ${
           isDragActive
             ? 'border-black bg-gray-50/80'
             : 'border-gray-200 bg-gray-50/30 hover:bg-gray-50/80 hover:border-gray-300'

@@ -1,12 +1,78 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Scissors, Package, ShoppingBag, Percent, Calendar, Sparkles, TrendingUp } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Scissors, Package, ShoppingBag, Percent, Calendar, TrendingUp } from 'lucide-react';
 import TransactionsList from './TransactionsList';
 import MonthSelector from './MonthSelector';
+import { getTransactionCategory, cleanItemDescription } from '@/lib/transaction-utils';
+import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+// ---------------------------------------------------------------------------
+// Metric card configuration — avoids repeating the same Card template 4×
+// ---------------------------------------------------------------------------
+
+interface MetricConfig {
+  label: string;
+  icon: typeof Scissors;
+  unit: string;
+}
+
+const METRICS: MetricConfig[] = [
+  { label: 'Ala Carte', icon: Scissors, unit: 'services' },
+  { label: 'Packages', icon: Package, unit: 'items' },
+  { label: 'Products', icon: ShoppingBag, unit: 'retail items' },
+  { label: 'Deductions', icon: Percent, unit: 'items' },
+];
+
+// ---------------------------------------------------------------------------
+// Aggregation helper — keeps the page component focused on layout
+// ---------------------------------------------------------------------------
+
+interface AggregationResult {
+  sums: number[];        // [alacarte, packages, products, deductions]
+  counts: number[];      // [alacarte, packages, products, deductions]
+  totalSales: number;
+}
+
+function aggregateTransactions(
+  txList: { type: string; amount: number; deduction: number }[],
+): AggregationResult {
+  let alacarteSum = 0, packageSum = 0, productSum = 0, deductionSum = 0;
+  let alacarteCount = 0, packageCount = 0, productCount = 0, deductionCount = 0;
+
+  txList.forEach((tx) => {
+    const amt = Number(tx.amount) || 0;
+    const ded = Number(tx.deduction) || 0;
+
+    deductionSum += ded;
+    if (ded > 0) deductionCount++;
+
+    const category = getTransactionCategory({ type: tx.type, amount: amt });
+    switch (category) {
+      case 'alacarte':
+        alacarteSum += amt;
+        if (amt !== 0) alacarteCount++;
+        break;
+      case 'packages':
+        packageSum += amt;
+        if (amt !== 0) packageCount++;
+        break;
+      case 'products':
+        productSum += amt;
+        if (amt !== 0) productCount++;
+        break;
+    }
+  });
+
+  return {
+    sums: [alacarteSum, packageSum, productSum, deductionSum],
+    counts: [alacarteCount, packageCount, productCount, deductionCount],
+    totalSales: alacarteSum + packageSum + productSum + deductionSum,
+  };
 }
 
 export default async function DashboardPage({ searchParams }: PageProps) {
@@ -20,10 +86,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     redirect('/login');
   }
 
-  // Fetch the stylist's profile
+  // Fetch the stylist's profile (only the fields we need)
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select('name')
     .eq('id', user.id)
     .single();
 
@@ -69,7 +135,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const startOfNextMonth = `${nextMonthYear}-${nextMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
 
   // Fetch transactions for the selected month
-  const { data: transactions } = await supabase
+  const { data: transactions, error: txError } = await supabase
     .from('transactions')
     .select('*')
     .eq('profile_id', user.id)
@@ -77,42 +143,22 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     .lt('transaction_date', startOfNextMonth)
     .order('transaction_date', { ascending: false });
 
+  if (txError) {
+    // Log server-side for debugging; display a user-friendly fallback
+    console.error('[DashboardPage] Failed to fetch transactions:', txError.message);
+  }
+
   const txList = transactions || [];
 
+  // Pre-resolve item descriptions server-side so the 37KB ITEM_DICTIONARY
+  // doesn't need to ship in the client bundle.
+  const resolvedTxList = txList.map((tx) => ({
+    ...tx,
+    item_description: cleanItemDescription(tx.item_description, ITEM_DICTIONARY),
+  }));
+
   // Aggregations
-  let alacarteSum = 0;
-  let packageSum = 0;
-  let productSum = 0;
-  let deductionSum = 0;
-
-  let alacarteCount = 0;
-  let packageCount = 0;
-  let productCount = 0;
-  let deductionCount = 0;
-
-  txList.forEach((tx) => {
-    const amt = Number(tx.amount) || 0;
-    const ded = Number(tx.deduction) || 0;
-
-    deductionSum += ded;
-    if (ded > 0) {
-      deductionCount++;
-    }
-
-    if (tx.type === 'S' || (tx.type === 'C' && amt < 0)) {
-      alacarteSum += amt;
-      if (amt !== 0) alacarteCount++;
-    } else if (tx.type === 'G' || (tx.type === 'C' && amt >= 0)) {
-      packageSum += amt;
-      if (amt !== 0) packageCount++;
-    } else if (tx.type === 'P') {
-      productSum += amt;
-      if (amt !== 0) productCount++;
-    }
-  });
-
-  // Deduction sales are also sales, not literally deducted from the total sales (per feedback)
-  const totalSales = alacarteSum + packageSum + productSum + deductionSum;
+  const { sums, counts, totalSales } = aggregateTransactions(txList);
 
   const currentMonthName = new Date(selYear, selMonth - 1, 1).toLocaleString('en-US', {
     month: 'long',
@@ -160,71 +206,27 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         </CardContent>
       </Card>
 
-      {/* Grid of Category Cards */}
+      {/* Grid of Category Cards — driven by METRICS config */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        {/* Ala Carte Card */}
-        <Card className="border-gray-200 bg-white shadow-sm rounded-xl overflow-hidden flex flex-col justify-between">
-          <CardHeader className="p-3.5 sm:p-4 pb-0 flex flex-row items-center justify-between space-y-0 select-none">
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ala Carte</span>
-            <Scissors className="w-4 h-4 text-gray-400" />
-          </CardHeader>
-          <CardContent className="p-3.5 sm:p-4 pt-2.5 sm:pt-3">
-            <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
-              RM {alacarteSum.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-            </div>
-            <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-              {alacarteCount} services
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Packages Card */}
-        <Card className="border-gray-200 bg-white shadow-sm rounded-xl overflow-hidden flex flex-col justify-between">
-          <CardHeader className="p-3.5 sm:p-4 pb-0 flex flex-row items-center justify-between space-y-0 select-none">
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Packages</span>
-            <Package className="w-4 h-4 text-gray-400" />
-          </CardHeader>
-          <CardContent className="p-3.5 sm:p-4 pt-2.5 sm:pt-3">
-            <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
-              RM {packageSum.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-            </div>
-            <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-              {packageCount} items
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Product Card */}
-        <Card className="border-gray-200 bg-white shadow-sm rounded-xl overflow-hidden flex flex-col justify-between">
-          <CardHeader className="p-3.5 sm:p-4 pb-0 flex flex-row items-center justify-between space-y-0 select-none">
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Products</span>
-            <ShoppingBag className="w-4 h-4 text-gray-400" />
-          </CardHeader>
-          <CardContent className="p-3.5 sm:p-4 pt-2.5 sm:pt-3">
-            <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
-              RM {productSum.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-            </div>
-            <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-              {productCount} retail items
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Deduction Sales Card */}
-        <Card className="border-gray-200 bg-white shadow-sm rounded-xl overflow-hidden flex flex-col justify-between">
-          <CardHeader className="p-3.5 sm:p-4 pb-0 flex flex-row items-center justify-between space-y-0 select-none">
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Deductions</span>
-            <Percent className="w-4 h-4 text-gray-400" />
-          </CardHeader>
-          <CardContent className="p-3.5 sm:p-4 pt-2.5 sm:pt-3">
-            <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
-              RM {deductionSum.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-            </div>
-            <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-              {deductionCount} items
-            </p>
-          </CardContent>
-        </Card>
+        {METRICS.map((metric, idx) => {
+          const Icon = metric.icon;
+          return (
+            <Card key={metric.label} className="border-gray-200 bg-white shadow-sm rounded-xl overflow-hidden flex flex-col justify-between">
+              <CardHeader className="p-3.5 sm:p-4 pb-0 flex flex-row items-center justify-between space-y-0 select-none">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{metric.label}</span>
+                <Icon className="w-4 h-4 text-gray-400" />
+              </CardHeader>
+              <CardContent className="p-3.5 sm:p-4 pt-2.5 sm:pt-3">
+                <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
+                  RM {sums[idx].toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </div>
+                <p className="text-[10px] text-gray-400 font-medium mt-0.5">
+                  {counts[idx]} {metric.unit}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Transaction History Section */}
@@ -233,7 +235,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
           <h2 className="text-base sm:text-lg font-bold text-gray-900">Recent Transactions</h2>
           <p className="text-xs text-gray-500">List of all your transaction and deduction records for this month.</p>
         </div>
-        <TransactionsList transactions={txList} />
+        <TransactionsList transactions={resolvedTxList} />
       </div>
     </main>
   );

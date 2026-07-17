@@ -1,26 +1,36 @@
 'use client';
 
-import { useState } from 'react';
-import { Search, Sparkles, Scissors, Package, ShoppingBag, Percent, MapPin, Calendar, ChevronDown } from 'lucide-react';
-import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
+import { useState, useMemo } from 'react';
+import { Search, Scissors, Package, ShoppingBag, Percent, MapPin, Calendar, ChevronDown } from 'lucide-react';
+import { cleanCustomerName, getTransactionCategory } from '@/lib/transaction-utils';
+import type { Tables } from '@/types/database.types';
 
-interface Transaction {
-  id: string;
-  amount: number;
-  deduction: number;
-  transaction_date: string;
-  customer_name: string;
-  item_description: string;
-  type: string;
-  branch: string | null;
-  employee_name: string;
-}
+type Transaction = Tables<'transactions'>;
 
 interface TransactionsListProps {
+  /** Transactions with item_description already resolved server-side. */
   transactions: Transaction[];
 }
 
 type FilterType = 'all' | 'alacarte' | 'packages' | 'products' | 'deductions';
+
+// Reusable date formatter — hoisted outside the component to avoid
+// re-constructing on every render cycle.
+const dayFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Kuala_Lumpur',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+const timeFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Kuala_Lumpur',
+  month: 'short',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: true,
+});
 
 export default function TransactionsList({ transactions }: TransactionsListProps) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,142 +44,107 @@ export default function TransactionsList({ transactions }: TransactionsListProps
     }));
   };
 
-  // Helper to clean customer name
-  const cleanCustomerName = (name: string) => {
-    if (!name) return 'Walk-in';
-    return name.includes(':') ? name.split(':').slice(1).join(':').trim() : name;
-  };
-
-  // Helper to clean item description (optional formatting)
-  const cleanItemDescription = (desc: string) => {
-    if (!desc) return '';
-    // If the description is just a code (like HSCS07), map it to the full description
-    let fullDesc = desc;
-    if (!desc.includes(':') && ITEM_DICTIONARY[desc]) {
-      fullDesc = ITEM_DICTIONARY[desc];
-    }
-    // Strip prefixes like "HSCS08: A La Carte -"
-    return fullDesc.replace(/^[^:]+:\s*(?:A La Carte|Package|Product)?\s*-\s*/i, '').trim();
-  };
-
-  // Helper to format date
+  // Helper to format transaction time for display
   const formatDate = (dateStr: string) => {
     try {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-        timeZone: 'Asia/Kuala_Lumpur',
-      });
+      return timeFormatter.format(new Date(dateStr));
     } catch {
       return dateStr;
     }
   };
 
-  // Filter transactions
-  const filteredTransactions = transactions.filter((tx) => {
-    // 1. Text Search filtering
-    const searchLower = searchQuery.toLowerCase();
-    const customerClean = cleanCustomerName(tx.customer_name).toLowerCase();
-    const descLower = tx.item_description?.toLowerCase() || '';
-    const branchLower = tx.branch?.toLowerCase() || '';
-    const matchesSearch =
-      customerClean.includes(searchLower) ||
-      descLower.includes(searchLower) ||
-      branchLower.includes(searchLower);
+  // ---------------------------------------------------------------------------
+  // Memoized filtering, grouping, and sorting — only recalculates when the
+  // transactions list, search query, or active filter changes.
+  // ---------------------------------------------------------------------------
+  const groupedDays = useMemo(() => {
+    // 1. Filter transactions
+    const filtered = transactions.filter((tx) => {
+      // Text search
+      const searchLower = searchQuery.toLowerCase();
+      const customerClean = cleanCustomerName(tx.customer_name).toLowerCase();
+      const descLower = tx.item_description?.toLowerCase() || '';
+      const branchLower = tx.branch?.toLowerCase() || '';
+      const matchesSearch =
+        customerClean.includes(searchLower) ||
+        descLower.includes(searchLower) ||
+        branchLower.includes(searchLower);
 
-    if (!matchesSearch) return false;
+      if (!matchesSearch) return false;
 
-    // 2. Tab/Category filtering
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'alacarte') {
-      return (tx.type === 'S' && tx.amount !== 0) || (tx.type === 'C' && tx.amount < 0);
-    }
-    if (activeFilter === 'packages') {
-      return (tx.type === 'G' || tx.type === 'C') && tx.amount > 0;
-    }
-    if (activeFilter === 'products') return tx.type === 'P' && tx.amount > 0;
-    if (activeFilter === 'deductions') return tx.deduction > 0;
-
-    return true;
-  });
-
-  // Group filtered transactions by local date
-  const groupsMap: Record<string, Transaction[]> = {};
-  filteredTransactions.forEach((tx) => {
-    try {
-      const date = new Date(tx.transaction_date);
-      const formatter = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'Asia/Kuala_Lumpur',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      });
-      const parts = formatter.formatToParts(date);
-      const year = parts.find((p) => p.type === 'year')?.value || '1970';
-      const month = parts.find((p) => p.type === 'month')?.value || '01';
-      const day = parts.find((p) => p.type === 'day')?.value || '01';
-      const dateKey = `${year}-${month}-${day}`;
-      
-      if (!groupsMap[dateKey]) {
-        groupsMap[dateKey] = [];
+      // Tab/Category filtering
+      if (activeFilter === 'all') return true;
+      if (activeFilter === 'alacarte') {
+        return (tx.type === 'S' && tx.amount !== 0) || (tx.type === 'C' && tx.amount < 0);
       }
-      groupsMap[dateKey].push(tx);
-    } catch {
-      if (!groupsMap['unknown']) {
-        groupsMap['unknown'] = [];
+      if (activeFilter === 'packages') {
+        return (tx.type === 'G' || tx.type === 'C') && tx.amount > 0;
       }
-      groupsMap['unknown'].push(tx);
-    }
-  });
+      if (activeFilter === 'products') return tx.type === 'P' && tx.amount > 0;
+      if (activeFilter === 'deductions') return tx.deduction > 0;
 
-  // Sort dates descending
-  const sortedDates = Object.keys(groupsMap).sort((a, b) => {
-    if (a === 'unknown') return 1;
-    if (b === 'unknown') return -1;
-    return b.localeCompare(a);
-  });
+      return true;
+    });
 
-  const getFormattedDate = (dateKey: string) => {
-    if (dateKey === 'unknown') return 'Unknown Date';
-    try {
-      const [year, month, day] = dateKey.split('-').map(Number);
-      const date = new Date(Date.UTC(year, month - 1, day));
-      return date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        timeZone: 'UTC',
-      });
-    } catch {
-      return dateKey;
-    }
-  };
+    // 2. Group by local date
+    const groupsMap: Record<string, Transaction[]> = {};
+    filtered.forEach((tx) => {
+      try {
+        const date = new Date(tx.transaction_date);
+        const parts = dayFormatter.formatToParts(date);
+        const year = parts.find((p) => p.type === 'year')?.value || '1970';
+        const month = parts.find((p) => p.type === 'month')?.value || '01';
+        const day = parts.find((p) => p.type === 'day')?.value || '01';
+        const dateKey = `${year}-${month}-${day}`;
 
-  const groupedDays = sortedDates.map((dateKey) => {
-    const txs = groupsMap[dateKey];
-    const dailyTotal = txs.reduce((sum, tx) => {
-      const amt = Number(tx.amount) || 0;
-      const ded = Number(tx.deduction) || 0;
-      if (activeFilter === 'deductions') {
-        return sum + ded;
+        if (!groupsMap[dateKey]) groupsMap[dateKey] = [];
+        groupsMap[dateKey].push(tx);
+      } catch {
+        if (!groupsMap['unknown']) groupsMap['unknown'] = [];
+        groupsMap['unknown'].push(tx);
       }
-      if (activeFilter === 'alacarte' || activeFilter === 'packages' || activeFilter === 'products') {
-        return sum + amt;
+    });
+
+    // 3. Sort dates descending
+    const sortedDates = Object.keys(groupsMap).sort((a, b) => {
+      if (a === 'unknown') return 1;
+      if (b === 'unknown') return -1;
+      return b.localeCompare(a);
+    });
+
+    // 4. Build grouped result
+    return sortedDates.map((dateKey) => {
+      const txs = groupsMap[dateKey];
+      const dailyTotal = txs.reduce((sum, tx) => {
+        const amt = Number(tx.amount) || 0;
+        const ded = Number(tx.deduction) || 0;
+        if (activeFilter === 'deductions') return sum + ded;
+        if (activeFilter === 'alacarte' || activeFilter === 'packages' || activeFilter === 'products') return sum + amt;
+        return sum + amt + ded;
+      }, 0);
+
+      let formattedDate = dateKey;
+      if (dateKey !== 'unknown') {
+        try {
+          const [yr, mo, dy] = dateKey.split('-').map(Number);
+          const d = new Date(Date.UTC(yr, mo - 1, dy));
+          formattedDate = d.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            timeZone: 'UTC',
+          });
+        } catch {
+          formattedDate = dateKey;
+        }
+      } else {
+        formattedDate = 'Unknown Date';
       }
-      return sum + amt + ded;
-    }, 0);
-    return {
-      dateKey,
-      formattedDate: getFormattedDate(dateKey),
-      transactions: txs,
-      dailyTotal,
-    };
-  });
+
+      return { dateKey, formattedDate, transactions: txs, dailyTotal };
+    });
+  }, [transactions, searchQuery, activeFilter]);
 
   return (
     <div className="space-y-6">
@@ -184,23 +159,30 @@ export default function TransactionsList({ transactions }: TransactionsListProps
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400 shadow-sm text-gray-900 transition-all"
+            aria-label="Search transactions by customer, service, or branch"
           />
         </div>
 
         {/* Horizontal Scrollable Tabs */}
-        <div className="flex gap-1.5 overflow-x-auto pb-2 scrollbar-none select-none -mx-4 px-4 sm:mx-0 sm:px-0">
-          {[
+        <div
+          className="flex gap-1.5 overflow-x-auto pb-2 scrollbar-none select-none -mx-4 px-4 sm:mx-0 sm:px-0"
+          role="tablist"
+          aria-label="Filter transactions by category"
+        >
+          {([
             { id: 'all', label: 'All', icon: null },
             { id: 'alacarte', label: 'Ala Carte', icon: Scissors },
             { id: 'packages', label: 'Packages', icon: Package },
             { id: 'products', label: 'Products', icon: ShoppingBag },
             { id: 'deductions', label: 'Deductions', icon: Percent },
-          ].map((tab) => {
+          ] as const).map((tab) => {
             const Icon = tab.icon;
             const isActive = activeFilter === tab.id;
             return (
               <button
                 key={tab.id}
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => setActiveFilter(tab.id as FilterType)}
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer ${
                   isActive
@@ -233,11 +215,15 @@ export default function TransactionsList({ transactions }: TransactionsListProps
           <div className="space-y-3">
             {groupedDays.map((group) => {
               const isExpanded = !!expandedDays[group.dateKey];
+              const panelId = `day-panel-${group.dateKey}`;
+              const isDeductionTab = activeFilter === 'deductions';
               return (
                 <div key={group.dateKey} className="space-y-2">
                   {/* Accordion Header */}
                   <button
                     onClick={() => toggleDay(group.dateKey)}
+                    aria-expanded={isExpanded}
+                    aria-controls={panelId}
                     className="w-full bg-white border border-gray-200/80 rounded-xl p-4 flex items-center justify-between shadow-sm hover:border-gray-300 hover:bg-gray-50/20 transition-all gap-4 text-left cursor-pointer select-none"
                   >
                     <div className="flex items-center gap-3 min-w-0">
@@ -255,7 +241,7 @@ export default function TransactionsList({ transactions }: TransactionsListProps
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className="font-bold text-sm text-emerald-600">
+                      <span className={`font-bold text-sm ${isDeductionTab ? 'text-amber-600' : 'text-emerald-600'}`}>
                         RM {group.dailyTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </span>
                       <div className="text-gray-400 transition-transform duration-200" style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
@@ -266,10 +252,13 @@ export default function TransactionsList({ transactions }: TransactionsListProps
 
                   {/* Accordion Content */}
                   {isExpanded && (
-                    <div className="pl-3 sm:pl-4 border-l-2 border-gray-200/60 ml-5 sm:ml-6 space-y-2.5 mt-2 transition-all duration-200">
+                    <div
+                      id={panelId}
+                      role="region"
+                      aria-label={`Transactions for ${group.formattedDate}`}
+                      className="pl-3 sm:pl-4 border-l-2 border-gray-200/60 ml-5 sm:ml-6 space-y-2.5 mt-2 transition-all duration-200"
+                    >
                       {group.transactions.map((tx) => {
-                        const isDeductionOnly = tx.deduction > 0 && tx.amount === 0;
-                        const cleanDesc = cleanItemDescription(tx.item_description);
                         const cleanCust = cleanCustomerName(tx.customer_name);
 
                         return (
@@ -280,9 +269,9 @@ export default function TransactionsList({ transactions }: TransactionsListProps
                             <div className="space-y-1 min-w-0 flex-1">
                               <div className="flex items-center gap-1.5 flex-wrap">
                                 <span className="font-semibold text-sm text-gray-900 truncate block">
-                                  {cleanDesc || 'Unknown Service'}
+                                  {tx.item_description || 'Unknown Service'}
                                 </span>
-                                
+
                                 {/* Branch Badge */}
                                 {tx.branch && (
                                   <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-gray-50 text-gray-500 border border-gray-150 uppercase tracking-wider">

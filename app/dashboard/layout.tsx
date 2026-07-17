@@ -18,10 +18,10 @@ export default async function DashboardLayout({
     redirect('/login');
   }
 
-  // Fetch the stylist's profile
+  // Fetch only the profile fields needed for the header
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select('name, email')
     .eq('id', user.id)
     .single();
 

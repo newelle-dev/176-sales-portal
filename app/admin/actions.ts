@@ -81,6 +81,17 @@ function parseTransactionDate(dateStr: string): string {
   throw new Error(`Invalid date format: ${dateStr}`);
 }
 
+/**
+ * Resolves a WessConnect branch name from a ticket reference number.
+ *
+ * WessConnect appends a numeric suffix to reference numbers to identify branches:
+ *  - No suffix (e.g. "T001")     → Bangsar (default/head office)
+ *  - Suffix "-2" (e.g. "T001-2") → KLGCC
+ *  - Suffix "-3" (e.g. "T001-3") → SS2
+ *
+ * Some reference numbers contain colon-separated parts (e.g. composite tickets);
+ * each part is checked for the branch suffix.
+ */
 function getBranchFromRef(refNo: string): string {
   const trimmed = refNo.trim();
   if (/:/.test(trimmed)) {
@@ -105,6 +116,14 @@ function getBranchFromRef(refNo: string): string {
   return 'Bangsar';
 }
 
+/**
+ * Server Action: Parses one or more uploaded WessConnect CSV files, maps
+ * employee names to stylist profiles, resolves branch from reference numbers,
+ * and upserts all transactions into the database.
+ *
+ * @param formData - FormData with a `files` field containing one or more CSV File objects.
+ * @returns UploadState with per-file stats, total counts, and any unmapped employee warnings.
+ */
 export async function uploadCsvAction(formData: FormData): Promise<UploadState> {
   try {
     // 1. Authenticate user and verify admin role

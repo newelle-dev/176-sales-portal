@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -14,15 +14,10 @@ import {
 } from '@/components/ui/dialog';
 import { Search, Plus, Edit, Trash2, User, Loader2, AlertCircle } from 'lucide-react';
 import { createStylistAction, updateStylistAction, deleteStylistAction } from './actions';
+import WessNameSelector from '@/components/admin/WessNameSelector';
+import type { Tables } from '@/types/database.types';
 
-interface Stylist {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  wess_names?: string[];
-  created_at: string;
-}
+type Stylist = Tables<'profiles'>;
 
 interface TeamManagerProps {
   initialStylists: Stylist[];
@@ -35,9 +30,15 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedStylist, setSelectedStylist] = useState<Stylist | null>(null);
-  
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+
+  // Scoped error + pending state per dialog to avoid cross-dialog bleed
+  const [addError, setAddError] = useState<string | null>(null);
+  const [editError, setEditError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const [isAddPending, startAddTransition] = useTransition();
+  const [isEditPending, startEditTransition] = useTransition();
+  const [isDeletePending, startDeleteTransition] = useTransition();
 
   // State for WessConnect CSV name matches selector
   const [wessSearch, setWessSearch] = useState('');
@@ -47,18 +48,18 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
   const filteredStylists = initialStylists.filter(
     (stylist) =>
       stylist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stylist.email.toLowerCase().includes(searchQuery.toLowerCase())
+      stylist.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
+    setAddError(null);
     const formData = new FormData(e.currentTarget);
 
-    startTransition(async () => {
+    startAddTransition(async () => {
       const res = await createStylistAction(null, formData);
       if (res.error) {
-        setError(res.error);
+        setAddError(res.error);
       } else {
         setIsAddOpen(false);
         (e.target as HTMLFormElement).reset();
@@ -69,13 +70,13 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedStylist) return;
-    setError(null);
+    setEditError(null);
     const formData = new FormData(e.currentTarget);
 
-    startTransition(async () => {
+    startEditTransition(async () => {
       const res = await updateStylistAction(null, { id: selectedStylist.id, formData });
       if (res.error) {
-        setError(res.error);
+        setEditError(res.error);
       } else {
         setIsEditOpen(false);
         setSelectedStylist(null);
@@ -85,12 +86,12 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
 
   const handleDeleteSubmit = async () => {
     if (!selectedStylist) return;
-    setError(null);
+    setDeleteError(null);
 
-    startTransition(async () => {
+    startDeleteTransition(async () => {
       const res = await deleteStylistAction(selectedStylist.id);
       if (res.error) {
-        setError(res.error);
+        setDeleteError(res.error);
       } else {
         setIsDeleteOpen(false);
         setSelectedStylist(null);
@@ -110,11 +111,12 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             className="pl-9 bg-gray-50/50 border-gray-200 focus-visible:bg-white w-full h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search stylists by name or email"
           />
         </div>
         <Button
           onClick={() => {
-            setError(null);
+            setAddError(null);
             setWessSearch('');
             setSelectedWessNames([]);
             setIsAddOpen(true);
@@ -132,11 +134,11 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-gray-150 bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-wider select-none">
-                  <th className="px-6 py-3">Stylist Name</th>
-                  <th className="px-6 py-3">Email Address</th>
-                  <th className="px-6 py-3 hidden md:table-cell">Role</th>
-                  <th className="px-6 py-3 hidden sm:table-cell">Joined Date</th>
-                  <th className="px-6 py-3 text-right">Actions</th>
+                  <th scope="col" className="px-6 py-3">Stylist Name</th>
+                  <th scope="col" className="px-6 py-3">Email Address</th>
+                  <th scope="col" className="px-6 py-3 hidden md:table-cell">Role</th>
+                  <th scope="col" className="px-6 py-3 hidden sm:table-cell">Joined Date</th>
+                  <th scope="col" className="px-6 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-xs">
@@ -163,7 +165,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                         {stylist.role}
                       </span>
                     </td>
-                    <td className="px-6 py-3.5 text-gray-450 text-gray-400 hidden sm:table-cell">
+                    <td className="px-6 py-3.5 text-gray-400 hidden sm:table-cell">
                       {new Date(stylist.created_at).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -177,7 +179,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                           size="icon-sm"
                           className="text-gray-400 hover:text-black hover:bg-gray-100"
                           onClick={() => {
-                            setError(null);
+                            setEditError(null);
                             setSelectedStylist(stylist);
                             setWessSearch('');
                             setSelectedWessNames(stylist.wess_names || []);
@@ -192,7 +194,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                           size="icon-sm"
                           className="text-gray-400 hover:text-destructive hover:bg-destructive/10"
                           onClick={() => {
-                            setError(null);
+                            setDeleteError(null);
                             setSelectedStylist(stylist);
                             setIsDeleteOpen(true);
                           }}
@@ -222,13 +224,20 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
         </div>
       </Card>
 
-      <Dialog open={isAddOpen} onOpenChange={(open) => {
-        setIsAddOpen(open);
-        if (!open) {
-          setWessSearch('');
-          setSelectedWessNames([]);
-        }
-      }}>
+      {/* ------------------------------------------------------------------ */}
+      {/* Add Stylist Dialog                                                  */}
+      {/* ------------------------------------------------------------------ */}
+      <Dialog
+        open={isAddOpen}
+        onOpenChange={(open) => {
+          setIsAddOpen(open);
+          if (!open) {
+            setWessSearch('');
+            setSelectedWessNames([]);
+            setAddError(null);
+          }
+        }}
+      >
         <DialogContent className="bg-white border border-gray-200 rounded-xl p-6 max-w-md w-full gap-0 select-none">
           <form onSubmit={handleAddSubmit}>
             <DialogHeader className="mb-4">
@@ -238,152 +247,62 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
               </DialogDescription>
             </DialogHeader>
 
-            {error && (
-              <div className="mb-4 p-3 bg-destructive/5 text-destructive rounded-lg text-xs flex items-start gap-2 border border-destructive/15">
+            {addError && (
+              <div className="mb-4 p-3 bg-destructive/5 text-destructive rounded-lg text-xs flex items-start gap-2 border border-destructive/15" role="alert">
                 <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                <span className="font-medium">{error}</span>
+                <span className="font-medium">{addError}</span>
               </div>
             )}
 
             <div className="space-y-4 mb-5">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Full Name</label>
+                <label htmlFor="add-name" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Full Name</label>
                 <Input
+                  id="add-name"
                   name="name"
                   type="text"
                   required
                   placeholder="e.g. Bangsar Stylist"
                   className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                  disabled={isPending}
+                  disabled={isAddPending}
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Email Address</label>
+                <label htmlFor="add-email" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Email Address</label>
                 <Input
+                  id="add-email"
                   name="email"
                   type="email"
                   required
                   placeholder="e.g. stylist@176avenue.com"
                   className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                  disabled={isPending}
+                  disabled={isAddPending}
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Login Password</label>
+                <label htmlFor="add-password" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Login Password</label>
                 <Input
+                  id="add-password"
                   name="password"
                   type="password"
                   required
                   minLength={6}
                   placeholder="Minimum 6 characters"
                   className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                  disabled={isPending}
+                  disabled={isAddPending}
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
-                  WessConnect CSV Name Matches
-                </label>
-
-                {/* Selected Matches as Badges */}
-                <div className="flex flex-wrap gap-1.5 mb-2 max-h-24 overflow-y-auto p-1.5 border border-dashed border-gray-200 rounded-lg bg-gray-50/30">
-                  {selectedWessNames.length > 0 ? (
-                    selectedWessNames.map((name) => (
-                      <span
-                        key={name}
-                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-gray-100 text-gray-800 border border-gray-250 select-none"
-                      >
-                        {name}
-                        <button
-                          type="button"
-                          onClick={() => setSelectedWessNames(selectedWessNames.filter((n) => n !== name))}
-                          className="text-gray-400 hover:text-gray-650 focus:outline-none font-bold text-xs"
-                          disabled={isPending}
-                        >
-                          &times;
-                        </button>
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-gray-400 text-[10px] italic select-none p-1">No names selected. Choose from the list below.</span>
-                  )}
-                </div>
-
-                {/* Search and List */}
-                <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                  <div className="relative border-b border-gray-150">
-                    <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-gray-400" />
-                    <Input
-                      type="text"
-                      placeholder="Search transaction names..."
-                      value={wessSearch}
-                      onChange={(e) => setWessSearch(e.target.value)}
-                      className="pl-8 border-0 bg-transparent h-8.5 text-xs focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 rounded-none w-full"
-                      disabled={isPending}
-                    />
-                  </div>
-
-                  <div className="max-h-36 overflow-y-auto divide-y divide-gray-100 text-xs">
-                    {/* Filtered names */}
-                    {transactionNames
-                      .filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase()))
-                      .map((name) => {
-                        const isSelected = selectedWessNames.includes(name.toLowerCase());
-                        return (
-                          <button
-                            key={name}
-                            type="button"
-                            disabled={isPending}
-                            onClick={() => {
-                              if (isSelected) {
-                                setSelectedWessNames(selectedWessNames.filter((n) => n !== name.toLowerCase()));
-                              } else {
-                                setSelectedWessNames([...selectedWessNames, name.toLowerCase()]);
-                              }
-                            }}
-                            className={`w-full text-left px-3 py-2 flex items-center justify-between transition-colors cursor-pointer ${
-                              isSelected ? 'bg-gray-50 font-semibold text-black' : 'hover:bg-gray-50 text-gray-600'
-                            }`}
-                          >
-                            <span>{name}</span>
-                            {isSelected && <span className="text-[10px] text-emerald-600 font-bold select-none">✓ Selected</span>}
-                          </button>
-                        );
-                      })}
-
-                    {/* Option to add custom name */}
-                    {wessSearch.trim() &&
-                      !transactionNames.some((name) => name.toLowerCase() === wessSearch.trim().toLowerCase()) && (
-                        <button
-                          type="button"
-                          disabled={isPending}
-                          onClick={() => {
-                            const newName = wessSearch.trim().toLowerCase();
-                            if (!selectedWessNames.includes(newName)) {
-                              setSelectedWessNames([...selectedWessNames, newName]);
-                            }
-                            setWessSearch('');
-                          }}
-                          className="w-full text-left px-3 py-2 text-emerald-600 hover:text-emerald-700 hover:bg-gray-50 font-medium flex items-center gap-1.5 transition-colors border-t border-dashed border-gray-150 cursor-pointer"
-                        >
-                          <Plus className="h-3 w-3" />
-                          <span>Add "{wessSearch.trim()}" as custom match</span>
-                        </button>
-                      )}
-
-                    {transactionNames.filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase())).length === 0 &&
-                      !wessSearch.trim() && (
-                        <div className="px-3 py-4 text-center text-gray-400 italic">No transaction names available.</div>
-                      )}
-                  </div>
-                </div>
-
-                {/* Hidden input to submit to backend */}
-                <input type="hidden" name="wess_names" value={selectedWessNames.join(', ')} />
-              </div>
+              <WessNameSelector
+                transactionNames={transactionNames}
+                selectedNames={selectedWessNames}
+                onSelectionChange={setSelectedWessNames}
+                searchValue={wessSearch}
+                onSearchChange={setWessSearch}
+                disabled={isAddPending}
+              />
             </div>
 
             <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
@@ -396,16 +315,16 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                   setSelectedWessNames([]);
                 }}
                 className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
-                disabled={isPending}
+                disabled={isAddPending}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 className="bg-black text-white hover:bg-slate-800 h-9 px-4 gap-1 text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
-                disabled={isPending}
+                disabled={isAddPending}
               >
-                {isPending ? (
+                {isAddPending ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 animate-spin" /> Adding...
                   </>
@@ -418,6 +337,9 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
         </DialogContent>
       </Dialog>
 
+      {/* ------------------------------------------------------------------ */}
+      {/* Edit Stylist Dialog                                                 */}
+      {/* ------------------------------------------------------------------ */}
       <Dialog
         open={isEditOpen}
         onOpenChange={(open) => {
@@ -426,6 +348,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             setSelectedStylist(null);
             setWessSearch('');
             setSelectedWessNames([]);
+            setEditError(null);
           }
         }}
       >
@@ -435,200 +358,113 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
               <DialogHeader className="mb-4">
                 <DialogTitle className="text-gray-900 font-bold text-lg">Edit Stylist Profile</DialogTitle>
                 <DialogDescription className="text-gray-400 text-xs mt-1">
-                  Modify the stylist's credentials or change their password.
+                  Modify the stylist&apos;s credentials or change their password.
                 </DialogDescription>
               </DialogHeader>
 
-              {error && (
-                <div className="mb-4 p-3 bg-destructive/5 text-destructive rounded-lg text-xs flex items-start gap-2 border border-destructive/15">
+              {editError && (
+                <div className="mb-4 p-3 bg-destructive/5 text-destructive rounded-lg text-xs flex items-start gap-2 border border-destructive/15" role="alert">
                   <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span className="font-medium">{error}</span>
+                  <span className="font-medium">{editError}</span>
                 </div>
               )}
 
               <div className="space-y-4 mb-5">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Full Name</label>
+                  <label htmlFor="edit-name" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Full Name</label>
                   <Input
+                    id="edit-name"
                     name="name"
                     type="text"
                     required
                     defaultValue={selectedStylist.name}
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                    disabled={isPending}
+                    disabled={isEditPending}
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Email Address</label>
+                  <label htmlFor="edit-email" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Email Address</label>
                   <Input
+                    id="edit-email"
                     name="email"
                     type="email"
                     required
                     defaultValue={selectedStylist.email}
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                    disabled={isPending}
+                    disabled={isEditPending}
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                  <label htmlFor="edit-password" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
                     New Password <span className="text-gray-400 font-normal normal-case">(Optional)</span>
                   </label>
                   <Input
+                    id="edit-password"
                     name="password"
                     type="password"
                     minLength={6}
                     placeholder="Leave blank to keep current"
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-                    disabled={isPending}
+                    disabled={isEditPending}
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
-                    WessConnect CSV Name Matches
-                  </label>
-
-                  {/* Selected Matches as Badges */}
-                  <div className="flex flex-wrap gap-1.5 mb-2 max-h-24 overflow-y-auto p-1.5 border border-dashed border-gray-200 rounded-lg bg-gray-50/30">
-                    {selectedWessNames.length > 0 ? (
-                      selectedWessNames.map((name) => (
-                        <span
-                          key={name}
-                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-gray-100 text-gray-800 border border-gray-250 select-none"
-                        >
-                          {name}
-                          <button
-                            type="button"
-                            onClick={() => setSelectedWessNames(selectedWessNames.filter((n) => n !== name))}
-                            className="text-gray-400 hover:text-gray-650 focus:outline-none font-bold text-xs"
-                            disabled={isPending}
-                        >
-                          &times;
-                        </button>
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-gray-400 text-[10px] italic select-none p-1">No names selected. Choose from the list below.</span>
-                  )}
-                </div>
-
-                {/* Search and List */}
-                <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                  <div className="relative border-b border-gray-150">
-                    <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-gray-400" />
-                    <Input
-                      type="text"
-                      placeholder="Search transaction names..."
-                      value={wessSearch}
-                      onChange={(e) => setWessSearch(e.target.value)}
-                      className="pl-8 border-0 bg-transparent h-8.5 text-xs focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 rounded-none w-full"
-                      disabled={isPending}
-                    />
-                  </div>
-
-                  <div className="max-h-36 overflow-y-auto divide-y divide-gray-100 text-xs">
-                    {/* Filtered names */}
-                    {transactionNames
-                      .filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase()))
-                      .map((name) => {
-                        const isSelected = selectedWessNames.includes(name.toLowerCase());
-                        return (
-                          <button
-                            key={name}
-                            type="button"
-                            disabled={isPending}
-                            onClick={() => {
-                              if (isSelected) {
-                                setSelectedWessNames(selectedWessNames.filter((n) => n !== name.toLowerCase()));
-                              } else {
-                                setSelectedWessNames([...selectedWessNames, name.toLowerCase()]);
-                              }
-                            }}
-                            className={`w-full text-left px-3 py-2 flex items-center justify-between transition-colors cursor-pointer ${
-                              isSelected ? 'bg-gray-50 font-semibold text-black' : 'hover:bg-gray-50 text-gray-600'
-                            }`}
-                          >
-                            <span>{name}</span>
-                            {isSelected && <span className="text-[10px] text-emerald-600 font-bold select-none">✓ Selected</span>}
-                          </button>
-                        );
-                      })}
-
-                    {/* Option to add custom name */}
-                    {wessSearch.trim() &&
-                      !transactionNames.some((name) => name.toLowerCase() === wessSearch.trim().toLowerCase()) && (
-                        <button
-                          type="button"
-                          disabled={isPending}
-                          onClick={() => {
-                            const newName = wessSearch.trim().toLowerCase();
-                            if (!selectedWessNames.includes(newName)) {
-                              setSelectedWessNames([...selectedWessNames, newName]);
-                            }
-                            setWessSearch('');
-                          }}
-                          className="w-full text-left px-3 py-2 text-emerald-600 hover:text-emerald-700 hover:bg-gray-50 font-medium flex items-center gap-1.5 transition-colors border-t border-dashed border-gray-150 cursor-pointer"
-                        >
-                          <Plus className="h-3 w-3" />
-                          <span>Add "{wessSearch.trim()}" as custom match</span>
-                        </button>
-                      )}
-
-                    {transactionNames.filter((name) => name.toLowerCase().includes(wessSearch.toLowerCase())).length === 0 &&
-                      !wessSearch.trim() && (
-                        <div className="px-3 py-4 text-center text-gray-400 italic">No transaction names available.</div>
-                      )}
-                  </div>
-                </div>
-
-                {/* Hidden input to submit to backend */}
-                <input type="hidden" name="wess_names" value={selectedWessNames.join(', ')} />
+                <WessNameSelector
+                  transactionNames={transactionNames}
+                  selectedNames={selectedWessNames}
+                  onSelectionChange={setSelectedWessNames}
+                  searchValue={wessSearch}
+                  onSearchChange={setWessSearch}
+                  disabled={isEditPending}
+                />
               </div>
-            </div>
 
-            <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  setIsEditOpen(false);
-                  setSelectedStylist(null);
-                  setWessSearch('');
-                  setSelectedWessNames([]);
-                }}
-                className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
-                disabled={isPending}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="bg-black text-white hover:bg-slate-800 h-9 px-4 gap-1 text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
-                disabled={isPending}
-              >
-                {isPending ? (
-                  <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving...
-                  </>
-                ) : (
-                  'Save Changes'
-                )}
-              </Button>
-            </DialogFooter>
-          </form>
-        )}
-      </DialogContent>
-    </Dialog>
+              <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setIsEditOpen(false);
+                    setSelectedStylist(null);
+                    setWessSearch('');
+                    setSelectedWessNames([]);
+                  }}
+                  className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
+                  disabled={isEditPending}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-black text-white hover:bg-slate-800 h-9 px-4 gap-1 text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
+                  disabled={isEditPending}
+                >
+                  {isEditPending ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
 
-      {/* Delete Stylist Dialog */}
+      {/* ------------------------------------------------------------------ */}
+      {/* Delete Stylist Dialog                                               */}
+      {/* ------------------------------------------------------------------ */}
       <Dialog
         open={isDeleteOpen}
         onOpenChange={(open) => {
           if (!open) {
             setIsDeleteOpen(false);
             setSelectedStylist(null);
+            setDeleteError(null);
           }
         }}
       >
@@ -640,10 +476,10 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             </DialogDescription>
           </DialogHeader>
 
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-650 rounded-lg text-xs flex items-start gap-2 border border-red-100">
+          {deleteError && (
+            <div className="mb-4 p-3 bg-red-50 text-red-650 rounded-lg text-xs flex items-start gap-2 border border-red-100" role="alert">
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-              <span>{error}</span>
+              <span>{deleteError}</span>
             </div>
           )}
 
@@ -656,7 +492,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                 setSelectedStylist(null);
               }}
               className="border-gray-200 text-gray-500 hover:text-black h-9 text-xs font-semibold px-4 rounded-lg cursor-pointer"
-              disabled={isPending}
+              disabled={isDeletePending}
             >
               Cancel
             </Button>
@@ -665,9 +501,9 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
               variant="destructive"
               className="bg-red-600 hover:bg-red-750 text-white h-9 px-4 gap-1 text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
               onClick={handleDeleteSubmit}
-              disabled={isPending}
+              disabled={isDeletePending}
             >
-              {isPending ? (
+              {isDeletePending ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 animate-spin" /> Deleting...
                 </>
