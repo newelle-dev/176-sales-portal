@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import Papa from 'papaparse';
 import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
+import type { Database } from '@/types/database.types';
 
 export type UploadState = {
   success?: boolean;
@@ -180,7 +181,7 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
       }
     });
 
-    const transactionsToInsert: any[] = [];
+    const transactionsToInsert: Database['public']['Tables']['transactions']['Insert'][] = [];
     const refCounts = new Map<string, number>();
     const filesProcessed: { name: string; insertedCount: number; branchDetected: string }[] = [];
     const unmappedEmployeeMap = new Map<string, number>();

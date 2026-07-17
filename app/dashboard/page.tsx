@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient, getCachedSession } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Scissors, Package, ShoppingBag, Percent, Calendar, TrendingUp } from 'lucide-react';
@@ -76,22 +76,13 @@ function aggregateTransactions(
 }
 
 export default async function DashboardPage({ searchParams }: PageProps) {
-  const supabase = await createClient();
+  const { user, profile } = await getCachedSession();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
+  if (!user || !profile) {
     redirect('/login');
   }
 
-  // Fetch the stylist's profile (only the fields we need)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('name')
-    .eq('id', user.id)
-    .single();
+  const supabase = await createClient();
 
   // Generate list of available months (from Jan 2026 to current calendar month)
   const now = new Date();

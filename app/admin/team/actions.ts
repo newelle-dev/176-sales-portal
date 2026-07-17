@@ -94,7 +94,7 @@ export async function updateStylistAction(
     const adminClient = createAdminClient();
 
     // Update email or password in auth if needed
-    const updateData: any = {};
+    const updateData: { email?: string; password?: string } = {};
     if (password && password.trim() !== '') {
       updateData.password = password.trim();
     }
