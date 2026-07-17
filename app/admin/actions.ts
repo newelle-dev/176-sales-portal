@@ -208,134 +208,287 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
         continue;
       }
 
-      // Default indices which we will auto-detect from header rows
-      let dateIdx = 1;
-      let refIdx = 2;
-      let empIdx = 3;
-      let custIdx = 4;
-      let itemIdx = 5;
-      let typeIdx = 6;
-      let nettIdx = 12; // Default index for Nett
-      let deductionIdx = 13; // Default index for Deduction
-
-      let fileInsertedCount = 0;
-      const branchesInFile = new Set<string>();
-
-      for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-
-        // Detect header row and update indices dynamically, trimming cell values beforehand
+      // Detect if this is an "Employee Service Detail" CSV format (check for "Actual Value" and "Prepaid")
+      let isServiceDetailFile = false;
+      for (const row of rows) {
         const trimmedRow = row.map((cell) => cell?.trim() || '');
         const lowerRow = trimmedRow.map((cell) => cell.replace(/^["']|["']$/g, '').toLowerCase());
         if (
           (lowerRow.includes('reference no.') || lowerRow.includes('reference no')) &&
-          lowerRow.includes('employee')
+          lowerRow.includes('employee') &&
+          lowerRow.includes('actual value')
         ) {
-          const foundDate = lowerRow.indexOf('date');
-          if (foundDate !== -1) dateIdx = foundDate;
-
-          const foundRef = lowerRow.includes('reference no.') ? lowerRow.indexOf('reference no.') : lowerRow.indexOf('reference no');
-          if (foundRef !== -1) refIdx = foundRef;
-
-          const foundEmp = lowerRow.indexOf('employee');
-          if (foundEmp !== -1) empIdx = foundEmp;
-
-          const foundCust = lowerRow.indexOf('customer');
-          if (foundCust !== -1) custIdx = foundCust;
-
-          const foundType = lowerRow.indexOf('type');
-          if (foundType !== -1) typeIdx = foundType;
-
-          // Look for 'item' or similar column header
-          let foundItem = lowerRow.indexOf('item');
-          if (foundItem === -1) {
-            foundItem = lowerRow.findIndex((cell) => cell.includes('item') || cell.includes('description') || cell.includes('service'));
-          }
-          if (foundItem !== -1) itemIdx = foundItem;
-          
-          const foundNett = lowerRow.indexOf('nett');
-          if (foundNett === -1) {
-            return { error: `Failed to parse CSV file "${file.name}": Required column 'Nett' not found.` };
-          }
-          nettIdx = foundNett;
-
-          const foundDeduction = lowerRow.indexOf('deduction');
-          deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
-          continue;
+          isServiceDetailFile = true;
+          break;
         }
+      }
 
-        // Check if it is a transaction row (starts with a row number)
-        const isTransactionRow = /^\d+$/.test(row[0]?.trim());
-        if (!isTransactionRow) {
-          continue; // skip totals, metadata, empty lines
-        }
+      let fileInsertedCount = 0;
+      const branchesInFile = new Set<string>();
 
-        // Extract transaction type and filter (only keep S, G, C, P)
-        const rawType = row[typeIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-        if (!['S', 'G', 'C', 'P'].includes(rawType)) {
-          continue; // Filter out other non-matching types
-        }
+      if (isServiceDetailFile) {
+        // Default column indices for Employee Service Detail
+        let dateIdx = 0;
+        let refIdx = 1;
+        let empIdx = 2;
+        let custIdx = 3;
+        let itemCodeIdx = 4;
+        let itemNameIdx = 5;
+        let prepaidIdx = 8;
+        let focIdx = 9;
+        let qtyIdx = 10;
+        let durationIdx = 11;
+        let valueIdx = 12;
+        let actualValueIdx = 13;
 
-        // Extract and normalize employee name
-        const rawEmployeeName = row[empIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-        if (!rawEmployeeName) {
-          continue;
-        }
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          const trimmedRow = row.map((cell) => cell?.trim() || '');
+          const lowerRow = trimmedRow.map((cell) => cell.replace(/^["']|["']$/g, '').toLowerCase());
 
-        let normalizedEmp = normalizeName(rawEmployeeName);
-        if (NAME_OVERRIDES[normalizedEmp]) {
-          normalizedEmp = NAME_OVERRIDES[normalizedEmp];
-        }
+          // Detect header row and update indices dynamically
+          if (
+            (lowerRow.includes('reference no.') || lowerRow.includes('reference no')) &&
+            lowerRow.includes('employee') &&
+            lowerRow.includes('actual value')
+          ) {
+            const foundDate = lowerRow.indexOf('date');
+            if (foundDate !== -1) dateIdx = foundDate;
 
-        const profileId = profileMap.get(normalizedEmp) || null;
+            const foundRef = lowerRow.includes('reference no.') ? lowerRow.indexOf('reference no.') : lowerRow.indexOf('reference no');
+            if (foundRef !== -1) refIdx = foundRef;
 
-        // If unmapped, track it
-        if (!profileId) {
-          const currentCount = unmappedEmployeeMap.get(rawEmployeeName) || 0;
-          unmappedEmployeeMap.set(rawEmployeeName, currentCount + 1);
-        }
+            const foundEmp = lowerRow.indexOf('employee');
+            if (foundEmp !== -1) empIdx = foundEmp;
 
-        // Parse other fields
-        const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-        const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-        const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-        let rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
-        if (rawItem && !rawItem.includes(':') && ITEM_DICTIONARY[rawItem]) {
-          rawItem = ITEM_DICTIONARY[rawItem];
-        }
-        const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
-        const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+            const foundCust = lowerRow.indexOf('customer');
+            if (foundCust !== -1) custIdx = foundCust;
 
-        try {
-          const transactionDate = parseTransactionDate(rawDate);
-          const amount = parseFloat(rawNett.replace(/,/g, '')) || 0;
-          const deduction = parseFloat(rawDeduction.replace(/,/g, '')) || 0;
-          const branch = getBranchFromRef(rawRef);
-          branchesInFile.add(branch);
+            const foundItemCode = lowerRow.indexOf('item code');
+            if (foundItemCode !== -1) itemCodeIdx = foundItemCode;
 
-          // Generate unique reference number per item in ticket to prevent duplicates in bulk uploads
-          let dbRef = rawRef;
-          if (rawRef) {
-            const count = refCounts.get(rawRef) || 0;
-            refCounts.set(rawRef, count + 1);
-            dbRef = `${rawRef}_${count + 1}`;
+            const foundItemName = lowerRow.indexOf('item name');
+            if (foundItemName !== -1) itemNameIdx = foundItemName;
+
+            const foundPrepaid = lowerRow.indexOf('prepaid');
+            if (foundPrepaid !== -1) prepaidIdx = foundPrepaid;
+
+            const foundFoc = lowerRow.indexOf('foc');
+            if (foundFoc !== -1) focIdx = foundFoc;
+
+            const foundQty = lowerRow.indexOf('qty');
+            if (foundQty !== -1) qtyIdx = foundQty;
+
+            const foundDuration = lowerRow.findIndex((cell) => cell.includes('duration'));
+            if (foundDuration !== -1) durationIdx = foundDuration;
+
+            const foundValue = lowerRow.indexOf('value');
+            if (foundValue !== -1) valueIdx = foundValue;
+
+            const foundActualValue = lowerRow.indexOf('actual value');
+            if (foundActualValue !== -1) actualValueIdx = foundActualValue;
+
+            continue;
           }
 
-          transactionsToInsert.push({
-            profile_id: profileId,
-            employee_name: rawEmployeeName,
-            branch: branch,
-            transaction_date: transactionDate,
-            reference_no: dbRef,
-            customer_name: rawCustomer,
-            item_description: rawItem,
-            type: rawType,
-            amount: amount,
-            deduction: deduction,
-          });
-          fileInsertedCount++;
-        } catch (err: any) {
-          return { error: `File "${file.name}", Row ${i + 1} parsing error: ${err.message || err}` };
+          // Check if transaction row (must start with a date format DD-MM-YYYY)
+          const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          if (!/^\d{2}[-/]\d{2}[-/]\d{4}/.test(rawDate)) {
+            continue; // Skip group header names, grand totals, and blank rows
+          }
+
+          const rawEmployeeName = row[empIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          if (!rawEmployeeName) {
+            continue;
+          }
+
+          let normalizedEmp = normalizeName(rawEmployeeName);
+          if (NAME_OVERRIDES[normalizedEmp]) {
+            normalizedEmp = NAME_OVERRIDES[normalizedEmp];
+          }
+
+          const profileId = profileMap.get(normalizedEmp) || null;
+
+          // If unmapped, track it
+          if (!profileId) {
+            const currentCount = unmappedEmployeeMap.get(rawEmployeeName) || 0;
+            unmappedEmployeeMap.set(rawEmployeeName, currentCount + 1);
+          }
+
+          const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          const rawItemCode = row[itemCodeIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          const rawItemName = row[itemNameIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          const itemDescription = rawItemCode ? `${rawItemCode}: ${rawItemName}` : rawItemName;
+
+          const rawActualValue = row[actualValueIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+          const rawQty = row[qtyIdx]?.trim().replace(/^["']|["']$/g, '') || '1';
+
+          try {
+            const transactionDate = parseTransactionDate(rawDate);
+            const actualValue = parseFloat(rawActualValue.replace(/,/g, '')) || 0;
+            const quantity = parseFloat(rawQty.replace(/,/g, '')) || 1;
+            const branch = getBranchFromRef(rawRef);
+            branchesInFile.add(branch);
+
+            // Generate unique prefixed reference number to prevent duplicate keys with standard reports
+            const baseRef = `ESD_${rawRef}`;
+            const count = refCounts.get(baseRef) || 0;
+            refCounts.set(baseRef, count + 1);
+            const dbRef = `${baseRef}_${count + 1}`;
+
+            transactionsToInsert.push({
+              profile_id: profileId,
+              employee_name: rawEmployeeName,
+              branch: branch,
+              transaction_date: transactionDate,
+              reference_no: dbRef,
+              customer_name: rawCustomer,
+              item_description: itemDescription,
+              type: 'S',
+              amount: 0,
+              deduction: actualValue,
+              quantity: quantity,
+            });
+            fileInsertedCount++;
+          } catch (err: any) {
+            return { error: `File "${file.name}", Row ${i + 1} parsing error: ${err.message || err}` };
+          }
+        }
+      } else {
+        // Standard transaction file format
+        let dateIdx = 1;
+        let refIdx = 2;
+        let empIdx = 3;
+        let custIdx = 4;
+        let itemIdx = 5;
+        let typeIdx = 6;
+        let nettIdx = 12; // Default index for Nett
+        let deductionIdx = 13; // Default index for Deduction
+        let qtyIdx = 7; // Default index for Qty
+
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+
+          // Detect header row and update indices dynamically, trimming cell values beforehand
+          const trimmedRow = row.map((cell) => cell?.trim() || '');
+          const lowerRow = trimmedRow.map((cell) => cell.replace(/^["']|["']$/g, '').toLowerCase());
+          if (
+            (lowerRow.includes('reference no.') || lowerRow.includes('reference no')) &&
+            lowerRow.includes('employee')
+          ) {
+            const foundDate = lowerRow.indexOf('date');
+            if (foundDate !== -1) dateIdx = foundDate;
+
+            const foundRef = lowerRow.includes('reference no.') ? lowerRow.indexOf('reference no.') : lowerRow.indexOf('reference no');
+            if (foundRef !== -1) refIdx = foundRef;
+
+            const foundEmp = lowerRow.indexOf('employee');
+            if (foundEmp !== -1) empIdx = foundEmp;
+
+            const foundCust = lowerRow.indexOf('customer');
+            if (foundCust !== -1) custIdx = foundCust;
+
+            const foundType = lowerRow.indexOf('type');
+            if (foundType !== -1) typeIdx = foundType;
+
+            const foundQty = lowerRow.indexOf('qty');
+            if (foundQty !== -1) qtyIdx = foundQty;
+
+            // Look for 'item' or similar column header
+            let foundItem = lowerRow.indexOf('item');
+            if (foundItem === -1) {
+              foundItem = lowerRow.findIndex((cell) => cell.includes('item') || cell.includes('description') || cell.includes('service'));
+            }
+            if (foundItem !== -1) itemIdx = foundItem;
+            
+            const foundNett = lowerRow.indexOf('nett');
+            if (foundNett === -1) {
+              return { error: `Failed to parse CSV file "${file.name}": Required column 'Nett' not found.` };
+            }
+            nettIdx = foundNett;
+
+            const foundDeduction = lowerRow.indexOf('deduction');
+            deductionIdx = foundDeduction !== -1 ? foundDeduction : 13;
+            continue;
+          }
+
+          // Check if it is a transaction row (starts with a row number)
+          const isTransactionRow = /^\d+$/.test(row[0]?.trim());
+          if (!isTransactionRow) {
+            continue; // skip totals, metadata, empty lines
+          }
+
+          // Extract transaction type and filter (only keep S, G, C, P)
+          const rawType = row[typeIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          if (!['S', 'G', 'C', 'P'].includes(rawType)) {
+            continue; // Filter out other non-matching types
+          }
+
+          // Extract and normalize employee name
+          const rawEmployeeName = row[empIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          if (!rawEmployeeName) {
+            continue;
+          }
+
+          let normalizedEmp = normalizeName(rawEmployeeName);
+          if (NAME_OVERRIDES[normalizedEmp]) {
+            normalizedEmp = NAME_OVERRIDES[normalizedEmp];
+          }
+
+          const profileId = profileMap.get(normalizedEmp) || null;
+
+          // If unmapped, track it
+          if (!profileId) {
+            const currentCount = unmappedEmployeeMap.get(rawEmployeeName) || 0;
+            unmappedEmployeeMap.set(rawEmployeeName, currentCount + 1);
+          }
+
+          // Parse other fields
+          const rawDate = row[dateIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          const rawRef = row[refIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          const rawCustomer = row[custIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          let rawItem = row[itemIdx]?.trim().replace(/^["']|["']$/g, '') || '';
+          if (rawItem && !rawItem.includes(':') && ITEM_DICTIONARY[rawItem]) {
+            rawItem = ITEM_DICTIONARY[rawItem];
+          }
+          const rawNett = row[nettIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+          const rawDeduction = row[deductionIdx]?.trim().replace(/^["']|["']$/g, '') || '0';
+          const rawQty = row[qtyIdx]?.trim().replace(/^["']|["']$/g, '') || '1';
+
+          try {
+            const transactionDate = parseTransactionDate(rawDate);
+            const amount = parseFloat(rawNett.replace(/,/g, '')) || 0;
+            const deduction = parseFloat(rawDeduction.replace(/,/g, '')) || 0;
+            const quantity = parseFloat(rawQty.replace(/,/g, '')) || 1;
+            const branch = getBranchFromRef(rawRef);
+            branchesInFile.add(branch);
+
+            // Generate unique reference number per item in ticket to prevent duplicates in bulk uploads
+            let dbRef = rawRef;
+            if (rawRef) {
+              const count = refCounts.get(rawRef) || 0;
+              refCounts.set(rawRef, count + 1);
+              dbRef = `${rawRef}_${count + 1}`;
+            }
+
+            transactionsToInsert.push({
+              profile_id: profileId,
+              employee_name: rawEmployeeName,
+              branch: branch,
+              transaction_date: transactionDate,
+              reference_no: dbRef,
+              customer_name: rawCustomer,
+              item_description: rawItem,
+              type: rawType,
+              amount: amount,
+              deduction: deduction,
+              quantity: quantity,
+            });
+            fileInsertedCount++;
+          } catch (err: any) {
+            return { error: `File "${file.name}", Row ${i + 1} parsing error: ${err.message || err}` };
+          }
         }
       }
 

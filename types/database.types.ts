@@ -55,6 +55,7 @@ export type Database = {
           type: string
           employee_name: string
           branch: string | null
+          quantity: number
         }
         Insert: {
           amount: number
@@ -69,6 +70,7 @@ export type Database = {
           type: string
           employee_name: string
           branch?: string | null
+          quantity?: number
         }
         Update: {
           amount?: number
@@ -83,6 +85,7 @@ export type Database = {
           type?: string
           employee_name?: string
           branch?: string | null
+          quantity?: number
         }
         Relationships: [
           {
