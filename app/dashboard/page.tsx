@@ -1,7 +1,7 @@
 import { createClient, getCachedSession } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Scissors, Package, ShoppingBag, Percent, Calendar, TrendingUp } from 'lucide-react';
+import { Scissors, Package, ShoppingBag, Percent, Calendar, TrendingUp, DollarSign } from 'lucide-react';
 import TransactionsList from './TransactionsList';
 import MonthSelector from './MonthSelector';
 import { getTransactionCategory, cleanItemDescription } from '@/lib/transaction-utils';
@@ -35,7 +35,8 @@ const METRICS: MetricConfig[] = [
 interface AggregationResult {
   sums: number[];        // [alacarte, packages, products, deductions]
   counts: number[];      // [alacarte, packages, products, deductions]
-  totalSales: number;
+  totalSales: number;    // including deductions
+  netSales: number;      // excluding deductions
 }
 
 function aggregateTransactions(
@@ -73,6 +74,7 @@ function aggregateTransactions(
     counts: [alacarteCount, packageCount, productCount, deductionCount],
     // Deductions represent real revenue from deduction transactions and are intentionally included in total sales
     totalSales: alacarteSum + packageSum + productSum + deductionSum,
+    netSales: alacarteSum + packageSum + productSum,
   };
 }
 
@@ -150,7 +152,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   }));
 
   // Aggregations
-  const { sums, counts, totalSales } = aggregateTransactions(txList);
+  const { sums, counts, totalSales, netSales } = aggregateTransactions(txList);
 
   const currentMonthName = new Date(selYear, selMonth - 1, 1).toLocaleString('en-US', {
     month: 'long',
@@ -175,28 +177,54 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* Main KPI Card - Total Sales */}
-      <Card className="border-gray-200 bg-white shadow-sm rounded-2xl overflow-hidden">
-        <CardContent className="p-5 sm:p-6 flex items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <span className="text-[10px] font-bold text-gray-450 uppercase tracking-wider block select-none">
-              Total Monthly Sales
-            </span>
-            <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
-              RM {totalSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 font-medium">
-                {txList.length} total transaction records
+      {/* Main KPI Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Total Monthly Sales (with deductions) */}
+        <Card className="border-gray-200 bg-white shadow-sm rounded-2xl overflow-hidden">
+          <CardContent className="p-5 sm:p-6 flex items-center justify-between gap-4">
+            <div className="space-y-1.5">
+              <span className="text-[10px] font-bold text-gray-450 uppercase tracking-wider block select-none">
+                Total Monthly Sales (Incl. Deductions)
               </span>
+              <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
+                RM {totalSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 font-medium">
+                  {txList.length} total transaction records
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-150 flex items-center justify-center text-gray-700 shrink-0 select-none">
-            <TrendingUp className="w-5.5 h-5.5 text-emerald-600" />
-          </div>
-        </CardContent>
-      </Card>
+            <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-150 flex items-center justify-center text-gray-700 shrink-0 select-none">
+              <TrendingUp className="w-5.5 h-5.5 text-emerald-600" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Total Monthly Sales (excluding deductions) */}
+        <Card className="border-gray-200 bg-white shadow-sm rounded-2xl overflow-hidden">
+          <CardContent className="p-5 sm:p-6 flex items-center justify-between gap-4">
+            <div className="space-y-1.5">
+              <span className="text-[10px] font-bold text-gray-450 uppercase tracking-wider block select-none">
+                Total Monthly Sales (Excl. Deductions)
+              </span>
+              <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
+                RM {netSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 font-medium">
+                  Revenue from services, packages & retail
+                </span>
+              </div>
+            </div>
+
+            <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-150 flex items-center justify-center text-gray-700 shrink-0 select-none">
+              <DollarSign className="w-5.5 h-5.5 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Grid of Category Cards — driven by METRICS config */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
