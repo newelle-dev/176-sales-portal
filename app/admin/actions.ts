@@ -576,3 +576,47 @@ export async function clearTransactionsAction(): Promise<{ success?: boolean; er
   }
 }
 
+/**
+ * Server Action: Updates or inserts the sales target for a specific year.
+ * Only callable by authenticated admin users.
+ */
+export async function updateYearlyTargetAction(
+  year: number,
+  amount: number
+): Promise<{ success?: boolean; error?: string }> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: 'Unauthorized: No active session.' };
+    }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (!profile || profile.role !== 'admin') {
+      return { error: 'Unauthorized: Only admins can manage targets.' };
+    }
+
+    const { error } = await supabase
+      .from('targets')
+      .upsert({ year, target_amount: amount }, { onConflict: 'year' });
+
+    if (error) {
+      return { error: `Failed to update target: ${error.message}` };
+    }
+
+    revalidatePath('/admin');
+    return { success: true };
+  } catch (error: any) {
+    return { error: error.message || 'An unexpected error occurred.' };
+  }
+}
+
+

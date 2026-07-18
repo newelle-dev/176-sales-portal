@@ -1,0 +1,563 @@
+﻿
+"Employee Received Detail"
+" Zom Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"10-07-2026 06:27 PM","TK09495-3: IN05966-3"," Zom Assist ",";000017482: Mabel",HSNC13,"A La Carte - Wash Off Treatment",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+2,"12-07-2026 04:28 PM","TK09551-3: IN06011-3"," Zom Assist ",";00002019: Lynn Lok",HSNC13,"A La Carte - Wash Off Treatment",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+,,,,,,,Total,2,50.00,50.00,0.00,0.00,50.00,0.00
+"Adda "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Agnes "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Alec "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Alice (Eyelash Assistant Director) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Angel Assist  "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Angela (Lash Guru) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 05:28 PM","TK09383-3: IN05883-3","Angela (Lash Guru) ",";000018880: Rebecca",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+2,"02-07-2026 05:28 PM","TK09383-3: IN05883-3","Angela (Lash Guru) ",";000018880: Rebecca",AOLR,"Add On - Lash Removal",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+3,"02-07-2026 05:28 PM","TK09383-3: IN05883-3","Angela (Lash Guru) ",";000018880: Rebecca",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+4,"04-07-2026 02:07 PM","TK09411-3: IN05904-3","Angela (Lash Guru) ","CS01573-3: Danielle Chong (Five Stone 10%)",C01082,"Package VIP Luxe Set - 1500 Credits",C,1,1500.00,1500.00,0.00,0.00,1500.00,0.00
+5,"04-07-2026 02:09 PM",TK09412-3,"Angela (Lash Guru) ","CS01573-3: Danielle Chong (Five Stone 10%)",AOLE,"Add On - LED Extensions",S,1,34.00,0.00,0.00,0.00,0.00,34.00
+6,"04-07-2026 02:09 PM",TK09412-3,"Angela (Lash Guru) ","CS01573-3: Danielle Chong (Five Stone 10%)",SSYL,"A La Carte - YY Lash (Signature Series)",S,1,194.48,0.00,0.00,0.00,0.00,194.48
+7,"04-07-2026 04:22 PM","TK09422-3: IN05911-3","Angela (Lash Guru) ","CS01991-3: Trixia",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+8,"04-07-2026 04:22 PM","TK09422-3: IN05911-3","Angela (Lash Guru) ","CS01991-3: Trixia",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+9,"04-07-2026 04:24 PM","TK09423-3: IN05912-3","Angela (Lash Guru) ","CS01992-3: Mabel",S00042-2,"Makeover RM399 - Lash Lift",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+10,"04-07-2026 04:24 PM","TK09423-3: IN05912-3","Angela (Lash Guru) ","CS01992-3: Mabel",TULS,"A la carte - Top up Lash Service",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+11,"04-07-2026 06:00 PM","TK09428-3: IN05917-3","Angela (Lash Guru) ","CS01931-3: Shireen Chin",C01082,"Package VIP Luxe Set - 1500 Credits",C,1,1500.00,1500.00,0.00,0.00,1500.00,0.00
+12,"04-07-2026 06:01 PM",TK09429-3,"Angela (Lash Guru) ","CS01931-3: Shireen Chin",AOLE,"Add On - LED Extensions",S,1,34.00,0.00,0.00,0.00,0.00,34.00
+13,"04-07-2026 06:01 PM",TK09429-3,"Angela (Lash Guru) ","CS01931-3: Shireen Chin",DSPYL,"A La Carte - Premium YY Lash (Designer Series)",S,1,228.48,0.00,0.00,0.00,0.00,228.48
+14,"05-07-2026 01:47 PM","TK09444-3: IN05929-3","Angela (Lash Guru) ",";000021918: Niva Mohan",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+15,"05-07-2026 01:47 PM","TK09444-3: IN05929-3","Angela (Lash Guru) ",";000021918: Niva Mohan",DSPCL,"A La Carte - Premium Camellia Lash (Designer Series)",S,1,336.00,336.00,0.00,0.00,336.00,0.00
+16,"05-07-2026 07:08 PM","TK09460-3: IN05940-3","Angela (Lash Guru) ",";00006438: Piyi",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+17,"05-07-2026 07:08 PM","TK09460-3: IN05940-3","Angela (Lash Guru) ",";00006438: Piyi",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+18,"05-07-2026 07:08 PM","TK09460-3: IN05940-3","Angela (Lash Guru) ",";00006438: Piyi",TULS,"A la carte - Top up Lash Service",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+19,"10-07-2026 06:48 PM","TK09506-3: IN05974-3","Angela (Lash Guru) ",";00006595: Joanne Wong",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+20,"10-07-2026 06:48 PM","TK09506-3: IN05974-3","Angela (Lash Guru) ",";00006595: Joanne Wong",C01082,"Package VIP Luxe Set - 1500 Credits",C,1,1500.00,1500.00,0.00,0.00,1500.00,0.00
+21,"10-07-2026 06:48 PM","TK09506-3: IN05974-3","Angela (Lash Guru) ",";00006595: Joanne Wong",RM50,"Redeem 1000points = RM50",C,-1,-50.00,-50.00,0.00,0.00,-50.00,0.00
+22,"10-07-2026 06:50 PM",TK09507-3,"Angela (Lash Guru) ",";00006595: Joanne Wong",DSPCL,"A La Carte - Premium Camellia Lash (Designer Series)",S,1,228.48,0.00,0.00,0.00,0.00,228.48
+23,"10-07-2026 06:53 PM","TK09509-3: IN05976-3","Angela (Lash Guru) ","CS02007-3: Fiona",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+24,"10-07-2026 06:53 PM","TK09509-3: IN05976-3","Angela (Lash Guru) ","CS02007-3: Fiona",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+25,"11-07-2026 03:47 PM",TK09520-3,"Angela (Lash Guru) ",";000013014: Yawan Ling",AOLE,"Add On - LED Extensions",S,1,50.00,0.00,0.00,0.00,0.00,50.00
+26,"11-07-2026 03:47 PM",TK09520-3,"Angela (Lash Guru) ",";000013014: Yawan Ling",TU100-150,"A La Carte - Touch Up Eyelash Extension (100-150 Lashes)",S,1,126.00,0.00,0.00,0.00,0.00,126.00
+27,"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Angela (Lash Guru) ",";00008015?: Aida Yasmin Zunaida",TU200-250,"A La Carte - Touch Up Eyelash Extension (200 - 250 Lashes)",S,1,126.48,0.00,0.00,0.00,0.00,126.48
+28,"11-07-2026 06:35 PM","TK09525-3: IN05990-3","Angela (Lash Guru) ","CS01734-2: Winnie",S01552,"Promo - Add On Darker Black Tint",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+29,"12-07-2026 04:20 PM","TK09548-3: IN06009-3","Angela (Lash Guru) ","CS01500-3: Angela",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+30,"12-07-2026 04:20 PM","TK09548-3: IN06009-3","Angela (Lash Guru) ","CS01500-3: Angela",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+31,"12-07-2026 05:04 PM","TK09561-3: IN06017-3","Angela (Lash Guru) ","CS02014-3: Sandra",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+32,"12-07-2026 05:04 PM","TK09561-3: IN06017-3","Angela (Lash Guru) ","CS02014-3: Sandra",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+33,"12-07-2026 05:04 PM","TK09561-3: IN06017-3","Angela (Lash Guru) ","CS02014-3: Sandra",TULS,"A la carte - Top up Lash Service",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+34,"13-07-2026 01:25 PM","TK09568-3: IN06023-3","Angela (Lash Guru) ","CS01034-3: Jin Ann Ooi",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+35,"13-07-2026 01:25 PM","TK09568-3: IN06023-3","Angela (Lash Guru) ","CS01034-3: Jin Ann Ooi",TU200-250,"A La Carte - Touch Up Eyelash Extension (200 - 250 Lashes)",S,1,186.00,186.00,0.00,0.00,186.00,0.00
+36,"14-07-2026 02:07 PM","TK09584-3: IN06036-3","Angela (Lash Guru) ","CS02020-3: Koo",S00040-2,"Makeover RM399 - Lash",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+37,"14-07-2026 02:07 PM","TK09584-3: IN06036-3","Angela (Lash Guru) ","CS02020-3: Koo",TULS,"A la carte - Top up Lash Service",S,1,100.00,100.00,0.00,0.00,100.00,0.00
+38,"14-07-2026 03:40 PM","TK09586-3: IN06038-3","Angela (Lash Guru) ",";00007649: Mavic Tan",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+39,"14-07-2026 03:40 PM","TK09586-3: IN06038-3","Angela (Lash Guru) ",";00007649: Mavic Tan",TU200-250,"A La Carte - Touch Up Eyelash Extension (200 - 250 Lashes)",S,1,186.00,186.00,0.00,0.00,186.00,0.00
+40,"14-07-2026 05:09 PM","TK09589-3: IN06040-3","Angela (Lash Guru) ",";00007506:  Rebekah Tan Li Theng ( Rebecca)",C01082,"Package VIP Luxe Set - 1500 Credits",C,1,1500.00,1500.00,0.00,0.00,1500.00,0.00
+41,"14-07-2026 05:10 PM",TK09590-3,"Angela (Lash Guru) ",";00007506:  Rebekah Tan Li Theng ( Rebecca)",TU200-250,"A La Carte - Touch Up Eyelash Extension (200 - 250 Lashes)",S,1,126.48,0.00,0.00,0.00,0.00,126.48
+42,"16-07-2026 05:34 PM","TK09607-3: IN06055-3","Angela (Lash Guru) ","CS01897-3: Jennie Yap",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+43,"16-07-2026 05:34 PM","TK09607-3: IN06055-3","Angela (Lash Guru) ","CS01897-3: Jennie Yap",G01203,"Package Premium Set – RM999 (4 Sessions)",G,1,999.00,999.00,0.00,0.00,999.00,0.00
+44,"17-07-2026 06:20 PM","TK09635-3: IN06076-3","Angela (Lash Guru) ","CS02030-3: Shiyamala",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+45,"17-07-2026 06:20 PM","TK09635-3: IN06076-3","Angela (Lash Guru) ","CS02030-3: Shiyamala",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+46,"17-07-2026 11:57 AM","TK09617-3: IN06062-3","Angela (Lash Guru) ","CS01895-3: Sydney",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+47,"17-07-2026 11:57 AM","TK09617-3: IN06062-3","Angela (Lash Guru) ","CS01895-3: Sydney",TULS,"A la carte - Top up Lash Service",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+48,"18-07-2026 11:04 AM",TK09639-3,"Angela (Lash Guru) ",";00002019: Lynn Lok",AOLE,"Add On - LED Extensions",S,1,34.00,0.00,0.00,0.00,0.00,34.00
+49,"18-07-2026 11:04 AM",TK09639-3,"Angela (Lash Guru) ",";00002019: Lynn Lok",TU200-250,"A La Carte - Touch Up Eyelash Extension (200 - 250 Lashes)",S,1,126.48,0.00,0.00,0.00,0.00,126.48
+,,,,,,,Total,47,11531.88,10223.00,0.00,0.00,10223.00,1308.88
+"Carmen "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"04-07-2026 05:22 PM","TK09427-3: IN05916-3","Carmen ","CS01994-3: Steph",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,96.00,96.00,0.00,0.00,96.00,0.00
+2,"07-07-2026 06:41 PM","TK09487-3: IN05960-3","Carmen ","CS02004-3: Keegan",HSCS12,"A La Carte - Highlights/Balayage/AirTouch (With Bleach)",S,1,652.80,652.80,0.00,0.00,652.80,0.00
+3,"07-07-2026 06:41 PM","TK09487-3: IN05960-3","Carmen ","CS02004-3: Keegan",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,230.40,230.40,0.00,0.00,230.40,0.00
+4,"10-07-2026 06:25 PM","TK09494-3: IN05965-3","Carmen ",";000024467: Aaron Lau",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,98.60,98.60,0.00,0.00,98.60,0.00
+5,"10-07-2026 06:28 PM","TK09496-3: IN05967-3","Carmen ",";000024360: Ivory Sonia James Pieng",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+6,"14-07-2026 04:03 PM","TK09588-3: IN06039-3","Carmen ","CS01225-2: Wei Harn",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,98.60,98.60,0.00,0.00,98.60,0.00
+7,"14-07-2026 07:36 PM","TK09598-3: IN06047-3","Carmen ","CS02022-3: Jerry",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,98.60,98.60,0.00,0.00,98.60,0.00
+8,"16-07-2026 12:54 PM","TK09600-3: IN06049-3","Carmen ","CS01994-3: Steph",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,96.00,96.00,0.00,0.00,96.00,0.00
+9,"17-07-2026 03:38 PM","TK09629-3: IN06071-3","Carmen ","CS02029-3: Barny Pang",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,98.60,98.60,0.00,0.00,98.60,0.00
+,,,,,,,Total,9,1605.60,1605.60,0.00,0.00,1605.60,0.00
+"Chien Way Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Creative Director - Nick "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 06:57 PM","TK09385-3: IN05885-3","Creative Director - Nick ",";00001597?: Elaine Tan Shi En",HSCS01,"A La Carte- Technique Perm",S,1,500.00,500.00,0.00,0.00,500.00,0.00
+2,"02-07-2026 06:57 PM","TK09385-3: IN05885-3","Creative Director - Nick ",";00001597?: Elaine Tan Shi En",HSNC01,"A La Carte - Creative Director Cut (Male)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+3,"02-07-2026 07:18 PM","TK09386-3: IN05886-3","Creative Director - Nick ",";00008015?: Aida Yasmin Zunaida",ARMTRT,"A La Carte - Absolut Repair Molecular Treatment",S,1,388.00,388.00,0.00,0.00,388.00,0.00
+4,"02-07-2026 07:18 PM","TK09386-3: IN05886-3","Creative Director - Nick ",";00008015?: Aida Yasmin Zunaida",HSCS12,"A La Carte - Highlights/Balayage/AirTouch (With Bleach)",S,1,878.70,878.70,0.00,0.00,878.70,0.00
+5,"02-07-2026 07:18 PM","TK09386-3: IN05886-3","Creative Director - Nick ",";00008015?: Aida Yasmin Zunaida",HSNC02,"A La Carte - Creative Director Cut (Female)",S,1,196.00,196.00,0.00,0.00,196.00,0.00
+6,"02-07-2026 07:29 PM","TK09387-3: IN05887-3","Creative Director - Nick ",";000025490: Bernardine Decena",ARMTRT,"A La Carte - Absolut Repair Molecular Treatment",S,1,388.00,388.00,0.00,0.00,388.00,0.00
+7,"02-07-2026 07:29 PM","TK09387-3: IN05887-3","Creative Director - Nick ",";000025490: Bernardine Decena",HSCS02,"A La Carte - Combination Perm",S,1,708.40,708.40,0.00,0.00,708.40,0.00
+8,"02-07-2026 07:29 PM","TK09387-3: IN05887-3","Creative Director - Nick ",";000025490: Bernardine Decena",P00228-3,"Texture Styling Mousse ",P,1,70.00,70.00,0.00,0.00,70.00,0.00
+,,,,,,,Total,8,3305.10,3305.10,0.00,0.00,3305.10,0.00
+"Daisy (Embroidery Director) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 05:00 PM","TK09375-3: IN05879-3","Daisy (Embroidery Director) ","CS00632-3: Lim Shiak Ling",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,686.00,686.00,0.00,0.00,686.00,0.00
+2,"03-07-2026 05:27 PM","TK09398-3: IN05896-3","Daisy (Embroidery Director) ",";000025779: Kaycie",PWSEED,"Promo - Weekday Special Eyebrow Embroidery (Director)",S,1,599.00,599.00,0.00,0.00,599.00,0.00
+3,"03-07-2026 12:27 PM","TK09389-3: IN05888-3","Daisy (Embroidery Director) ",";00006976: Wong Sit Yin",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,686.00,686.00,0.00,0.00,686.00,0.00
+4,"06-07-2026 06:53 PM","TK09474-3: IN05951-3","Daisy (Embroidery Director) ",";000022320: Annie Hg",EBOFEST,"A La Carte - Eyebrow Shaping Tweezer (Face Hair Removal)",S,1,26.00,26.00,0.00,0.00,26.00,0.00
+5,"06-07-2026 11:30 AM","TK09464-3: IN05943-3","Daisy (Embroidery Director) ",";00006458: Joey",PWSEED,"Promo - Weekday Special Eyebrow Embroidery (Director)",S,1,599.00,599.00,0.00,0.00,599.00,0.00
+6,"06-07-2026 11:30 AM","TK09464-3: IN05943-3","Daisy (Embroidery Director) ",";00006458: Joey",S00271-3,"Prepaid - Embroidery Touch Up",S,1,586.00,586.00,0.00,0.00,586.00,0.00
+7,"06-07-2026 12:37 PM","TK09465-3: IN05944-3","Daisy (Embroidery Director) ","CS01371-2: Charlene Tan",EE6DHSD,"6D Hairline Strokes (Director)",S,1,1086.00,1086.00,0.00,0.00,1086.00,0.00
+8,"10-07-2026 06:36 PM","TK09499-3: IN05969-3","Daisy (Embroidery Director) ","CS01575-3: Joanna",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,686.00,686.00,0.00,0.00,686.00,0.00
+9,"10-07-2026 12:21 PM","TK09491-3: IN05963-3","Daisy (Embroidery Director) ",";00009840: May Yee",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,686.00,686.00,0.00,0.00,686.00,0.00
+10,"11-07-2026 02:19 PM","TK09512-3: IN05979-3","Daisy (Embroidery Director) ",";000012944: Alice Chee",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,736.00,736.00,0.00,0.00,736.00,0.00
+11,"11-07-2026 06:25 PM","TK09522-3: IN05987-3","Daisy (Embroidery Director) ","CS00946-3: Adelyn Koh",EESCD,"Signature Combination (Director)",S,1,1286.00,1286.00,0.00,0.00,1286.00,0.00
+12,"11-07-2026 11:15 AM","TK09511-3: IN05978-3","Daisy (Embroidery Director) ",";000011054: Siew Xia",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,686.00,686.00,0.00,0.00,686.00,0.00
+13,"12-07-2026 10:09 AM","TK09538-3: IN06003-3","Daisy (Embroidery Director) ",";000015045: Angela Foo",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,786.00,786.00,0.00,0.00,786.00,0.00
+14,"12-07-2026 10:09 AM","TK09538-3: IN06003-3","Daisy (Embroidery Director) ",";000015045: Angela Foo",EHESFHSD3,"A La Carte - 3cm Scalp and Forehead Hairline Strokes (Director)",S,1,1659.00,1659.00,0.00,0.00,1659.00,0.00
+15,"12-07-2026 10:09 AM","TK09538-3: IN06003-3","Daisy (Embroidery Director) ",";000015045: Angela Foo",S00023-2,"A La Carte - Touch Up Lip Embroidery (Director)",S,1,543.00,543.00,0.00,0.00,543.00,0.00
+16,"17-07-2026 01:08 PM",TK09619-3,"Daisy (Embroidery Director) ","CS00030-3: Winni Yeong",DSPCL,"A La Carte - Premium Camellia Lash (Designer Series)",S,1,218.40,0.00,0.00,0.00,0.00,218.40
+17,"17-07-2026 04:06 PM","TK09632-3: IN06073-3","Daisy (Embroidery Director) ","CS00191-3: Jasmine A",EBOFESR,"A La Carte - Eyebrow Shaping Razor (Face Hair Removal)",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+18,"18-07-2026 12:05 PM","TK09640-3: IN06079-3","Daisy (Embroidery Director) ",";00001080: Ng Ru Shyuan",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,736.00,736.00,0.00,0.00,736.00,0.00
+19,"18-07-2026 12:13 PM","TK09642-3: IN06081-3","Daisy (Embroidery Director) ",";00007444: Tok",EEID,"Inner Eyeliner Embroidery *1mm* (Director)",S,1,1086.00,1086.00,0.00,0.00,1086.00,0.00
+20,"18-07-2026 12:13 PM","TK09642-3: IN06081-3","Daisy (Embroidery Director) ",";00007444: Tok",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,386.00,386.00,0.00,0.00,386.00,0.00
+,,,,,,,Total,20,13778.40,13560.00,0.00,0.00,13560.00,218.40
+"Daniel "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Devi "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Divya "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Ella Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Gino Assist  "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Grace (Manicurist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Hellen "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Jade Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Jay (Manicurist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Jee (Nails Director) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Jessie Cheah (Star Specialist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 05:15 PM","TK09379-3: IN05880-3","Jessie Cheah (Star Specialist) ",";00003935: Leong Swee Han",PWSEEES,"Promo - Weekday Special Eyebrow Embroidery (Elite Specialist))",S,1,699.00,699.00,0.00,0.00,699.00,0.00
+2,"03-07-2026 02:02 PM","TK09392-3: IN05890-3","Jessie Cheah (Star Specialist) ","CS01986-3: Samantha",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+3,"03-07-2026 06:31 PM","TK09403-3: IN05900-3","Jessie Cheah (Star Specialist) ",";000013342: June Tay Su Teng",EBOFESR,"A La Carte - Eyebrow Shaping Razor (Face Hair Removal)",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+4,"04-07-2026 04:22 PM","TK09422-3: IN05911-3","Jessie Cheah (Star Specialist) ","CS01991-3: Trixia",EBOFESR,"A La Carte - Eyebrow Shaping Razor (Face Hair Removal)",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+5,"04-07-2026 05:08 PM","TK09426-3: IN05915-3","Jessie Cheah (Star Specialist) ","CS01992-3: Mabel",PWSEESS,"Promo - Weekday Special Eyebrow Embroidery (Star Specialist))",S,1,499.00,499.00,0.00,0.00,499.00,0.00
+6,"04-07-2026 05:08 PM","TK09426-3: IN05915-3","Jessie Cheah (Star Specialist) ","CS01992-3: Mabel",S00044-2,"Makeover RM399 - Brow Shaping",S,1,8.00,8.00,0.00,0.00,8.00,0.00
+7,"04-07-2026 06:11 PM","TK09431-3: IN05919-3","Jessie Cheah (Star Specialist) ","CS01995-3: Jestine",AOLE,"Add On - LED Extensions",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+8,"04-07-2026 06:11 PM","TK09431-3: IN05919-3","Jessie Cheah (Star Specialist) ","CS01995-3: Jestine",PFTEE,"PROMO - First Trial Eyelash Extension @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+9,"05-07-2026 05:53 PM","TK09455-3: IN05937-3","Jessie Cheah (Star Specialist) ","CS02002-3: Lauren Lim",S01549,"A La Carte - Premium Lash Lift (Non Director)",S,1,286.00,286.00,0.00,0.00,286.00,0.00
+10,"05-07-2026 11:55 AM","TK09437-3: IN05924-3","Jessie Cheah (Star Specialist) ",";000024734: Leanne Chua",WTFEFW,"A La Carte - Eyebrow (Face Waxing)",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+11,"06-07-2026 06:08 PM","TK09473-3: IN05950-3","Jessie Cheah (Star Specialist) ","CS00053-2: Nurin Natasha Fuaad",LL176,"Promo - First Trial Lash Lift @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+12,"06-07-2026 06:08 PM","TK09473-3: IN05950-3","Jessie Cheah (Star Specialist) ","CS00053-2: Nurin Natasha Fuaad",S01552,"Promo - Add On Darker Black Tint",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+13,"06-07-2026 06:08 PM","TK09473-3: IN05950-3","Jessie Cheah (Star Specialist) ","CS00053-2: Nurin Natasha Fuaad",WTBB,"A La Carte - Brazillian ALL OFF (Brazillian Waxing)",S,1,129.00,129.00,0.00,0.00,129.00,0.00
+14,"07-07-2026 07:25 PM","TK09488-3: IN05961-3","Jessie Cheah (Star Specialist) ","CS02005-3: Nur Fatiha",AOLR,"Add On - Lash Removal",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+15,"07-07-2026 07:25 PM","TK09488-3: IN05961-3","Jessie Cheah (Star Specialist) ","CS02005-3: Nur Fatiha",S01549,"A La Carte - Premium Lash Lift (Non Director)",S,1,286.00,286.00,0.00,0.00,286.00,0.00
+16,"07-07-2026 07:25 PM","TK09488-3: IN05961-3","Jessie Cheah (Star Specialist) ","CS02005-3: Nur Fatiha",S01552,"Promo - Add On Darker Black Tint",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+17,"07-07-2026 07:37 PM","TK09489-3: IN05962-3","Jessie Cheah (Star Specialist) ","CS00080-2: Classpass Keshika Subbarrao",WTFEFW,"A La Carte - Eyebrow (Face Waxing)",S,1,32.40,32.40,0.00,0.00,32.40,0.00
+18,"10-07-2026 06:45 PM","TK09503-3: IN05973-3","Jessie Cheah (Star Specialist) ","CS00568-3: Lee Mun Yee",G01198,"PACKAGE - Lash Lift Package for 5 Sessions (Non-Director)",G,1,859.00,859.00,0.00,0.00,859.00,0.00
+19,"11-07-2026 03:35 PM","TK09514-3: IN05981-3","Jessie Cheah (Star Specialist) ",";000013288: Huang Rong Tsu",EBOFEST,"A La Carte - Eyebrow Shaping Tweezer (Face Hair Removal)",S,1,26.00,26.00,0.00,0.00,26.00,0.00
+20,"11-07-2026 03:45 PM","TK09519-3: IN05985-3","Jessie Cheah (Star Specialist) ",";00006249: Ee Von",AOLR,"Add On - Lash Removal",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+21,"11-07-2026 03:45 PM","TK09519-3: IN05985-3","Jessie Cheah (Star Specialist) ",";00006249: Ee Von",SSCL,"A La Carte - Camellia Lash (Signature Series)",S,1,286.00,286.00,0.00,0.00,286.00,0.00
+22,"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jessie Cheah (Star Specialist) ",";00008015?: Aida Yasmin Zunaida",G01177,"PACKAGE - HRP Underarm (12 Sessions)",G,1,904.50,904.50,0.00,0.00,904.50,0.00
+23,"11-07-2026 06:48 PM","TK09533-3: IN05998-3","Jessie Cheah (Star Specialist) ",";000015191: Jessica Lim Lee Wei",AOLE,"Add On - LED Extensions",S,1,50.00,0.00,0.00,0.00,0.00,0.00
+24,"11-07-2026 06:48 PM","TK09533-3: IN05998-3","Jessie Cheah (Star Specialist) ",";000015191: Jessica Lim Lee Wei",DSCL,"A La Carte - Clover Lash (Designer Series)",S,1,306.00,306.00,0.00,0.00,306.00,0.00
+25,"12-07-2026 04:26 PM","TK09549-3: IN06010-3","Jessie Cheah (Star Specialist) ",";000018429: Suet Yee Lau",EBOFESR,"A La Carte - Eyebrow Shaping Razor (Face Hair Removal)",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+26,"12-07-2026 07:32 PM","TK09564-3: IN06020-3","Jessie Cheah (Star Specialist) ",";000023932: Anthea Pushparatnam",EETUES,"A La Carte - Touch Up Eyebrow (Elite Specialist)",S,1,486.00,450.00,0.00,0.00,450.00,0.00
+27,"14-07-2026 01:12 PM","TK09582-3: IN06035-3","Jessie Cheah (Star Specialist) ","CS02019-3: Michelle",PEET2,"Prepaid - Eyebrow Touch-Up (2 Months Validity)",S,1,386.00,386.00,0.00,0.00,386.00,0.00
+28,"14-07-2026 01:12 PM","TK09582-3: IN06035-3","Jessie Cheah (Star Specialist) ","CS02019-3: Michelle",PWSEEES,"Promo - Weekday Special Eyebrow Embroidery (Elite Specialist))",S,1,699.00,699.00,0.00,0.00,699.00,0.00
+29,"17-07-2026 03:27 PM","TK09626-3: IN06068-3","Jessie Cheah (Star Specialist) ","CS00589-3: Zalina Zainal",PETBND,"A La Carte - Browlift Treatment (Non-Director)",S,1,286.00,286.00,0.00,0.00,286.00,0.00
+30,"17-07-2026 03:27 PM","TK09626-3: IN06068-3","Jessie Cheah (Star Specialist) ","CS00589-3: Zalina Zainal",PTJCLFND,"A La Carte - Japanese Crown Lash Lift (Non-Director)",S,1,336.00,336.00,0.00,0.00,336.00,0.00
+31,"17-07-2026 03:36 PM","TK09628-3: IN06070-3","Jessie Cheah (Star Specialist) ","CS02028-3: Valeria Chuah",S00042-2,"Makeover RM399 - Lash Lift",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+32,"17-07-2026 03:36 PM","TK09628-3: IN06070-3","Jessie Cheah (Star Specialist) ","CS02028-3: Valeria Chuah",S00044-2,"Makeover RM399 - Brow Shaping",S,1,8.00,8.00,0.00,0.00,8.00,0.00
+,,,,,,,Total,32,7491.90,7405.90,0.00,0.00,7405.90,0.00
+"Jessy (Manicurist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Jill "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Jing Wen (Manicurist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 05:20 PM","TK09381-3: IN05881-3","Jing Wen (Manicurist) ","CS01984-3: Cassy",NAIL03,"A La Carte - Gel Manicure",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+2,"02-07-2026 05:20 PM","TK09381-3: IN05881-3","Jing Wen (Manicurist) ","CS01984-3: Cassy",NAIL04,"A La Carte- Gel Pedicure",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+3,"02-07-2026 05:20 PM","TK09381-3: IN05881-3","Jing Wen (Manicurist) ","CS01984-3: Cassy",NAIL13,"A La Carte - Removal of Gel Colour",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+4,"02-07-2026 05:20 PM","TK09381-3: IN05881-3","Jing Wen (Manicurist) ","CS01984-3: Cassy",NAIL14,"A La Carte - Nail Art",S,1,46.00,46.00,0.00,0.00,46.00,0.00
+5,"02-07-2026 05:28 PM","TK09383-3: IN05883-3","Jing Wen (Manicurist) ",";000018880: Rebecca",NAIL01,"A La Carte - Classic Manicure",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+6,"03-07-2026 06:16 PM","TK09401-3: IN05899-3","Jing Wen (Manicurist) ","CS01573-3: Danielle Chong (Five Stone 10%)",NAIL03,"A La Carte - Gel Manicure",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+7,"03-07-2026 06:16 PM","TK09401-3: IN05899-3","Jing Wen (Manicurist) ","CS01573-3: Danielle Chong (Five Stone 10%)",NAIL09,"A La Carte - Infills",S,1,92.00,92.00,0.00,0.00,92.00,0.00
+8,"03-07-2026 06:16 PM","TK09401-3: IN05899-3","Jing Wen (Manicurist) ","CS01573-3: Danielle Chong (Five Stone 10%)",NAIL14,"A La Carte - Nail Art",S,1,46.00,46.00,0.00,0.00,46.00,0.00
+9,"04-07-2026 02:18 PM","TK09415-3: IN05906-3","Jing Wen (Manicurist) ","CS01548-3: Jenny Lim",S01605,"Happy Hour- Gel Manicure",S,1,63.00,63.00,0.00,0.00,63.00,0.00
+10,"04-07-2026 04:24 PM","TK09423-3: IN05912-3","Jing Wen (Manicurist) ","CS01992-3: Mabel",NAIL03,"A La Carte - Gel Manicure",S,1,66.00,66.00,0.00,0.00,66.00,0.00
+11,"04-07-2026 04:24 PM","TK09423-3: IN05912-3","Jing Wen (Manicurist) ","CS01992-3: Mabel",NAIL13,"A La Carte - Removal of Gel Colour",S,1,26.00,26.00,0.00,0.00,26.00,0.00
+12,"04-07-2026 04:24 PM","TK09423-3: IN05912-3","Jing Wen (Manicurist) ","CS01992-3: Mabel",NAIL14,"A La Carte - Nail Art",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+13,"04-07-2026 04:24 PM","TK09423-3: IN05912-3","Jing Wen (Manicurist) ","CS01992-3: Mabel",S00041-2,"Makeover RM399 - Nails",S,1,38.00,38.00,0.00,0.00,38.00,0.00
+14,"04-07-2026 04:48 PM","TK09425-3: IN05914-3","Jing Wen (Manicurist) ","CS01993-3: Jennifer Tan",NAIL02,"A La Carte - Classic Pedicure",S,1,66.00,66.00,0.00,0.00,66.00,0.00
+15,"04-07-2026 07:00 PM","TK09433-3: IN05921-3","Jing Wen (Manicurist) ",";00000483?: Erita Ong",S01583,"Happy Hour- Classic Pedicure",S,1,33.00,33.00,0.00,0.00,33.00,0.00
+16,"05-07-2026 04:21 PM","TK09449-3: IN05933-3","Jing Wen (Manicurist) ","CS01999-3: Jet Wong",NAIL01,"A La Carte - Classic Manicure",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+17,"05-07-2026 04:21 PM","TK09449-3: IN05933-3","Jing Wen (Manicurist) ","CS01999-3: Jet Wong",NAIL02,"A La Carte - Classic Pedicure",S,1,66.00,66.00,0.00,0.00,66.00,0.00
+18,"06-07-2026 06:08 PM","TK09473-3: IN05950-3","Jing Wen (Manicurist) ","CS00053-2: Nurin Natasha Fuaad",NAIL01,"A La Carte - Classic Manicure",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+19,"06-07-2026 06:53 PM","TK09474-3: IN05951-3","Jing Wen (Manicurist) ",";000022320: Annie Hg",NAIL03,"A La Carte - Gel Manicure",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+20,"06-07-2026 06:53 PM","TK09474-3: IN05951-3","Jing Wen (Manicurist) ",";000022320: Annie Hg",NAIL14,"A La Carte - Nail Art",S,1,46.00,46.00,0.00,0.00,46.00,0.00
+21,"06-07-2026 06:53 PM","TK09474-3: IN05951-3","Jing Wen (Manicurist) ",";000022320: Annie Hg",S01583,"Happy Hour- Classic Pedicure",S,1,33.00,33.00,0.00,0.00,33.00,0.00
+22,"07-07-2026 05:32 PM",TK09481-3,"Jing Wen (Manicurist) ",";000019262: Yulia",NAIL04,"A La Carte- Gel Pedicure",S,1,126.00,0.00,0.00,0.00,0.00,126.00
+23,"10-07-2026 06:40 PM","TK09501-3: IN05971-3","Jing Wen (Manicurist) ",";00009696: Michell Koh",NAIL03,"A La Carte - Gel Manicure",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+24,"10-07-2026 06:52 PM","TK09508-3: IN05975-3","Jing Wen (Manicurist) ",";000013528: Mayble Long",S00037-2,"Gel Mani @RM99",S,1,99.00,99.00,0.00,0.00,99.00,0.00
+25,"11-07-2026 02:30 PM","TK09513-3: IN05980-3","Jing Wen (Manicurist) ","CS01796-3: Geetha",G00012-2,"Promo - RM126 Gel Mani + Classic Pedi",G,1,126.00,126.00,0.00,0.00,126.00,0.00
+26,"11-07-2026 02:30 PM","TK09513-3: IN05980-3","Jing Wen (Manicurist) ","CS01796-3: Geetha",NAIL13,"A La Carte - Removal of Gel Colour",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+27,"11-07-2026 02:30 PM","TK09513-3: IN05980-3","Jing Wen (Manicurist) ","CS01796-3: Geetha",NAIL14,"A La Carte - Nail Art",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+28,"11-07-2026 03:40 PM","TK09517-3: IN05983-3","Jing Wen (Manicurist) ","CS01562-3: Miss Lai",S01579,"Happy Hour- Classic Manicure",S,1,28.00,28.00,0.00,0.00,28.00,0.00
+29,"11-07-2026 06:25 PM","TK09522-3: IN05987-3","Jing Wen (Manicurist) ","CS00946-3: Adelyn Koh",NAIL04,"A La Carte- Gel Pedicure",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+30,"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jing Wen (Manicurist) ",";00008015?: Aida Yasmin Zunaida",NAIL04,"A La Carte- Gel Pedicure",S,1,126.00,0.00,0.00,0.00,0.00,126.00
+31,"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jing Wen (Manicurist) ",";00008015?: Aida Yasmin Zunaida",NAIL14,"A La Carte - Nail Art",S,1,46.00,0.00,0.00,0.00,0.00,46.00
+32,"12-07-2026 04:15 PM",TK09545-3,"Jing Wen (Manicurist) ","CS00901-3: Jennifer Chua",NAIL03,"A La Carte - Gel Manicure",S,1,90.10,0.00,0.00,0.00,0.00,90.10
+33,"12-07-2026 04:15 PM",TK09545-3,"Jing Wen (Manicurist) ","CS00901-3: Jennifer Chua",NAIL12,"A La Carte - Removal of Gel Acrylic/Extensions",S,1,30.60,0.00,0.00,0.00,0.00,30.60
+34,"12-07-2026 04:20 PM","TK09548-3: IN06009-3","Jing Wen (Manicurist) ","CS01500-3: Angela",NAIL04,"A La Carte- Gel Pedicure",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+35,"12-07-2026 04:20 PM","TK09548-3: IN06009-3","Jing Wen (Manicurist) ","CS01500-3: Angela",NAIL12,"A La Carte - Removal of Gel Acrylic/Extensions",S,1,20.00,20.00,0.00,0.00,20.00,0.00
+36,"12-07-2026 04:20 PM","TK09548-3: IN06009-3","Jing Wen (Manicurist) ","CS01500-3: Angela",S00037-2,"Gel Mani @RM99",S,1,99.00,99.00,0.00,0.00,99.00,0.00
+37,"13-07-2026 04:05 PM","TK09571-3: IN06026-3","Jing Wen (Manicurist) ","CS01483-3: Whena Chua",NAIL03,"A La Carte - Gel Manicure",S,1,74.20,74.20,0.00,0.00,74.20,0.00
+38,"13-07-2026 04:05 PM","TK09571-3: IN06026-3","Jing Wen (Manicurist) ","CS01483-3: Whena Chua",NAIL09,"A La Carte - Infills",S,1,46.20,46.20,0.00,0.00,46.20,0.00
+39,"13-07-2026 04:05 PM","TK09571-3: IN06026-3","Jing Wen (Manicurist) ","CS01483-3: Whena Chua",NAIL14,"A La Carte - Nail Art",S,1,18.20,18.20,0.00,0.00,18.20,0.00
+40,"14-07-2026 02:05 PM",TK09583-3,"Jing Wen (Manicurist) ",";000019262: Yulia",NAIL03,"A La Carte - Gel Manicure",S,1,106.00,0.00,0.00,0.00,0.00,106.00
+41,"14-07-2026 02:05 PM",TK09583-3,"Jing Wen (Manicurist) ",";000019262: Yulia",NAIL14,"A La Carte - Nail Art",S,1,56.00,0.00,0.00,0.00,0.00,56.00
+42,"14-07-2026 02:07 PM","TK09584-3: IN06036-3","Jing Wen (Manicurist) ","CS02020-3: Koo",S00041-2,"Makeover RM399 - Nails",S,1,38.00,38.00,0.00,0.00,38.00,0.00
+43,"14-07-2026 06:59 PM",TK09596-3,"Jing Wen (Manicurist) ",";000014749: Woon Yin Chai Expiry Date : 30 July 2024",NAIL03,"A La Carte - Gel Manicure",S,1,74.20,0.00,0.00,0.00,0.00,74.20
+44,"14-07-2026 12:44 PM","TK09580-3: IN06033-3","Jing Wen (Manicurist) ","CS01772-3: Jynwaye Foo",NAIL05,"A La Carte- Gel Polish/Color",S,1,66.00,66.00,0.00,0.00,66.00,0.00
+45,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Jing Wen (Manicurist) ",";000018366: Jennifer Yan",NAIL01,"A La Carte - Classic Manicure",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+46,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Jing Wen (Manicurist) ",";000018366: Jennifer Yan",NAIL16,"A La Carte - Signature Pedicure",S,1,156.00,156.00,0.00,0.00,156.00,0.00
+47,"16-07-2026 05:27 PM","TK09605-3: IN06053-3","Jing Wen (Manicurist) ","CS02023-3: Caryn Tan",NAIL05,"A La Carte- Gel Polish/Color",S,1,66.00,66.00,0.00,0.00,66.00,0.00
+48,"16-07-2026 05:49 PM",TK09609-3,"Jing Wen (Manicurist) ",";000020841: Cathie Wu",NAIL03,"A La Carte - Gel Manicure",S,1,84.80,0.00,0.00,0.00,0.00,84.80
+49,"16-07-2026 05:49 PM",TK09609-3,"Jing Wen (Manicurist) ",";000020841: Cathie Wu",NAIL09,"A La Carte - Infills",S,1,52.80,0.00,0.00,0.00,0.00,52.80
+50,"16-07-2026 05:49 PM",TK09609-3,"Jing Wen (Manicurist) ",";000020841: Cathie Wu",NAIL14,"A La Carte - Nail Art",S,1,36.80,0.00,0.00,0.00,0.00,36.80
+51,"16-07-2026 06:09 PM","TK09612-3: IN06058-3","Jing Wen (Manicurist) ","CS02025-3: Aimi",NAIL01,"A La Carte - Classic Manicure",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+52,"16-07-2026 07:01 PM","TK09614-3: IN06060-3","Jing Wen (Manicurist) ",";00009188: Thuong",NAIL02,"A La Carte - Classic Pedicure",S,1,66.00,66.00,0.00,0.00,66.00,0.00
+53,"17-07-2026 03:25 PM","TK09624-3: IN06066-3","Jing Wen (Manicurist) ",";000013496: Dr Aster Siaw (Pkg Expiry Date 30 Oct 2024)",NAIL03,"A La Carte - Gel Manicure",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+54,"17-07-2026 03:25 PM","TK09624-3: IN06066-3","Jing Wen (Manicurist) ",";000013496: Dr Aster Siaw (Pkg Expiry Date 30 Oct 2024)",NAIL14,"A La Carte - Nail Art",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+55,"17-07-2026 03:31 PM","TK09627-3: IN06069-3","Jing Wen (Manicurist) ","CS02028-3: Valeria Chuah",S00041-2,"Makeover RM399 - Nails",S,1,38.00,38.00,0.00,0.00,38.00,0.00
+56,"17-07-2026 06:35 PM","TK09637-3: IN06077-3","Jing Wen (Manicurist) ","CS02031-3: Din din",G00012-2,"Promo - RM126 Gel Mani + Classic Pedi",G,1,126.00,126.00,0.00,0.00,126.00,0.00
+57,"17-07-2026 12:55 PM","TK09618-3: IN06063-3","Jing Wen (Manicurist) ","CS02027-3: Carol Leong",NAIL02,"A La Carte - Classic Pedicure",S,1,56.10,56.10,0.00,0.00,56.10,0.00
+58,"17-07-2026 12:55 PM","TK09618-3: IN06063-3","Jing Wen (Manicurist) ","CS02027-3: Carol Leong",NAIL03,"A La Carte - Gel Manicure",S,1,47.60,47.60,0.00,0.00,47.60,0.00
+59,"17-07-2026 12:55 PM","TK09618-3: IN06063-3","Jing Wen (Manicurist) ","CS02027-3: Carol Leong",P00234-3,"Footlogic Nail Tincture 50ml",P,1,159.00,159.00,0.00,0.00,159.00,0.00
+,,,,,,,Total,59,4127.60,3298.30,0.00,0.00,3298.30,829.30
+"Jules "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Kalpana "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Kenny "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Management "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"03-07-2026 10:49 AM","TK09405-3: IN05902-3","Management ","CS01989-3: Ewen",S00041-2,"Makeover RM399 - Nails",S,1,38.00,0.00,0.00,0.00,0.00,0.00
+2,"03-07-2026 10:49 AM","TK09405-3: IN05902-3","Management ","CS01989-3: Ewen",S00042-2,"Makeover RM399 - Lash Lift",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+3,"03-07-2026 10:49 AM","TK09405-3: IN05902-3","Management ","CS01989-3: Ewen",S00043-2,"Makeover RM399 - Hair",S,1,267.00,227.00,0.00,0.00,227.00,0.00
+4,"03-07-2026 10:49 AM","TK09405-3: IN05902-3","Management ","CS01989-3: Ewen",S00044-2,"Makeover RM399 - Brow Shaping",S,1,8.00,0.00,0.00,0.00,0.00,0.00
+5,"04-07-2026 02:41 PM","TK09418-3: IN05908-3","Management ",";00009499: Jane",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,586.00,586.00,0.00,0.00,586.00,0.00
+6,"05-07-2026 01:52 PM","TK09443-3: IN05928-3","Management ","CS01997-3: Lyn",S00189-3,"Booking Fee Deposit - Embroidery Service",S,1,300.00,300.00,0.00,0.00,300.00,0.00
+7,"05-07-2026 11:49 AM","TK09436-3: IN05923-3","Management ",";00006458: Joey",S00189-3,"Booking Fee Deposit - Embroidery Service",S,1,300.00,300.00,0.00,0.00,300.00,0.00
+8,"05-07-2026 12:30 PM","TK09462-3: IN05942-3","Management ",";00007444: Tok",S00189-3,"Booking Fee Deposit - Embroidery Service",S,1,300.00,300.00,0.00,0.00,300.00,0.00
+9,"11-07-2026 06:18 PM","TK09521-3: IN05986-3","Management ","CS02008-3: Kimberly Woon",S01613,"35% OFF Eyebrow Embroidery New Set (All Techniques)",S,1,835.90,835.90,0.00,0.00,835.90,0.00
+10,"11-07-2026 06:18 PM","TK09521-3: IN05986-3","Management ","CS02008-3: Kimberly Woon",S01614,"35% OFF Touch Up Eyebrow Embroidery (All Techniques)",S,1,510.90,510.90,0.00,0.00,510.90,0.00
+11,"13-07-2026 10:40 AM","TK09565-3: IN06021-3","Management ","CS01290-3: Darshini",S00189-3,"Booking Fee Deposit - Embroidery Service",S,1,300.00,300.00,0.00,0.00,300.00,0.00
+12,"14-07-2026 02:07 PM","TK09584-3: IN06036-3","Management ","CS02020-3: Koo",S00044-2,"Makeover RM399 - Brow Shaping",S,1,8.00,8.00,0.00,0.00,8.00,0.00
+13,"16-07-2026 10:32 AM","TK09638-3: IN06078-3","Management ","CS00747-3: Noven Pang",S00189-3,"Booking Fee Deposit - Embroidery Service",S,1,300.00,300.00,0.00,0.00,300.00,0.00
+14,"16-07-2026 12:49 PM","TK09599-3: IN06048-3","Management ",";000015520: Hwang Seak May",S00189-3,"Booking Fee Deposit - Embroidery Service",S,1,300.00,300.00,0.00,0.00,300.00,0.00
+15,"17-07-2026 03:23 PM","TK09623-3: IN06075-3","Management ","CS00572-3: Yoke Fong Low",EETUD,"A La Carte - Touch Up Eyebrow (Director)",S,1,586.00,586.00,0.00,0.00,586.00,0.00
+,,,,,,,Total,15,4725.80,4639.80,0.00,0.00,4639.80,0.00
+"Maria "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Maw Maw Assist  "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Mayble "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Moon Assist  "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Naomi (Star Specialist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"04-07-2026 02:05 PM","TK09410-3: IN05903-3","Naomi (Star Specialist) ",";00009844: Cheryl (Jeanette & Hiuwen Only)",EE6DHSES,"6D Hairline Strokes (Elite Specialist)",S,1,886.00,886.00,0.00,0.00,886.00,0.00
+2,"07-07-2026 05:48 PM","TK09483-3: IN05957-3","Naomi (Star Specialist) ","CS00804-3: Sindy Wong",G00136-3,"3 Sessions - RM199 Upper Lip Package",G,1,199.00,199.00,0.00,0.00,199.00,0.00
+3,"07-07-2026 10:54 AM",TK09477-3,"Naomi (Star Specialist) ","CS00275-3: Sheenee Chai",S01549,"A La Carte - Premium Lash Lift (Non Director)",S,1,286.00,0.00,0.00,0.00,0.00,286.00
+4,"11-07-2026 06:25 PM","TK09522-3: IN05987-3","Naomi (Star Specialist) ","CS00946-3: Adelyn Koh",S01549,"A La Carte - Premium Lash Lift (Non Director)",S,1,286.00,286.00,0.00,0.00,286.00,0.00
+5,"11-07-2026 06:41 PM","TK09528-3: IN05993-3","Naomi (Star Specialist) ",";000015358: Clair Danielle Leong Su Li",WTHLB,"A La Carte - Half Legs Bottom (Lower Body Waxing)",S,1,59.00,59.00,0.00,0.00,59.00,0.00
+6,"11-07-2026 06:41 PM","TK09528-3: IN05993-3","Naomi (Star Specialist) ",";000015358: Clair Danielle Leong Su Li",WTUBUA,"A La Carte - Under Arms (Upper Body Waxing)",S,1,39.00,39.00,0.00,0.00,39.00,0.00
+7,"11-07-2026 06:52 PM","TK09535-3: IN06000-3","Naomi (Star Specialist) ",";000013088: Mei Xin",G00138-3,"3 Sessions - RM399 Under Arm Package",G,1,399.00,399.00,0.00,0.00,399.00,0.00
+8,"11-07-2026 06:52 PM","TK09535-3: IN06000-3","Naomi (Star Specialist) ",";000013088: Mei Xin",G01182,"PACKAGE - Brazillian Hair Removal for (12 Sessions)",G,1,1804.50,1804.50,0.00,0.00,1804.50,0.00
+9,"12-07-2026 04:17 PM","TK09546-3: IN06007-3","Naomi (Star Specialist) ",";000024433: Ornella Durand",WTFEFW,"A La Carte - Eyebrow (Face Waxing)",S,1,36.00,36.00,0.00,0.00,36.00,0.00
+10,"14-07-2026 03:32 PM","TK09585-3: IN06037-3","Naomi (Star Specialist) ","CS02021-3: luna ang",PWSEEES,"Promo - Weekday Special Eyebrow Embroidery (Elite Specialist))",S,1,699.00,699.00,0.00,0.00,699.00,0.00
+11,"14-07-2026 12:11 PM","TK09579-3: IN06032-3","Naomi (Star Specialist) ","CS01402-3: Khoo Hsiu Fen",S00259-3,"Promo - First Trial Diode Laser @ RM176",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+12,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Naomi (Star Specialist) ",";000020131: Yivon Cheah",EBOFESR,"A La Carte - Eyebrow Shaping Razor (Face Hair Removal)",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+13,"16-07-2026 07:01 PM","TK09614-3: IN06060-3","Naomi (Star Specialist) ",";00009188: Thuong",EBOFESR,"A La Carte - Eyebrow Shaping Razor (Face Hair Removal)",S,1,16.00,16.00,0.00,0.00,16.00,0.00
+,,,,,,,Total,13,4901.50,4615.50,0.00,0.00,4615.50,286.00
+"Nicholas "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 05:25 PM","TK09382-3: IN05882-3","Nicholas ","CS01985-3: Classpass Wai Meng",S00019-2,"Classpass - First Time Visit Hair Cut for Male (Artistic Stylist)",S,1,63.60,63.60,0.00,0.00,63.60,0.00
+2,"02-07-2026 05:55 PM","TK09384-3: IN05884-3","Nicholas ",";000014424: Shaleen Tan ",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+3,"03-07-2026 03:13 PM","TK09394-3: IN05892-3","Nicholas ",";000014466: Eileen Chua",HSCS12,"A La Carte - Highlights/Balayage/AirTouch (With Bleach)",S,1,656.00,0.00,0.00,0.00,0.00,656.00
+4,"03-07-2026 03:13 PM","TK09394-3: IN05892-3","Nicholas ",";000014466: Eileen Chua",PKGHAIRRM1000,"Package Pay RM1000 get 1200 Credits",C,1,1000.00,1000.00,0.00,0.00,1000.00,0.00
+5,"03-07-2026 07:29 PM","TK09404-3: IN05901-3","Nicholas ","CS01921-3: Charmaine Liew",E3548601,"LP METAL DX SHAMPOO 300ML",P,1,134.00,134.00,0.00,0.00,134.00,0.00
+6,"03-07-2026 07:29 PM","TK09404-3: IN05901-3","Nicholas ","CS01921-3: Charmaine Liew",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,150.00,150.00,0.00,0.00,150.00,0.00
+7,"03-07-2026 07:29 PM","TK09404-3: IN05901-3","Nicholas ","CS01921-3: Charmaine Liew",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,150.00,150.00,0.00,0.00,150.00,0.00
+8,"03-07-2026 07:29 PM","TK09404-3: IN05901-3","Nicholas ","CS01921-3: Charmaine Liew",S01601," Hair Makeover @ RM298",S,1,298.00,298.00,0.00,0.00,298.00,0.00
+9,"04-07-2026 02:38 PM","TK09416-3: IN05907-3","Nicholas ",";000017204: Hailey Soo",PKGHAIRRM500,"Package Pay RM500 get 600 Credits",C,1,500.00,500.00,0.00,0.00,500.00,0.00
+10,"04-07-2026 02:40 PM",TK09419-3,"Nicholas ",";000017204: Hailey Soo",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,86.00,0.00,0.00,0.00,0.00,86.00
+11,"04-07-2026 05:08 PM","TK09426-3: IN05915-3","Nicholas ","CS01992-3: Mabel",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+12,"04-07-2026 05:08 PM","TK09426-3: IN05915-3","Nicholas ","CS01992-3: Mabel",S00043-2,"Makeover RM399 - Hair",S,1,267.00,267.00,0.00,0.00,267.00,0.00
+13,"04-07-2026 06:17 PM","TK09432-3: IN05920-3","Nicholas ","CS01731-3: Classpass Ming da",S00018-2,"Classpass - Hair Cut For Male (Artistic Stylist)",S,1,84.80,84.80,0.00,0.00,84.80,0.00
+14,"04-07-2026 07:03 PM","TK09434-3: IN05922-3","Nicholas ",";000018888: Jo",HSCS06,"A La Carte - Majifashion Color",S,1,306.00,306.00,0.00,0.00,306.00,0.00
+15,"04-07-2026 07:03 PM","TK09434-3: IN05922-3","Nicholas ",";000018888: Jo",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+16,"04-07-2026 07:03 PM","TK09434-3: IN05922-3","Nicholas ",";000018888: Jo",RBD,"Redeem Birthday Discount",C,-1,-35.00,-35.00,0.00,0.00,-35.00,0.00
+17,"05-07-2026 03:27 PM","TK09446-3: IN05931-3","Nicholas ","CS01761-3: Jaymie",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+18,"05-07-2026 05:37 PM","TK09454-3: IN05936-3","Nicholas ","CS02001-3: Marvin",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,116.00,116.00,0.00,0.00,116.00,0.00
+19,"05-07-2026 05:55 PM","TK09456-3: IN05938-3","Nicholas ",";000024475: Renee",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+20,"05-07-2026 05:55 PM","TK09456-3: IN05938-3","Nicholas ",";000024475: Renee",RBD,"Redeem Birthday Discount",C,-1,-34.00,-34.00,0.00,0.00,-34.00,0.00
+21,"05-07-2026 12:19 PM","TK09438-3: IN05925-3","Nicholas ",";000023564: Erwin Ang",PKGHAIRRM500,"Package Pay RM500 get 600 Credits",C,1,500.00,500.00,0.00,0.00,500.00,0.00
+22,"05-07-2026 12:20 PM",TK09439-3,"Nicholas ",";000023564: Erwin Ang",HSCS06,"A La Carte - Majifashion Color",S,1,246.00,0.00,0.00,0.00,0.00,246.00
+23,"05-07-2026 12:20 PM",TK09439-3,"Nicholas ",";000023564: Erwin Ang",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,10.00,0.00,0.00,0.00,0.00,10.00
+24,"05-07-2026 12:20 PM",TK09439-3,"Nicholas ",";000023564: Erwin Ang",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,86.00,0.00,0.00,0.00,0.00,86.00
+25,"05-07-2026 12:20 PM",TK09439-3,"Nicholas ",";000023564: Erwin Ang",S01544,"Hair Treatment (Scalp & Hair Refreshing)",S,1,186.00,0.00,0.00,0.00,0.00,186.00
+26,"05-07-2026 12:26 PM","TK09440-3: IN05926-3","Nicholas ",";00000326: Michelle Pong",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,115.60,115.60,0.00,0.00,115.60,0.00
+27,"05-07-2026 12:42 PM","TK09441-3: IN05927-3","Nicholas ","CS01996-3: Classpass Jia Yoon Chong",HSCPNC05,"Classpass - First Time Visit Hair Cut for Female (Artistic Stylist)",S,1,75.60,75.60,0.00,0.00,75.60,0.00
+28,"06-07-2026 07:57 PM","TK09475-3: IN05952-3","Nicholas ",";000016192: Ahna Humaira binti Ahmad Fadzil",ARMTRT,"A La Carte - Absolut Repair Molecular Treatment",S,1,388.00,388.00,0.00,0.00,388.00,0.00
+29,"06-07-2026 07:57 PM","TK09475-3: IN05952-3","Nicholas ",";000016192: Ahna Humaira binti Ahmad Fadzil",HSCS12,"A La Carte - Highlights/Balayage/AirTouch (With Bleach)",S,1,466.00,466.00,0.00,0.00,466.00,0.00
+30,"07-07-2026 01:54 PM","TK09478-3: IN05954-3","Nicholas ",";00009859: Jo Yee Cheah",HSCS06,"A La Carte - Majifashion Color",S,1,366.00,366.00,0.00,0.00,366.00,0.00
+31,"07-07-2026 01:56 PM","TK09479-3: IN05955-3","Nicholas ",";000024948: Liang Yi Wong",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+32,"07-07-2026 05:42 PM","TK09482-3: IN05956-3","Nicholas ","CS01572-3: Laura Aguirre",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+33,"07-07-2026 06:13 PM","TK09486-3: IN05959-3","Nicholas ","CS01534-3: Ms Chang",HSCS08,"A La Carte - Roots Touch Up",S,1,203.40,203.40,0.00,0.00,203.40,0.00
+34,"10-07-2026 06:27 PM","TK09495-3: IN05966-3","Nicholas ",";000017482: Mabel",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,96.00,96.00,0.00,0.00,96.00,0.00
+35,"10-07-2026 06:29 PM","TK09497-3: IN05968-3","Nicholas ",";000025828: Ajay",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,98.60,98.60,0.00,0.00,98.60,0.00
+36,"10-07-2026 07:51 PM","TK09510-3: IN05977-3","Nicholas ",";00008646: Jaesy Yap",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+37,"10-07-2026 12:23 PM","TK09492-3: IN05964-3","Nicholas ","CS01992-3: Mabel",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+38,"10-07-2026 12:23 PM","TK09492-3: IN05964-3","Nicholas ","CS01992-3: Mabel",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,150.00,150.00,0.00,0.00,150.00,0.00
+39,"10-07-2026 12:23 PM","TK09492-3: IN05964-3","Nicholas ","CS01992-3: Mabel",P00086-3,"Genesis Fondant 200ml",P,1,164.00,164.00,0.00,0.00,164.00,0.00
+40,"10-07-2026 12:23 PM","TK09492-3: IN05964-3","Nicholas ","CS01992-3: Mabel",P00105-3,"Gloss Absolu Bain 250 ml",P,1,153.00,153.00,0.00,0.00,153.00,0.00
+41,"10-07-2026 12:23 PM","TK09492-3: IN05964-3","Nicholas ","CS01992-3: Mabel",S01601," Hair Makeover @ RM298",S,1,298.00,298.00,0.00,0.00,298.00,0.00
+42,"11-07-2026 03:43 PM","TK09518-3: IN05984-3","Nicholas ","CS01673-3: Xiang Xiang Neik",HSCS06,"A La Carte - Majifashion Color",S,1,338.40,338.40,0.00,0.00,338.40,0.00
+43,"11-07-2026 03:43 PM","TK09518-3: IN05984-3","Nicholas ","CS01673-3: Xiang Xiang Neik",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,104.40,104.40,0.00,0.00,104.40,0.00
+44,"11-07-2026 03:43 PM","TK09518-3: IN05984-3","Nicholas ","CS01673-3: Xiang Xiang Neik",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,122.40,122.40,0.00,0.00,122.40,0.00
+45,"11-07-2026 06:32 PM","TK09524-3: IN05989-3","Nicholas ","CS01551-3: Rachel Tan",HSCS06,"A La Carte - Majifashion Color",S,1,311.10,311.10,0.00,0.00,311.10,0.00
+46,"11-07-2026 06:32 PM","TK09524-3: IN05989-3","Nicholas ","CS01551-3: Rachel Tan",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,244.80,244.80,0.00,0.00,244.80,0.00
+47,"11-07-2026 06:32 PM","TK09524-3: IN05989-3","Nicholas ","CS01551-3: Rachel Tan",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,115.60,115.60,0.00,0.00,115.60,0.00
+48,"11-07-2026 06:38 PM","TK09526-3: IN05991-3","Nicholas ","CS02009-3: CM",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+49,"11-07-2026 06:38 PM","TK09526-3: IN05991-3","Nicholas ","CS02009-3: CM",S01601," Hair Makeover @ RM298",S,1,298.00,298.00,0.00,0.00,298.00,0.00
+50,"11-07-2026 06:47 PM","TK09532-3: IN05997-3","Nicholas ","CS02010-3: Lee Jia Lee",HSNC10,"A La Carte - Fringe",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+51,"11-07-2026 06:54 PM","TK09536-3: IN06001-3","Nicholas ","CS02011-3: Grace Kwan",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+52,"11-07-2026 06:54 PM","TK09536-3: IN06001-3","Nicholas ","CS02011-3: Grace Kwan",S01601," Hair Makeover @ RM298",S,1,298.00,298.00,0.00,0.00,298.00,0.00
+53,"12-07-2026 04:18 PM","TK09547-3: IN06008-3","Nicholas ",";000023026: Julian Sim",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+54,"12-07-2026 04:18 PM","TK09547-3: IN06008-3","Nicholas ",";000023026: Julian Sim",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+55,"12-07-2026 04:30 PM","TK09552-3: IN06012-3","Nicholas ","CS01750-3: Carmen",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,122.40,122.40,0.00,0.00,122.40,0.00
+56,"12-07-2026 06:58 PM","TK09563-3: IN06019-3","Nicholas ",";00008135: Lee Min Hui",HSCS06,"A La Carte - Majifashion Color",S,1,366.00,0.00,0.00,0.00,0.00,366.00
+57,"12-07-2026 06:58 PM","TK09563-3: IN06019-3","Nicholas ",";00008135: Lee Min Hui",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,0.00,0.00,0.00,0.00,136.00
+58,"12-07-2026 06:58 PM","TK09563-3: IN06019-3","Nicholas ",";00008135: Lee Min Hui",PKGHAIRRM500,"Package Pay RM500 get 600 Credits",C,1,500.00,500.00,0.00,0.00,500.00,0.00
+59,"13-07-2026 03:20 PM","TK09573-3: IN06028-3","Nicholas ","CS02015-3: CC Lim",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,98.60,98.60,0.00,0.00,98.60,0.00
+60,"13-07-2026 03:59 PM","TK09570-3: IN06025-3","Nicholas ","CS01700-2: Melissa Lee",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+61,"13-07-2026 04:13 PM","TK09572-3: IN06027-3","Nicholas ","CS00080-2: Classpass Keshika Subbarrao",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,115.60,115.60,0.00,0.00,115.60,0.00
+62,"13-07-2026 05:47 PM","TK09575-3: IN06029-3","Nicholas ","CS02016-3: Charlie",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,116.00,116.00,0.00,0.00,116.00,0.00
+63,"14-07-2026 01:07 PM","TK09581-3: IN06034-3","Nicholas ","CS02018-3: Classpass May J",S00018-2,"Classpass - Hair Cut For Male (Artistic Stylist)",S,1,84.80,84.80,0.00,0.00,84.80,0.00
+64,"14-07-2026 02:07 PM","TK09584-3: IN06036-3","Nicholas ","CS02020-3: Koo",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,4.00,0.00,0.00,4.00,0.00
+65,"14-07-2026 02:07 PM","TK09584-3: IN06036-3","Nicholas ","CS02020-3: Koo",S00043-2,"Makeover RM399 - Hair",S,1,267.00,267.00,0.00,0.00,267.00,0.00
+66,"14-07-2026 03:15 PM","RC00011-3: IN06036-3","Nicholas ","CS02020-3: Koo",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,0,0.00,46.00,0.00,0.00,46.00,0.00
+67,"14-07-2026 05:16 PM","TK09592-3: IN06042-3","Nicholas ",";000020857: Karmen Lai",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+68,"14-07-2026 12:06 PM","TK09578-3: IN06031-3","Nicholas ",";000020498: Zack How Jenn Lin",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+69,"14-07-2026 12:06 PM","TK09578-3: IN06031-3","Nicholas ",";000020498: Zack How Jenn Lin",P00091-3,"Genesis BAIN DE FORCE 250ml",P,1,143.00,143.00,0.00,0.00,143.00,0.00
+70,"16-07-2026 04:32 PM","TK09603-3: IN06051-3","Nicholas ",";000022708: Ming hao yap",HSNC05,"A La Carte - Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+71,"16-07-2026 05:31 PM","TK09606-3: IN06054-3","Nicholas ","CS02024-3: Amy",HSCS05,"A La Carte - Straightening/Relaxing",S,1,328.10,328.10,0.00,0.00,328.10,0.00
+72,"16-07-2026 05:31 PM","TK09606-3: IN06054-3","Nicholas ","CS02024-3: Amy",HSCS06,"A La Carte - Majifashion Color",S,1,268.60,268.60,0.00,0.00,268.60,0.00
+73,"16-07-2026 05:31 PM","TK09606-3: IN06054-3","Nicholas ","CS02024-3: Amy",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,115.60,115.60,0.00,0.00,115.60,0.00
+74,"16-07-2026 05:31 PM","TK09606-3: IN06054-3","Nicholas ","CS02024-3: Amy",P00078-3,"CHROMA THERMIQUE 150ML VF46",P,1,165.00,165.00,0.00,0.00,165.00,0.00
+75,"16-07-2026 07:29 PM","TK09615-3: IN06061-3","Nicholas ","CS01673-3: Xiang Xiang Neik",P00044-3,"K Resistance FORCE Ciment Thermique 150ML V060",P,1,148.00,148.00,0.00,0.00,148.00,0.00
+76,"16-07-2026 07:29 PM","TK09615-3: IN06061-3","Nicholas ","CS01673-3: Xiang Xiang Neik",P00155-3,"Hermoso Hairspray .",P,1,48.00,48.00,0.00,0.00,48.00,0.00
+77,"17-07-2026 01:45 PM","TK09620-3: IN06064-3","Nicholas ","CS01653-3: Melissa Lim",PKGHAIRRM500,"Package Pay RM500 get 600 Credits",C,1,500.00,500.00,0.00,0.00,500.00,0.00
+78,"17-07-2026 01:47 PM",TK09621-3,"Nicholas ","CS01653-3: Melissa Lim",HSCS08,"A La Carte - Roots Touch Up",S,1,246.00,0.00,0.00,0.00,0.00,246.00
+79,"17-07-2026 01:47 PM",TK09621-3,"Nicholas ","CS01653-3: Melissa Lim",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,288.00,0.00,0.00,0.00,0.00,288.00
+80,"17-07-2026 03:31 PM","TK09627-3: IN06069-3","Nicholas ","CS02028-3: Valeria Chuah",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,50.00,50.00,0.00,0.00,50.00,0.00
+81,"17-07-2026 03:31 PM","TK09627-3: IN06069-3","Nicholas ","CS02028-3: Valeria Chuah",P00098-3,"Curl Maniefesto CREME 150ML",P,1,174.00,174.00,0.00,0.00,174.00,0.00
+82,"17-07-2026 03:31 PM","TK09627-3: IN06069-3","Nicholas ","CS02028-3: Valeria Chuah",S00043-2,"Makeover RM399 - Hair",S,1,267.00,267.00,0.00,0.00,267.00,0.00
+83,"17-07-2026 04:49 PM","TK09633-3: IN06074-3","Nicholas ",";000024547: Felicia Soo",PKGHAIRRM1000,"Package Pay RM1000 get 1200 Credits",C,1,1000.00,1000.00,0.00,0.00,1000.00,0.00
+84,"17-07-2026 04:51 PM",TK09634-3,"Nicholas ",";000024547: Felicia Soo",HSCS06,"A La Carte - Majifashion Color",S,1,406.00,0.00,0.00,0.00,0.00,406.00
+85,"17-07-2026 04:51 PM",TK09634-3,"Nicholas ",";000024547: Felicia Soo",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,0.00,0.00,0.00,0.00,288.00
+86,"17-07-2026 04:51 PM",TK09634-3,"Nicholas ",";000024547: Felicia Soo",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,38.00,0.00,0.00,0.00,0.00,38.00
+87,"17-07-2026 04:51 PM",TK09634-3,"Nicholas ",";000024547: Felicia Soo",HSNC06,"A La Carte - Artistic Stylist Cut (Female)",S,1,68.00,0.00,0.00,0.00,0.00,68.00
+88,"18-07-2026 12:10 PM","TK09641-3: IN06080-3","Nicholas ","CS02032-3: Classpass Ayunda Soemali",HSCPNC05,"Classpass - First Time Visit Hair Cut for Female (Artistic Stylist)",S,1,75.60,75.60,0.00,0.00,75.60,0.00
+,,,,,,,Total,83,17357.60,14251.60,0.00,0.00,14251.60,3106.00
+"Nicholas Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Phillip "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Rain Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Roiroi (Manicurist) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Sedra Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Steve "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 05:00 PM","TK09375-3: IN05879-3","Steve ","CS00632-3: Lim Shiak Ling",S01571,"Happy Hour - Wash and Blow",S,1,53.00,53.00,0.00,0.00,53.00,0.00
+2,"02-07-2026 05:20 PM","TK09381-3: IN05881-3","Steve ","CS01984-3: Cassy",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+3,"02-07-2026 05:20 PM","TK09381-3: IN05881-3","Steve ","CS01984-3: Cassy",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+4,"03-07-2026 04:06 PM","TK09396-3: IN05894-3","Steve ",";000018299: Teh Ee Hoon",HSCS06,"A La Carte - Majifashion Color",S,1,286.00,286.00,0.00,0.00,286.00,0.00
+5,"03-07-2026 04:06 PM","TK09396-3: IN05894-3","Steve ",";000018299: Teh Ee Hoon",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,150.00,150.00,0.00,0.00,150.00,0.00
+6,"03-07-2026 04:06 PM","TK09396-3: IN05894-3","Steve ",";000018299: Teh Ee Hoon",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+7,"03-07-2026 04:15 PM","TK09397-3: IN05895-3","Steve ",";000017019: Siobhan Lim",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+8,"03-07-2026 06:10 PM","TK09399-3: IN05897-3","Steve ","CS01988-3: Christine",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+9,"03-07-2026 06:10 PM","TK09399-3: IN05897-3","Steve ","CS01988-3: Christine",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,156.00,156.00,0.00,0.00,156.00,0.00
+10,"03-07-2026 06:10 PM","TK09399-3: IN05897-3","Steve ","CS01988-3: Christine",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+11,"03-07-2026 06:15 PM","TK09400-3: IN05898-3","Steve ","CS01548-3: Jenny Lim",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,244.80,244.80,0.00,0.00,244.80,0.00
+12,"03-07-2026 06:15 PM","TK09400-3: IN05898-3","Steve ","CS01548-3: Jenny Lim",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,56.10,56.10,0.00,0.00,56.10,0.00
+13,"04-07-2026 02:15 PM","TK09414-3: IN05905-3","Steve ","CS01990-3: Mei",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+14,"04-07-2026 02:18 PM","TK09415-3: IN05906-3","Steve ","CS01548-3: Jenny Lim",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,124.80,124.80,0.00,0.00,124.80,0.00
+15,"04-07-2026 02:52 PM","TK09420-3: IN05909-3","Steve ","CS01952-3: Sharon Lim",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+16,"04-07-2026 03:23 PM","TK09421-3: IN05910-3","Steve ",";000013611: Theebah A/ P Silvadorae",HSCS05,"A La Carte - Straightening/Relaxing",S,1,356.00,356.00,0.00,0.00,356.00,0.00
+17,"04-07-2026 03:23 PM","TK09421-3: IN05910-3","Steve ",";000013611: Theebah A/ P Silvadorae",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,116.00,116.00,0.00,0.00,116.00,0.00
+18,"04-07-2026 04:47 PM","TK09424-3: IN05913-3","Steve ",";000024794: Ginabelle",HSCS11,"A La Carte - Highlights/Balayage/AirTouch (Without Bleach)",S,1,506.00,506.00,0.00,0.00,506.00,0.00
+19,"04-07-2026 04:47 PM","TK09424-3: IN05913-3","Steve ",";000024794: Ginabelle",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+20,"04-07-2026 04:47 PM","TK09424-3: IN05913-3","Steve ",";000024794: Ginabelle",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+21,"04-07-2026 07:00 PM","TK09433-3: IN05921-3","Steve ",";00000483?: Erita Ong",HSCS08,"A La Carte - Roots Touch Up",S,1,226.00,226.00,0.00,0.00,226.00,0.00
+22,"04-07-2026 07:00 PM","TK09433-3: IN05921-3","Steve ",";00000483?: Erita Ong",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+23,"04-07-2026 07:00 PM","TK09433-3: IN05921-3","Steve ",";00000483?: Erita Ong",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+24,"04-07-2026 07:00 PM","TK09433-3: IN05921-3","Steve ",";00000483?: Erita Ong",RM50,"Redeem 1000points = RM50",C,-1,-50.00,-50.00,0.00,0.00,-50.00,0.00
+25,"05-07-2026 02:15 PM","TK09445-3: IN05930-3","Steve ","CS01998-3: Misha",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+26,"05-07-2026 02:15 PM","TK09445-3: IN05930-3","Steve ","CS01998-3: Misha",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+27,"05-07-2026 04:08 PM","TK09448-3: IN05932-3","Steve ","SP28: Norie Faizal",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+28,"05-07-2026 04:23 PM","TK09450-3: IN05934-3","Steve ",";000024012: Liv Ee",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+29,"05-07-2026 04:23 PM","TK09450-3: IN05934-3","Steve ",";000024012: Liv Ee",P00157-3,"Loreal Flex Waves Force 2 190ml ",P,1,74.00,74.00,0.00,0.00,74.00,0.00
+30,"05-07-2026 04:27 PM","TK09451-3: IN05935-3","Steve ","CS02000-3: JC Wong",HSCS07,"A La Carte - Inoa Color (No Ammonia)",S,1,384.30,384.30,0.00,0.00,384.30,0.00
+31,"05-07-2026 04:27 PM","TK09451-3: IN05935-3","Steve ","CS02000-3: JC Wong",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+32,"05-07-2026 04:27 PM","TK09451-3: IN05935-3","Steve ","CS02000-3: JC Wong",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+33,"05-07-2026 05:59 PM","TK09457-3: IN05939-3","Steve ",";000014091: Chin Ren Yu",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+34,"05-07-2026 07:19 PM","TK09461-3: IN05941-3","Steve ",";000020236: Jimmy Yean",HSCS01,"A La Carte- Technique Perm",S,1,316.00,316.00,0.00,0.00,316.00,0.00
+35,"05-07-2026 07:19 PM","TK09461-3: IN05941-3","Steve ",";000020236: Jimmy Yean",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,244.80,244.80,0.00,0.00,244.80,0.00
+36,"05-07-2026 07:19 PM","TK09461-3: IN05941-3","Steve ",";000020236: Jimmy Yean",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+37,"06-07-2026 02:22 PM","TK09468-3: IN05946-3","Steve ",";000021586: Li Shian Liew",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+38,"06-07-2026 02:22 PM","TK09468-3: IN05946-3","Steve ",";000021586: Li Shian Liew",HSCS18,"A La Carte - Keratin Treatment",S,1,650.00,650.00,0.00,0.00,650.00,0.00
+39,"06-07-2026 02:22 PM","TK09468-3: IN05946-3","Steve ",";000021586: Li Shian Liew",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+40,"06-07-2026 02:22 PM","TK09468-3: IN05946-3","Steve ",";000021586: Li Shian Liew",P00055-3,"K Discipline Keratine Thermique 150ML V060",P,1,174.00,174.00,0.00,0.00,174.00,0.00
+41,"06-07-2026 03:47 PM","TK09470-3: IN05947-3","Steve ",";000018523: Priscilla Khu",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+42,"06-07-2026 04:34 PM","TK09472-3: IN05949-3","Steve ","CS02003-3: Erin Neoh",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+43,"06-07-2026 08:09 PM","TK09476-3: IN05953-3","Steve ",";000011956: Dr Fazliana Abd Rashid",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+44,"06-07-2026 08:09 PM","TK09476-3: IN05953-3","Steve ",";000011956: Dr Fazliana Abd Rashid",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+45,"06-07-2026 08:09 PM","TK09476-3: IN05953-3","Steve ",";000011956: Dr Fazliana Abd Rashid",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+46,"06-07-2026 08:09 PM","TK09476-3: IN05953-3","Steve ",";000011956: Dr Fazliana Abd Rashid",S01543,"1 Tone INOA Hair Color (RM316-RM366)",S,1,356.00,356.00,0.00,0.00,356.00,0.00
+47,"07-07-2026 05:48 PM","TK09483-3: IN05957-3","Steve ","CS00804-3: Sindy Wong",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,156.00,156.00,0.00,0.00,156.00,0.00
+48,"07-07-2026 06:09 PM","TK09485-3: IN05958-3","Steve ","CS01758-3: MC Yim",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+49,"10-07-2026 06:38 PM","TK09500-3: IN05970-3","Steve ","CS02006-3: Chong",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+50,"10-07-2026 06:38 PM","TK09500-3: IN05970-3","Steve ","CS02006-3: Chong",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+51,"10-07-2026 06:40 PM","TK09501-3: IN05971-3","Steve ",";00009696: Michell Koh",S01575,"Happy Hour- 3 Step Fusio Dose Treatment",S,1,144.00,144.00,0.00,0.00,144.00,0.00
+52,"10-07-2026 06:42 PM","TK09502-3: IN05972-3","Steve ","CS01612-2: KOL Grace Lim",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+53,"11-07-2026 03:37 PM","TK09515-3: IN05982-3","Steve ",";00009696: Michell Koh",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,126.00,76.00,0.00,0.00,76.00,0.00
+54,"11-07-2026 03:40 PM","TK09517-3: IN05983-3","Steve ","CS01562-3: Miss Lai",HSCS08,"A La Carte - Roots Touch Up",S,1,266.00,0.00,0.00,0.00,0.00,266.00
+55,"11-07-2026 03:40 PM","TK09517-3: IN05983-3","Steve ","CS01562-3: Miss Lai",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,0.00,0.00,0.00,0.00,176.00
+56,"11-07-2026 06:39 PM","TK09527-3: IN05992-3","Steve ",";000012733: Ken Chan Yong Chin *Steve*",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,56.00,56.00,0.00,0.00,56.00,0.00
+57,"11-07-2026 06:42 PM","TK09529-3: IN05994-3","Steve ",";000017039: Wai Chia",HSCS06,"A La Carte - Majifashion Color",S,1,384.30,384.30,0.00,0.00,384.30,0.00
+58,"11-07-2026 06:42 PM","TK09529-3: IN05994-3","Steve ",";000017039: Wai Chia",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+59,"11-07-2026 06:42 PM","TK09529-3: IN05994-3","Steve ",";000017039: Wai Chia",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,135.00,0.00,0.00,135.00,0.00
+60,"11-07-2026 06:44 PM","TK09530-3: IN05995-3","Steve ",";00003625: Ireena Amer",HSCS08,"A La Carte - Roots Touch Up",S,1,268.80,268.80,0.00,0.00,268.80,0.00
+61,"11-07-2026 06:46 PM","TK09531-3: IN05996-3","Steve ","CS01888-3: Janice Lim",ARMTRT,"A La Carte - Absolut Repair Molecular Treatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+62,"11-07-2026 06:46 PM","TK09531-3: IN05996-3","Steve ","CS01888-3: Janice Lim",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+63,"11-07-2026 06:50 PM","TK09534-3: IN05999-3","Steve ",";000017087: Shin Yee",HSNC12,"A La Carte - Hair Styling",S,1,256.00,256.00,0.00,0.00,256.00,0.00
+64,"11-07-2026 07:10 PM","TK09537-3: IN06002-3","Steve ",";000019176: Cesare Guerreri",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,156.00,156.00,0.00,0.00,156.00,0.00
+65,"12-07-2026 04:14 PM","TK09544-3: IN06006-3","Steve ",";000014414: Edward Yeap",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+66,"12-07-2026 04:28 PM","TK09551-3: IN06011-3","Steve ",";00002019: Lynn Lok",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,116.00,116.00,0.00,0.00,116.00,0.00
+67,"12-07-2026 04:53 PM","TK09555-3: IN06014-3","Steve ",";000021358: Shyamala Kumar",HSCS06,"A La Carte - Majifashion Color",S,1,316.00,316.00,0.00,0.00,316.00,0.00
+68,"12-07-2026 04:53 PM","TK09555-3: IN06014-3","Steve ",";000021358: Shyamala Kumar",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+69,"12-07-2026 04:53 PM","TK09555-3: IN06014-3","Steve ",";000021358: Shyamala Kumar",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+70,"12-07-2026 04:56 PM","TK09557-3: IN06015-3","Steve ","CS01534-3: Ms Chang",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,73.10,73.10,0.00,0.00,73.10,0.00
+71,"12-07-2026 04:57 PM","TK09558-3: IN06016-3","Steve ","CS02013-3: Siew Ling",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,149.60,149.60,0.00,0.00,149.60,0.00
+72,"12-07-2026 06:18 PM","TK09562-3: IN06018-3","Steve ",";000013371: Chu Yun Ling Eunice",HSCS12,"A La Carte - Highlights/Balayage/AirTouch (With Bleach)",S,1,696.60,696.60,0.00,0.00,696.60,0.00
+73,"12-07-2026 06:18 PM","TK09562-3: IN06018-3","Steve ",";000013371: Chu Yun Ling Eunice",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+74,"13-07-2026 01:20 PM","TK09567-3: IN06022-3","Steve ","CS01537-3: Tracy",E0016702,"Loreal Elnett Hairspray 500ml",P,1,63.00,63.00,0.00,0.00,63.00,0.00
+75,"13-07-2026 03:49 PM","TK09569-3: IN06024-3","Steve ",";000013161: Quah Mun Yi",HSCS08,"A La Carte - Roots Touch Up",S,1,562.00,562.00,0.00,0.00,562.00,0.00
+76,"13-07-2026 03:49 PM","TK09569-3: IN06024-3","Steve ",";000013161: Quah Mun Yi",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,230.00,230.00,0.00,0.00,230.00,0.00
+77,"13-07-2026 03:49 PM","TK09569-3: IN06024-3","Steve ",";000013161: Quah Mun Yi",HSCS25,"A La Carte - Premier Kerastase Hair Treatment",S,1,384.00,384.00,0.00,0.00,384.00,0.00
+78,"13-07-2026 03:49 PM","TK09569-3: IN06024-3","Steve ",";000013161: Quah Mun Yi",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+79,"13-07-2026 03:49 PM","TK09569-3: IN06024-3","Steve ",";000013161: Quah Mun Yi",RM50,"Redeem 1000points = RM50",C,-1,-50.00,-50.00,0.00,0.00,-50.00,0.00
+80,"13-07-2026 06:42 PM","TK09577-3: IN06030-3","Steve ","CS02017-3: Ivy Yap",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,156.00,156.00,0.00,0.00,156.00,0.00
+81,"14-07-2026 05:13 PM","TK09591-3: IN06041-3","Steve ","CS01547-3: Hui Ferm Wong",HSCS11,"A La Carte - Highlights/Balayage/AirTouch (Without Bleach)",S,1,437.40,437.40,0.00,0.00,437.40,0.00
+82,"14-07-2026 05:13 PM","TK09591-3: IN06041-3","Steve ","CS01547-3: Hui Ferm Wong",HSCS18,"A La Carte - Keratin Treatment",S,1,405.00,405.00,0.00,0.00,405.00,0.00
+83,"14-07-2026 05:13 PM","TK09591-3: IN06041-3","Steve ","CS01547-3: Hui Ferm Wong",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,122.40,122.40,0.00,0.00,122.40,0.00
+84,"14-07-2026 05:20 PM","TK09593-3: IN06043-3","Steve ",";000025570: Evon Chan",HSCS06,"A La Carte - Majifashion Color",S,1,356.00,356.00,0.00,0.00,356.00,0.00
+85,"14-07-2026 05:20 PM","TK09593-3: IN06043-3","Steve ",";000025570: Evon Chan",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+86,"14-07-2026 05:20 PM","TK09593-3: IN06043-3","Steve ",";000025570: Evon Chan",P00054-3,"K Discipline MSQ MASKERATINE 200ML VF56",P,1,202.00,202.00,0.00,0.00,202.00,0.00
+87,"14-07-2026 05:44 PM","TK09594-3: IN06044-3","Steve ",";000015960: Caroline Vanessa Yeo Pui Pui",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+88,"14-07-2026 06:01 PM","TK09595-3: IN06045-3","Steve ",";000013611: Theebah A/ P Silvadorae",HSCS09,"A La Carte - Inoa Roots Touch Up",S,1,256.00,256.00,0.00,0.00,256.00,0.00
+89,"14-07-2026 07:16 PM","TK09597-3: IN06046-3","Steve ",";000018024: Chloe Lim",HSCS01,"A La Carte- Technique Perm",S,1,205.80,205.80,0.00,0.00,205.80,0.00
+90,"14-07-2026 07:16 PM","TK09597-3: IN06046-3","Steve ",";000018024: Chloe Lim",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,156.00,156.00,0.00,0.00,156.00,0.00
+91,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Steve ",";000020131: Yivon Cheah",ARMTRT,"A La Carte - Absolut Repair Molecular Treatment",S,1,356.00,356.00,0.00,0.00,356.00,0.00
+92,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Steve ",";000020131: Yivon Cheah",HSCS06,"A La Carte - Majifashion Color",S,1,426.00,426.00,0.00,0.00,426.00,0.00
+93,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Steve ",";000020131: Yivon Cheah",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,386.00,386.00,0.00,0.00,386.00,0.00
+94,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Steve ",";000020131: Yivon Cheah",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+95,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Steve ",";000020131: Yivon Cheah",P00090-3,"Genesis BAIN DE MASSE 250ml",P,1,143.00,143.00,0.00,0.00,143.00,0.00
+96,"16-07-2026 03:10 PM","TK09602-3: IN06050-3","Steve ",";000020131: Yivon Cheah",RM50,"Redeem 1000points = RM50",C,-2,-100.00,-100.00,0.00,0.00,-100.00,0.00
+97,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",ARMTRT,"A La Carte - Absolut Repair Molecular Treatment",S,1,356.00,356.00,0.00,0.00,356.00,0.00
+98,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",HSCS07,"A La Carte - Inoa Color (No Ammonia)",S,1,366.00,366.00,0.00,0.00,366.00,0.00
+99,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",HSCS14,"A La Carte - Scalp Detox & Intensive Scalp Treatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+100,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,136.00,136.00,0.00,0.00,136.00,0.00
+101,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",P00109-3,"K GENESIS CURE ANTICHUTE 42*6ML",P,1,969.00,969.00,0.00,0.00,969.00,0.00
+102,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",P00119-3,"Specifique Bain Prevention 1000 ml",P,1,460.00,460.00,0.00,0.00,460.00,0.00
+103,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",P00136-3,"Discipline Fondant Fluidealiste 1000 ml",P,1,460.00,460.00,0.00,0.00,460.00,0.00
+104,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Steve ",";000018366: Jennifer Yan",RM50,"Redeem 1000points = RM50",C,-4,-200.00,-200.00,0.00,0.00,-200.00,0.00
+105,"16-07-2026 05:46 PM","TK09608-3: IN06056-3","Steve ",";000020112: Caren",HSCS07,"A La Carte - Inoa Color (No Ammonia)",S,1,289.00,289.00,0.00,0.00,289.00,0.00
+106,"16-07-2026 05:46 PM","TK09608-3: IN06056-3","Steve ",";000020112: Caren",RM50,"Redeem 1000points = RM50",C,-1,-50.00,-50.00,0.00,0.00,-50.00,0.00
+107,"16-07-2026 05:52 PM","TK09610-3: IN06057-3","Steve ",";000016218: Jane Cheah",HSCS08,"A La Carte - Roots Touch Up",S,1,226.00,226.00,0.00,0.00,226.00,0.00
+108,"16-07-2026 05:52 PM","TK09610-3: IN06057-3","Steve ",";000016218: Jane Cheah",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",S,1,288.00,288.00,0.00,0.00,288.00,0.00
+109,"16-07-2026 05:52 PM","TK09610-3: IN06057-3","Steve ",";000016218: Jane Cheah",RM50,"Redeem 1000points = RM50",C,-2,-100.00,-100.00,0.00,0.00,-100.00,0.00
+110,"16-07-2026 06:13 PM","TK09613-3: IN06059-3","Steve ","CS02026-3: Xin Lee",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,176.00,176.00,0.00,0.00,176.00,0.00
+111,"17-07-2026 03:10 PM","TK09622-3: IN06065-3","Steve ",";000014058: Hanson Kua Han Shang",HSNC03,"A La Carte - Senior Artistic Stylist Cut (Male)",S,1,86.00,86.00,0.00,0.00,86.00,0.00
+112,"17-07-2026 03:26 PM","TK09625-3: IN06067-3","Steve ",";000013371: Chu Yun Ling Eunice",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,106.00,106.00,0.00,0.00,106.00,0.00
+113,"17-07-2026 03:26 PM","TK09625-3: IN06067-3","Steve ",";000013371: Chu Yun Ling Eunice",RM50,"Redeem 1000points = RM50",C,-1,-50.00,-50.00,0.00,0.00,-50.00,0.00
+114,"17-07-2026 03:59 PM","TK09630-3: IN06072-3","Steve ","CS00231-3: Chan Li Ann",G00001-2,"PACKAGE - Buy 10 Free 3 for Wash and Blow",G,1,960.00,960.00,0.00,0.00,960.00,0.00
+115,"17-07-2026 12:55 PM","TK09618-3: IN06063-3","Steve ","CS02027-3: Carol Leong",HSNC04,"A La Carte - Senior Artistic Stylist Cut (Female)",S,1,149.60,149.60,0.00,0.00,149.60,0.00
+,,,,,,,Total,96,25460.40,24927.40,0.00,0.00,24927.40,442.00
+"Sven "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Tintin "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Weixin Assist "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"02-07-2026 07:29 PM","TK09387-3: IN05887-3","Weixin Assist ",";000025490: Bernardine Decena",P01609,"Feiqu Natural Pearl Hair Cream",P,1,83.00,83.00,0.00,0.00,83.00,0.00
+2,"03-07-2026 02:26 PM","TK09393-3: IN05891-3","Weixin Assist ",";000015753: Jessie Lim",HSNC11,"A La Carte - Shampoo & Blowdry",S,1,126.00,126.00,0.00,0.00,126.00,0.00
+3,"11-07-2026 06:44 PM","TK09530-3: IN05995-3","Weixin Assist ",";00003625: Ireena Amer",HSNC13,"A La Carte - Wash Off Treatment",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+4,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Weixin Assist ",";000018366: Jennifer Yan",P00037-3,"K Nutritive 8HMNS SERUM 90ML VA21",P,1,301.00,301.00,0.00,0.00,301.00,0.00
+5,"16-07-2026 05:09 PM","TK09604-3: IN06052-3","Weixin Assist ",";000018366: Jennifer Yan",P00148-3,"Chroma Absolu Masque 500 ml",P,1,480.00,480.00,0.00,0.00,480.00,0.00
+6,"16-07-2026 05:46 PM","TK09608-3: IN06056-3","Weixin Assist ",";000020112: Caren",HSNC13,"A La Carte - Wash Off Treatment",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+7,"16-07-2026 06:13 PM","TK09613-3: IN06059-3","Weixin Assist ","CS02026-3: Xin Lee",HSNC13,"A La Carte - Wash Off Treatment",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+,,,,,,,Total,7,1065.00,1065.00,0.00,0.00,1065.00,0.00
+"Winnie (Lash Guru) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+"Yuri Assist  "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+1,"04-07-2026 02:15 PM","TK09414-3: IN05905-3","Yuri Assist  ","CS01990-3: Mei",HSCS21,"A La Carte - Top Up Hair Service (Chemical Service)",S,1,25.00,25.00,0.00,0.00,25.00,0.00
+,,,,,,,Total,1,25.00,25.00,0.00,0.00,25.00,0.00
+"YY (Lash Guru) "
+#,Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Type,Qty,Total,Received,Tax,Charge,Nett,Deduction
+,,,,,,,Total,0,0.00,0.00,0.00,0.00,0.00,0.00
+
+,,,,,,,"Grand Total",392,95425.78,88972.20,0.00,0.00,88972.20,6190.58

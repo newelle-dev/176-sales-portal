@@ -46,6 +46,15 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    /* Custom app colors mapping for V1 theme */
+    --color-gray-150: oklch(0.95 0 0);
+    --color-gray-250: oklch(0.89 0 0);
+    --color-gray-450: oklch(0.68 0 0);
+    --color-gray-405: oklch(0.708 0 0);
+    --color-red-650: oklch(0.55 0.18 25);
+    --color-slate-350: oklch(0.80 0.03 250);
+    --color-orange-850: oklch(0.40 0.18 35);
 }
 
 :root {

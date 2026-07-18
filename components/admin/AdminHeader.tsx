@@ -9,7 +9,7 @@ export default function AdminHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white border-b border-gray-150 px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm select-none">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-150 px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm select-none">
       <div className="flex items-center gap-2">
         <span className="font-extrabold text-lg tracking-wider text-black">176 AVENUE</span>
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-black text-white font-bold uppercase tracking-wider">Admin</span>
@@ -17,21 +17,28 @@ export default function AdminHeader() {
       <nav className="flex items-center gap-1.5">
         <Link
           href="/admin"
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-            pathname === '/admin'
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${pathname === '/admin'
               ? 'bg-gray-100 text-black'
               : 'text-gray-400 hover:text-black hover:bg-gray-50'
-          }`}
+            }`}
+        >
+          Dashboard
+        </Link>
+        <Link
+          href="/admin/upload"
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${pathname === '/admin/upload' || pathname.startsWith('/admin/upload/')
+              ? 'bg-gray-100 text-black'
+              : 'text-gray-400 hover:text-black hover:bg-gray-50'
+            }`}
         >
           Upload CSV
         </Link>
         <Link
           href="/admin/team"
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-            pathname === '/admin/team' || pathname.startsWith('/admin/team/')
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${pathname === '/admin/team' || pathname.startsWith('/admin/team/')
               ? 'bg-gray-100 text-black'
               : 'text-gray-400 hover:text-black hover:bg-gray-50'
-          }`}
+            }`}
         >
           Team Management
         </Link>

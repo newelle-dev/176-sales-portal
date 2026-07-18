@@ -13,6 +13,12 @@ change.
 
 ## Completed
 
+- Implemented Admin Dashboard improvements: registered custom color variables (`gray-150`, `gray-250`, `gray-450`, `gray-405`, `red-650`, `slate-350`, `orange-850`) in Tailwind v4 `@theme inline` block in `app/globals.css` to fix uncompiled color tokens; resolved the off-by-one error in the yearly progress pace calculation; added "Year Not Started" status text for future years; and added server-side query error logging for admin data fetches.
+- Rebuilt the root `/admin` page as a dedicated Overview & Stats Dashboard. It displays annual target progress with a live pacing indicator, monthly milestone achievement metrics, branch contribution meters, a categorical sales mix, and a dynamic stylist leaderboard sorted by Nett Sales (all calculations correctly exclude deduction sales).
+- Split the admin panel layouts by moving the drag-and-drop CSV Upload Zone and Danger Zone components to a separate, dedicated `/admin/upload` page.
+- Updated `components/admin/AdminHeader.tsx` to include clear navigation links for "Dashboard" and "Upload CSV".
+- Created the `public.targets` table in Supabase and implemented a target settings configuration modal dialog on the dashboard allowing admins to edit targets dynamically via `updateYearlyTargetAction` Server Action.
+- Added type definitions for `public.targets` in `types/database.types.ts` for end-to-end type safety.
 - Added a second main KPI card on the stylist dashboard to display Total Monthly Sales excluding deductions (representing revenue from services, packages, and products), alongside the total including deductions, providing stylists with clear and comprehensive metrics.
 - Implemented a "Danger Zone" section on the Admin dashboard to clear all transaction records. This includes a secure Server Action `clearTransactionsAction` verifying admin authentication, a double-confirmation Dialog prompting the user to type `DELETE` to confirm, and cache revalidation for dashboard route updates.
 - Set up design system and UI primitive components (Button, Card, Dialog, Input, ScrollArea, Tabs, TextArea) and `lib/utils.ts` `cn()` helper.

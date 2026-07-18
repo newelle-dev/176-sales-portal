@@ -1,0 +1,266 @@
+﻿
+"Employee Service Detail"
+"Adda "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Agnes "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Alec "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Alice "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"13-07-2026 04:38 PM",TK10011-2,"Alice ",";00007747: Datin Nina",L012,"MIE Eyelash Regrowth Treatment","Eyebrow & Lash lift","Lash Lift Service",Yes,No,1,0,99.75,99.75
+,,,,,,,,,"Grand Total",1,0,99.75,99.75
+
+"Angel Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Angela "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Carmen "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Creative Director - Nick "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"05-07-2026 03:31 PM",TK09895-2,"Creative Director - Nick ",";000014923: Ng Suet Li (Sharon)",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"05-07-2026 03:31 PM",TK09895-2,"Creative Director - Nick ",";000014923: Ng Suet Li (Sharon)",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"05-07-2026 04:15 PM","TK09897-2: IN07520-2","Creative Director - Nick ",";000018953: Shea Nee Teh",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"11-07-2026 02:22 PM",TK09971-2,"Creative Director - Nick ",";00000002?: Jeanette Lee Cai Ni",HSNC01,"A La Carte - Creative Director Cut (Male)",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,79.23,79.23
+"11-07-2026 02:22 PM",TK09971-2,"Creative Director - Nick ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"11-07-2026 06:02 PM","TK09978-2: IN07575-2","Creative Director - Nick ",";000022976: Yoke Yoon Lam",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,144.75,144.75
+"11-07-2026 06:02 PM","TK09978-2: IN07575-2","Creative Director - Nick ",";000022976: Yoke Yoon Lam",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,144.75,144.75
+"11-07-2026 07:24 PM",TK09986-2,"Creative Director - Nick ",";000025787: Roxanne Low",S01602,"Redeem: Scalp Intensive Treatment ",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,60,145.50,145.50
+"11-07-2026 07:40 PM","TK09990-2: IN07585-2","Creative Director - Nick ",";000012159: Leyana Kamarudin",S01228,"Scalp/Hair Treatment",Hairsoho,"Hairsoho Service",Yes,No,0.50,0,200.00,200.00
+"11-07-2026 07:40 PM","TK09990-2: IN07585-2","Creative Director - Nick ",";000012159: Leyana Kamarudin",S01228,"Scalp/Hair Treatment",Hairsoho,"Hairsoho Service",Yes,No,0.50,0,200.00,200.00
+"13-07-2026 06:05 PM","TK10017-2: IN07607-2","Creative Director - Nick ",";000014409: Sarah Chen",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"13-07-2026 06:05 PM","TK10017-2: IN07607-2","Creative Director - Nick ",";000014409: Sarah Chen",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+,,,,,,,,,"Grand Total",6,330,1625.00,1625.00
+
+"Daisy (Embroidery Director) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"01-07-2026 05:36 PM",TK09854-2,"Daisy (Embroidery Director) ",";000025691: Neo #1443",S01613,"35% OFF Eyebrow Embroidery New Set (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,835.90,835.90
+"01-07-2026 06:03 PM",TK09859-2,"Daisy (Embroidery Director) ",";000025673: Joanne Foong #1423",S01614,"35% OFF Touch Up Eyebrow Embroidery (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,510.90,510.90
+"01-07-2026 06:14 PM","TK09862-2: IN07495-2","Daisy (Embroidery Director) ",";00006374: Kelly Ng",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+"08-07-2026 06:43 PM","TK09940-2: IN07550-2","Daisy (Embroidery Director) ",";000025807: Licia Ee",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+"08-07-2026 06:50 PM","TK09943-2: IN07552-2","Daisy (Embroidery Director) ",";000022373: Jo Anne  Ng",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,193.00,193.00
+"15-07-2026 05:42 PM",TK10024-2,"Daisy (Embroidery Director) ","CS00232-3: Shirley Chin",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,193.00,193.00
+"15-07-2026 05:45 PM","TK10025-2: IN07612-2","Daisy (Embroidery Director) ","CS01290-3: Darshini",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+"15-07-2026 05:48 PM",TK10026-2,"Daisy (Embroidery Director) ",";00002832: Tiffanie Ong",S01613,"35% OFF Eyebrow Embroidery New Set (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,835.90,835.90
+"15-07-2026 05:51 PM",TK10028-2,"Daisy (Embroidery Director) ",";000024504: Anis Alysia Marof Khan",S01551,"A La Carte - Premium Lash Lift (Director)",Artistry,"Lash Lift Service",Yes,No,1,0,386.00,386.00
+"15-07-2026 05:51 PM",TK10028-2,"Daisy (Embroidery Director) ",";000024504: Anis Alysia Marof Khan",S01550,"A La Carte - Add On Darker Black Tint",Artistry,"Lash Lift Service",Yes,No,1,0,86.00,86.00
+,,,,,,,,,"Grand Total",10,0,3940.70,3940.70
+
+"Daniel Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"01-07-2026 06:09 PM",TK09861-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"03-07-2026 03:54 PM",TK09870-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"03-07-2026 06:36 PM","TK09878-2: IN07507-2","Daniel Assist ","CS01129-2: Mastura",S01469,"Redeem - Premiere/Keratin Treatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,229.17,229.17
+"06-07-2026 02:07 PM",TK09923-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"08-07-2026 06:28 PM",TK09937-2,"Daniel Assist ",";000013865: Vanessa Pang",S01495,"Exosome Treatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,272.00,272.00
+"10-07-2026 06:20 PM","TK09962-2: IN07565-2","Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"10-07-2026 06:20 PM","TK09962-2: IN07565-2","Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"11-07-2026 02:22 PM",TK09971-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"13-07-2026 02:23 PM",TK10006-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"13-07-2026 02:23 PM",TK10006-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"17-07-2026 05:24 PM",TK10059-2,"Daniel Assist ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+,,,,,,,,,"Grand Total",5.5,225,1148.10,1148.10
+
+"Devi "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Divya "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Ella Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"03-07-2026 09:56 AM","TK09869-2: IN07502-2","Ella Assist ","CS01456-2: DK",S00039-2,"Redeem Exosome",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,193.34,193.34
+"10-07-2026 06:43 PM",TK09967-2,"Ella Assist ","CS01156-2: Qiany U",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"11-07-2026 02:22 PM",TK09971-2,"Ella Assist ",";00000002?: Jeanette Lee Cai Ni",HSNC01,"A La Carte - Creative Director Cut (Male)",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,79.23,79.23
+"11-07-2026 02:22 PM",TK09971-2,"Ella Assist ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"15-07-2026 11:51 AM","TK10021-2: IN07611-2","Ella Assist ","CS01456-2: DK",S01228,"Scalp/Hair Treatment",Hairsoho,"Hairsoho Service",Yes,No,0.50,0,144.75,144.75
+"17-07-2026 04:09 PM","TK10057-2: IN07636-2","Ella Assist ",";00001584?: Michelle Kwok",S00039-2,"Redeem Exosome",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,193.34,193.34
+"17-07-2026 06:01 PM",TK10066-2,"Ella Assist ","CS01156-2: Qiany U",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+,,,,,,,,,"Grand Total",3.5,135,802.96,802.96
+
+"Gino Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Grace "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"11-07-2026 07:00 PM","TK09984-2: IN07580-2","Grace ",";000014063: Debra Ovinis",S01612,"Redeem Gel Manicure",Nails,"Nail Service",Yes,No,1,0,90.00,90.00
+,,,,,,,,,"Grand Total",1,0,90.00,90.00
+
+"Hellen "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"01-07-2026 06:09 PM",TK09861-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"03-07-2026 03:54 PM",TK09870-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"03-07-2026 06:36 PM","TK09878-2: IN07507-2","Hellen ","CS01129-2: Mastura",S01469,"Redeem - Premiere/Keratin Treatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,229.17,229.17
+"06-07-2026 02:07 PM",TK09923-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"08-07-2026 06:28 PM",TK09937-2,"Hellen ",";000013865: Vanessa Pang",S01495,"Exosome Treatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,272.00,272.00
+"10-07-2026 06:20 PM","TK09962-2: IN07565-2","Hellen ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"10-07-2026 06:20 PM","TK09962-2: IN07565-2","Hellen ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"10-07-2026 06:43 PM",TK09967-2,"Hellen ","CS01156-2: Qiany U",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"11-07-2026 02:22 PM",TK09971-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+"13-07-2026 02:23 PM",TK10006-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"13-07-2026 02:23 PM",TK10006-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,110.77,110.77
+"17-07-2026 05:24 PM",TK10059-2,"Hellen ",";00000002?: Jeanette Lee Cai Ni",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+,,,,,,,,,"Grand Total",6,270,1188.87,1188.87
+
+"Hellen Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jade  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jade Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"05-07-2026 03:31 PM",TK09895-2,"Jade Assist ",";000014923: Ng Suet Li (Sharon)",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"05-07-2026 03:31 PM",TK09895-2,"Jade Assist ",";000014923: Ng Suet Li (Sharon)",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"11-07-2026 06:02 PM","TK09978-2: IN07575-2","Jade Assist ",";000022976: Yoke Yoon Lam",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,144.75,144.75
+"11-07-2026 06:02 PM","TK09978-2: IN07575-2","Jade Assist ",";000022976: Yoke Yoon Lam",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,144.75,144.75
+"11-07-2026 07:40 PM","TK09990-2: IN07585-2","Jade Assist ",";000012159: Leyana Kamarudin",S01228,"Scalp/Hair Treatment",Hairsoho,"Hairsoho Service",Yes,No,0.50,0,200.00,200.00
+"11-07-2026 07:40 PM","TK09990-2: IN07585-2","Jade Assist ",";000012159: Leyana Kamarudin",S01228,"Scalp/Hair Treatment",Hairsoho,"Hairsoho Service",Yes,No,0.50,0,200.00,200.00
+"13-07-2026 06:05 PM","TK10017-2: IN07607-2","Jade Assist ",";000014409: Sarah Chen",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+,,,,,,,,,"Grand Total",3.5,135,1049.50,1049.50
+
+"Jay (Nail Guru) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"12-07-2026 04:07 PM",TK09999-2,"Jay (Nail Guru) ","CS01666-2: Nur Aini Ali Kasim",S01612,"Redeem Gel Manicure",Nails,"Nail Service",Yes,No,1,0,90.00,90.00
+,,,,,,,,,"Grand Total",1,0,90.00,90.00
+
+"Jee (Nails Director) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jessie "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jessy (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jill "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jingwen (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jules "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kalpana "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kelvin (Leading Stlyist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kelvin Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kelvin Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kenny "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kenny Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Management "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Maria "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Maw Maw Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Mayble "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"03-07-2026 09:56 AM","TK09869-2: IN07502-2","Mayble ","CS01456-2: DK",S00039-2,"Redeem Exosome",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,193.34,193.34
+"15-07-2026 11:51 AM","TK10021-2: IN07611-2","Mayble ","CS01456-2: DK",S01228,"Scalp/Hair Treatment",Hairsoho,"Hairsoho Service",Yes,No,0.50,0,144.75,144.75
+"17-07-2026 04:09 PM","TK10057-2: IN07636-2","Mayble ",";00001584?: Michelle Kwok",S00039-2,"Redeem Exosome",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,193.34,193.34
+"17-07-2026 06:01 PM",TK10066-2,"Mayble ","CS01156-2: Qiany U",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,40.77,40.77
+,,,,,,,,,"Grand Total",2,45,572.19,572.19
+
+"Mayble Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Moemoe  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Moon Asst "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Naomi "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"08-07-2026 07:18 PM",TK09949-2,"Naomi ",";00006983: Cheryl Ong",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+,,,,,,,,,"Grand Total",1,0,143.00,143.00
+
+"Negin Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Nicholas "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Nicholas Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Nini (Senior Lash Guru) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"16-07-2026 05:22 PM",TK10047-2,"Nini (Senior Lash Guru) ",";00002998: Nicole Chin",S01581,"Redeem - Premium Lash",Eyelash,"Eyelash Service",Yes,No,1,0,224.75,224.75
+,,,,,,,,,"Grand Total",1,0,224.75,224.75
+
+"Phillip "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Rain Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"05-07-2026 04:15 PM","TK09897-2: IN07520-2","Rain Assist ",";000018953: Shea Nee Teh",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+"11-07-2026 07:24 PM",TK09986-2,"Rain Assist ",";000025787: Roxanne Low",S01602,"Redeem: Scalp Intensive Treatment ",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,60,145.50,145.50
+"13-07-2026 06:05 PM","TK10017-2: IN07607-2","Rain Assist ",";000014409: Sarah Chen",HSCS15,"A La Carte - 3 Step Fusio Dose ConcentrateTreatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,45,120.00,120.00
+,,,,,,,,,"Grand Total",1.5,150,385.50,385.50
+
+"Roiroi "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Sedra Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Steve "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Sven "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Tintin "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Tyra "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Weixin Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"William Assist  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Winnie "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"04-07-2026 02:52 PM",TK09883-2,"Winnie ","CS01730-2: Sandy Goh",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+"08-07-2026 06:45 PM","TK09941-2: IN07551-2","Winnie ",";00007747: Datin Nina",L012,"MIE Eyelash Regrowth Treatment","Eyebrow & Lash lift","Lash Lift Service",Yes,No,1,0,99.75,99.75
+"08-07-2026 06:53 PM","TK09944-2: IN07553-2","Winnie ",";00000600: Kimberly Lee",2026BDL,"Booking Deposit - Lash",Eyelash,"Eyelash Service",Yes,No,1,0,50.00,50.00
+"08-07-2026 06:58 PM",TK09945-2,"Winnie ",";00000600: Kimberly Lee",S01580,"Redeem - Classic Lash",Eyelash,"Eyelash Package",Yes,No,1,0,149.75,149.75
+"18-07-2026 12:40 PM",TK10075-2,"Winnie ",";00007747: Datin Nina",L012,"MIE Eyelash Regrowth Treatment","Eyebrow & Lash lift","Lash Lift Service",Yes,No,1,0,99.75,99.75
+,,,,,,,,,"Grand Total",5,0,542.25,542.25
+
+"Wong Sing Yong "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Yin Voon Hao "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"YY "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+

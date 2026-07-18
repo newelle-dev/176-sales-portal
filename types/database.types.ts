@@ -41,6 +41,24 @@ export type Database = {
         }
         Relationships: []
       }
+      targets: {
+        Row: {
+          year: number
+          target_amount: number
+          created_at: string
+        }
+        Insert: {
+          year: number
+          target_amount?: number
+          created_at?: string
+        }
+        Update: {
+          year?: number
+          target_amount?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number

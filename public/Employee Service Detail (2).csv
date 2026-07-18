@@ -1,0 +1,227 @@
+﻿
+"Employee Service Detail"
+" Zom Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"05-07-2026 06:52 PM",TK09459-3," Zom Assist ",";000013004: Ashley Wong",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,33.08,33.08
+"13-07-2026 03:59 PM","TK09570-3: IN06025-3"," Zom Assist ","CS01700-2: Melissa Lee",HSCS22,"A La Carte - Cut + Color/Perm + Treatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,133.50,133.50
+,,,,,,,,,"Grand Total",1,45,166.58,166.58
+
+"Adda "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Agnes "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Alec "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Alice (Eyelash Assistant Director) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Angel Assist  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Angela (Lash Guru) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"11-07-2026 06:35 PM","TK09525-3: IN05990-3","Angela (Lash Guru) ","CS01734-2: Winnie",S00040-2,"Makeover RM399 - Lash",Eyelash,"Eyelash Service",Yes,No,1,0,86.00,86.00
+"11-07-2026 06:35 PM","TK09525-3: IN05990-3","Angela (Lash Guru) ","CS01734-2: Winnie",S00044-2,"Makeover RM399 - Brow Shaping",Artistry,"Embroidery Service",Yes,No,1,0,8.00,8.00
+"12-07-2026 05:02 PM",TK09560-3,"Angela (Lash Guru) ","CS01989-3: Ewen",S00042-2,"Makeover RM399 - Lash Lift",Artistry,"Lash Lift Service",Yes,No,1,0,86.00,86.00
+"12-07-2026 05:02 PM",TK09560-3,"Angela (Lash Guru) ","CS01989-3: Ewen",S00041-2,"Makeover RM399 - Nails",Nails,"Nail Service",Yes,No,1,0,38.00,38.00
+"12-07-2026 05:02 PM",TK09560-3,"Angela (Lash Guru) ","CS01989-3: Ewen",S00044-2,"Makeover RM399 - Brow Shaping",Artistry,"Embroidery Service",Yes,No,1,0,8.00,8.00
+"13-07-2026 06:38 PM",TK09576-3,"Angela (Lash Guru) ","CS01752-3: Au Kwinn",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,193.00,193.00
+"16-07-2026 05:49 PM",TK09609-3,"Angela (Lash Guru) ",";000020841: Cathie Wu",S01405,"Redeem - Signature Lash",Eyelash,"Eyelash Service",Yes,No,1,90,224.75,224.75
+"16-07-2026 06:07 PM",TK09611-3,"Angela (Lash Guru) ","CS01897-3: Jennie Yap",S01581,"Redeem - Premium Lash",Eyelash,"Eyelash Service",Yes,No,1,0,249.75,249.75
+,,,,,,,,,"Grand Total",8,90,893.50,893.50
+
+"Carmen "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Chien Way Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Creative Director - Nick "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Daisy (Embroidery Director) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"03-07-2026 11:11 AM",TK09388-3,"Daisy (Embroidery Director) ",";000025699: Sue Yin Heng #1453",S01614,"35% OFF Touch Up Eyebrow Embroidery (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,510.90,510.90
+"03-07-2026 05:27 PM","TK09398-3: IN05896-3","Daisy (Embroidery Director) ",";000025779: Kaycie",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+"04-07-2026 11:55 AM",TK09406-3,"Daisy (Embroidery Director) ",";000025677: Leesa Lim #1429",S01613,"35% OFF Eyebrow Embroidery New Set (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,835.90,835.90
+"04-07-2026 11:58 AM",TK09407-3,"Daisy (Embroidery Director) ","CS00299-3: Jennifer Lee",S01614,"35% OFF Touch Up Eyebrow Embroidery (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,510.90,510.90
+"04-07-2026 02:40 PM",TK09417-3,"Daisy (Embroidery Director) ",";000025683: Jia En Lim #1435",S01613,"35% OFF Eyebrow Embroidery New Set (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,835.90,835.90
+"06-07-2026 11:06 AM",TK09463-3,"Daisy (Embroidery Director) ","CS00378-3: Janet Wong",S00217-3,"Redeem Treatment - Lower Leg",BrowBar,"Laser Removal",Yes,No,1,0,303.25,303.25
+"06-07-2026 11:06 AM",TK09463-3,"Daisy (Embroidery Director) ","CS00378-3: Janet Wong",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,300.75,300.75
+"06-07-2026 11:30 AM","TK09464-3: IN05943-3","Daisy (Embroidery Director) ",";00006458: Joey",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+"06-07-2026 03:36 PM",TK09469-3,"Daisy (Embroidery Director) ","CS01079-3: Sharlyn Chan",S01614,"35% OFF Touch Up Eyebrow Embroidery (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,510.90,510.90
+"06-07-2026 06:53 PM","TK09474-3: IN05951-3","Daisy (Embroidery Director) ",";000022320: Annie Hg",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,193.00,193.00
+"10-07-2026 06:35 PM",TK09498-3,"Daisy (Embroidery Director) ","CS01749-3: Jolene Chan Wye Sun",EETUD,"A La Carte - Touch Up Eyebrow (Director)",Artistry,"Embroidery Service",Yes,No,1,0,586.00,586.00
+"10-07-2026 06:46 PM",TK09505-3,"Daisy (Embroidery Director) ","CS01764-3: Evon",S00235-3,"Prepaid - Eyebrow Touch-Up (3 Months Validity)",Artistry,"Embroidery Service",Yes,No,1,0,586.00,586.00
+"12-07-2026 10:09 AM","TK09538-3: IN06003-3","Daisy (Embroidery Director) ",";000015045: Angela Foo",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+"12-07-2026 05:01 PM",TK09559-3,"Daisy (Embroidery Director) ","CS01144-3: Leong Pui Wuan",EETUD,"A La Carte - Touch Up Eyebrow (Director)",Artistry,"Embroidery Service",Yes,No,1,0,586.00,586.00
+"17-07-2026 11:57 AM","TK09617-3: IN06062-3","Daisy (Embroidery Director) ","CS01895-3: Sydney",S00235-3,"Prepaid - Eyebrow Touch-Up (3 Months Validity)",Artistry,"Embroidery Service",Yes,No,1,0,586.00,586.00
+"17-07-2026 03:23 PM","TK09623-3: IN06075-3","Daisy (Embroidery Director) ","CS00572-3: Yoke Fong Low",S01613,"35% OFF Eyebrow Embroidery New Set (All Techniques)",Artistry,"Embroidery Service",Yes,No,1,0,835.90,835.90
+"18-07-2026 12:13 PM","TK09642-3: IN06081-3","Daisy (Embroidery Director) ",";00007444: Tok",S00189-3,"Booking Fee Deposit - Embroidery Service",BrowBar,"Embroidery Service",Yes,No,1,0,300.00,300.00
+,,,,,,,,,"Grand Total",17,0,8381.40,8381.40
+
+"Daniel "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Devi "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Divya "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Ella Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Gino Assist  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Grace (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Hellen "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jade Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jay (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jee (Nails Director) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jessie Cheah (Star Specialist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"02-07-2026 05:10 PM",TK09378-3,"Jessie Cheah (Star Specialist) ","CS00369-3: Ada Ho Kah Leng",S01580,"Redeem - Classic Lash",Eyelash,"Eyelash Package",Yes,No,1,0,149.75,149.75
+"03-07-2026 06:40 PM",TK09402-3,"Jessie Cheah (Star Specialist) ",";00006048: Winnie Choo",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+"04-07-2026 02:03 PM",TK09409-3,"Jessie Cheah (Star Specialist) ",";00006588: Angeline Chiam Hui Ling",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"05-07-2026 03:56 PM",TK09447-3,"Jessie Cheah (Star Specialist) ","CS00087-3: Hayley Chan",S00140-3,"Hair Removal Program (Upper Body Area) - Under Arms - From",BrowBar,"Waxing Service",Yes,No,4,120,301.52,301.52
+"06-07-2026 01:25 PM",TK09466-3,"Jessie Cheah (Star Specialist) ","CS00276-3: Low Xin-Dee",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"07-07-2026 05:19 PM",TK09480-3,"Jessie Cheah (Star Specialist) ",";000010741: Meryl Loh Wei Chyi",S01484,"Redeem Eyebrow Hair Removal",Artistry,"Hair Removal Program",Yes,No,1,0,18.71,18.71
+"10-07-2026 02:03 PM",TK09493-3,"Jessie Cheah (Star Specialist) ","CS00568-3: Lee Mun Yee",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+"10-07-2026 06:45 PM",TK09504-3,"Jessie Cheah (Star Specialist) ","CS00568-3: Lee Mun Yee",S01549,"A La Carte - Premium Lash Lift (Non Director)",Artistry,"Lash Lift Service",Yes,No,1,0,171.80,171.80
+"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jessie Cheah (Star Specialist) ",";00008015?: Aida Yasmin Zunaida",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jessie Cheah (Star Specialist) ",";00008015?: Aida Yasmin Zunaida",S01492,"Redeem Half Leg",Artistry,"Hair Removal Program",Yes,No,1,0,151.63,151.63
+"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jessie Cheah (Star Specialist) ",";00008015?: Aida Yasmin Zunaida",S00210-3,"Redeem Treatment - Underarm","Hair Removal","Hair Removal Program",Yes,No,1,0,75.38,75.38
+"11-07-2026 06:28 PM","TK09523-3: IN05988-3","Jessie Cheah (Star Specialist) ",";00008015?: Aida Yasmin Zunaida",S01491,"Redeem Toes Hair Removal",Artistry,"Hair Removal Program",Yes,No,1,0,26.63,26.63
+"12-07-2026 04:55 PM",TK09556-3,"Jessie Cheah (Star Specialist) ",";000013661: Ai Iseri",S01350,"Redeem - Eyelash/LashLift",Eyelash,"Eyelash Service",Yes,No,1,0,162.38,162.38
+"13-07-2026 03:59 PM","TK09570-3: IN06025-3","Jessie Cheah (Star Specialist) ","CS01700-2: Melissa Lee",S00008-2,"Premium Lash Lift",BrowBar,"Lash Lift Service",Yes,No,1,0,86.00,86.00
+"13-07-2026 03:59 PM","TK09570-3: IN06025-3","Jessie Cheah (Star Specialist) ","CS01700-2: Melissa Lee",EMBRO08,"Eyebrow Shaping/Threading (Eyebrow Guru)",BrowBar,"Embroidery Service",Yes,No,1,0,8.00,8.00
+"14-07-2026 04:05 PM",TK09587-3,"Jessie Cheah (Star Specialist) ",";000022976: Yoke Yoon Lam",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+,,,,,,,,,"Grand Total",19,120,2031.94,2031.94
+
+"Jessy (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jill "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Jing Wen (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"13-07-2026 03:59 PM","TK09570-3: IN06025-3","Jing Wen (Manicurist) ","CS01700-2: Melissa Lee",NAIL01,"A La Carte - Classic Manicure",Nails,"Nail Service",Yes,No,1,60,38.00,38.00
+,,,,,,,,,"Grand Total",1,60,38.00,38.00
+
+"Jules "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kalpana "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Kenny "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Management "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Maria "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Maw Maw Assist  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Mayble "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Moon Assist  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Naomi (Star Specialist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"02-07-2026 05:08 PM",TK09376-3,"Naomi (Star Specialist) ",";000013736: Suraya Yasmin binti Abdul Jabbar",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+"02-07-2026 05:09 PM",TK09377-3,"Naomi (Star Specialist) ","CS00183-3: Sing Tian Soong",S00155-3,"Hair Removal Program (Lower Body Area) - Half Legs (Bottom)",BrowBar,"Waxing Service",Yes,No,1,60,83.25,83.25
+"02-07-2026 05:09 PM",TK09377-3,"Naomi (Star Specialist) ","CS00183-3: Sing Tian Soong",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+"03-07-2026 01:59 PM",TK09390-3,"Naomi (Star Specialist) ","CS00371-3: Connie",S00027-3,"Eyebrow Shaping - Eyebrow Diode Hair Removal",BrowBar,"Laser Removal",Yes,No,1,30,18.67,18.67
+"04-07-2026 01:57 PM",TK09408-3,"Naomi (Star Specialist) ","CS01926-3: Xing Pieng",S00275-3,"Redeem Underarm",,,Yes,No,1,0,133.00,133.00
+"04-07-2026 01:57 PM",TK09408-3,"Naomi (Star Specialist) ","CS01926-3: Xing Pieng",S00281-3,"Redeem Full Leg",,,Yes,No,1,0,433.00,433.00
+"05-07-2026 11:22 AM",TK09435-3,"Naomi (Star Specialist) ","CS01367-3: Erika",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"05-07-2026 01:02 PM",TK09442-3,"Naomi (Star Specialist) ",";000025593: Olivia Soo Ting",EETUES,"A La Carte - Touch Up Eyebrow (Elite Specialist)",Artistry,"Embroidery Service",Yes,No,1,0,386.00,386.00
+"05-07-2026 06:03 PM",TK09458-3,"Naomi (Star Specialist) ",";00006791: Elaine Choo",S00221-3,"Redeem Lash Lift Treatment",BrowBar,"Lash Lift Service",Yes,No,1,0,143.00,143.00
+"07-07-2026 06:06 PM",TK09484-3,"Naomi (Star Specialist) ","CS00804-3: Sindy Wong",S00273-3,"Redeem Upper Lip",,,Yes,No,1,0,66.33,66.33
+"07-07-2026 06:06 PM",TK09484-3,"Naomi (Star Specialist) ","CS00804-3: Sindy Wong",S00273-3,"Redeem Upper Lip",,,Yes,No,1,0,66.33,66.33
+"07-07-2026 06:06 PM",TK09484-3,"Naomi (Star Specialist) ","CS00804-3: Sindy Wong",S00273-3,"Redeem Upper Lip",,,Yes,No,1,0,66.33,66.33
+"11-07-2026 03:39 PM",TK09516-3,"Naomi (Star Specialist) ",";000023013: Hannah Low",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"11-07-2026 03:39 PM",TK09516-3,"Naomi (Star Specialist) ",";000023013: Hannah Low",S00210-3,"Redeem Treatment - Underarm","Hair Removal","Hair Removal Program",Yes,No,1,0,75.38,75.38
+"11-07-2026 06:52 PM","TK09535-3: IN06000-3","Naomi (Star Specialist) ",";000013088: Mei Xin",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"11-07-2026 06:52 PM","TK09535-3: IN06000-3","Naomi (Star Specialist) ",";000013088: Mei Xin",S00275-3,"Redeem Underarm",,,Yes,No,1,0,133.00,133.00
+"12-07-2026 04:27 PM",TK09550-3,"Naomi (Star Specialist) ",";00002869?: Evelin Singgih",EETUES,"A La Carte - Touch Up Eyebrow (Elite Specialist)",Artistry,"Embroidery Service",Yes,No,1,0,386.00,386.00
+"12-07-2026 04:47 PM",TK09554-3,"Naomi (Star Specialist) ","CS00270-3: Joannah Tay",S01455,"Redeem - Upper Lip / Lower Lip (Face Hair Removal)","Hair Removal","Hair Removal Program",Yes,No,1,60,18.71,18.71
+"12-07-2026 04:47 PM",TK09554-3,"Naomi (Star Specialist) ","CS00270-3: Joannah Tay",S00212-3,"Redeem Treatment - Full Arm",BrowBar,"Laser Removal",Yes,No,1,0,83.25,83.25
+"12-07-2026 04:47 PM",TK09554-3,"Naomi (Star Specialist) ","CS00270-3: Joannah Tay",HRPUBSS,"A La Carte - Shoulders (Upper Body Hair Removal)",Artistry,"Hair Removal Program",Yes,No,1,60,133.29,133.29
+"16-07-2026 01:02 PM",TK09601-3,"Naomi (Star Specialist) ","CS01537-3: Tracy",S00214-3,"Redeem Treatment - Brazillian",BrowBar,"Laser Removal",Yes,No,1,0,150.38,150.38
+"17-07-2026 10:39 AM",TK09616-3,"Naomi (Star Specialist) ","CS00334-3: Carolyn Lai",S00160-3,"Hair Removal Program (Brazilian Area) - From",BrowBar,"Waxing Service",Yes,No,1,60,150.33,150.33
+,,,,,,,,,"Grand Total",22,270,3263.39,3263.39
+
+"Nicholas "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"05-07-2026 06:52 PM",TK09459-3,"Nicholas ",";000013004: Ashley Wong",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,33.08,33.08
+"12-07-2026 05:02 PM",TK09560-3,"Nicholas ","CS01989-3: Ewen",S00043-2,"Makeover RM399 - Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,133.50,133.50
+"13-07-2026 03:59 PM","TK09570-3: IN06025-3","Nicholas ","CS01700-2: Melissa Lee",HSCS22,"A La Carte - Cut + Color/Perm + Treatment",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,133.50,133.50
+,,,,,,,,,"Grand Total",1.5,45,300.08,300.08
+
+"Nicholas Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Phillip "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Rain Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Roiroi (Manicurist) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Sedra Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Steve "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"12-07-2026 06:18 PM","TK09562-3: IN06018-3","Steve ",";000013371: Chu Yun Ling Eunice",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,1,0,221.54,221.54
+"17-07-2026 04:04 PM",TK09631-3,"Steve ","CS00231-3: Chan Li Ann",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,36.93,36.93
+,,,,,,,,,"Grand Total",1.5,45,258.47,258.47
+
+"Sven "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Tintin "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Weixin Assist "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"12-07-2026 06:18 PM","TK09562-3: IN06018-3","Weixin Assist ",";000013371: Chu Yun Ling Eunice",S01346,"Redeem Treatment for Scalp and Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,1,0,221.54,221.54
+"17-07-2026 04:04 PM",TK09631-3,"Weixin Assist ","CS00231-3: Chan Li Ann",HSNC11,"A La Carte - Shampoo & Blowdry",Hairsoho,"Hairsoho (Non Chemical Service)",Yes,No,0.50,45,36.93,36.93
+,,,,,,,,,"Grand Total",1.5,45,258.47,258.47
+
+"Winnie (Lash Guru) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
+"Yuri Assist  "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+"12-07-2026 05:02 PM",TK09560-3,"Yuri Assist  ","CS01989-3: Ewen",S00043-2,"Makeover RM399 - Hair",Hairsoho,"Hairsoho (Chemical Service)",Yes,No,0.50,0,133.50,133.50
+,,,,,,,,,"Grand Total",0.5,0,133.50,133.50
+
+"YY (Lash Guru) "
+Date,"Reference No.",Employee,Customer,"Item Code","Item Name",Section,Category,Prepaid,FOC,Qty,"Duration (Mins)",Value,"Actual Value"
+
