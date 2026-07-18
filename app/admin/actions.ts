@@ -41,13 +41,6 @@ function normalizeName(name: string): string {
   return normalized;
 }
 
-const NAME_OVERRIDES: Record<string, string> = {
-  'sven': 'sven tan',
-  'alice': 'alice assist',
-  'jessie': 'jessie cheah',
-  'jingwen': 'jing wen',
-  'williamassist': 'william assist',
-};
 
 // Safe date parser for "DD-MM-YYYY hh:mm A", "DD/MM/YYYY hh:mm A", and similar formats
 function parseTransactionDate(dateStr: string): string {
@@ -302,10 +295,7 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
             continue;
           }
 
-          let normalizedEmp = normalizeName(rawEmployeeName);
-          if (NAME_OVERRIDES[normalizedEmp]) {
-            normalizedEmp = NAME_OVERRIDES[normalizedEmp];
-          }
+          const normalizedEmp = normalizeName(rawEmployeeName);
 
           const profileId = profileMap.get(normalizedEmp) || null;
 
@@ -431,10 +421,7 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
             continue;
           }
 
-          let normalizedEmp = normalizeName(rawEmployeeName);
-          if (NAME_OVERRIDES[normalizedEmp]) {
-            normalizedEmp = NAME_OVERRIDES[normalizedEmp];
-          }
+          const normalizedEmp = normalizeName(rawEmployeeName);
 
           const profileId = profileMap.get(normalizedEmp) || null;
 

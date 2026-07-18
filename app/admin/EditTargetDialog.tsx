@@ -17,7 +17,6 @@ import { Settings2, Loader2 } from 'lucide-react';
 
 interface EditTargetDialogProps {
   year: number;
-  initialTotal: number;
   initialHair: number;
   initialNails: number;
   initialArtistryLash: number;
@@ -25,7 +24,6 @@ interface EditTargetDialogProps {
 
 export default function EditTargetDialog({
   year,
-  initialTotal,
   initialHair,
   initialNails,
   initialArtistryLash,
@@ -36,12 +34,6 @@ export default function EditTargetDialog({
   const [artistryLashVal, setArtistryLashVal] = React.useState(initialArtistryLash.toString());
   const [isPending, startTransition] = React.useTransition();
   const [error, setError] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    setHairVal(initialHair.toString());
-    setNailsVal(initialNails.toString());
-    setArtistryLashVal(initialArtistryLash.toString());
-  }, [initialHair, initialNails, initialArtistryLash]);
 
   const hairNum = parseFloat(hairVal) || 0;
   const nailsNum = parseFloat(nailsVal) || 0;

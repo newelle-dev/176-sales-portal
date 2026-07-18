@@ -196,6 +196,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                             setIsEditOpen(true);
                           }}
                           title="Edit Stylist"
+                          aria-label={`Edit profile for stylist ${stylist.name}`}
                         >
                           <Edit className="h-3.5 w-3.5" />
                         </Button>
@@ -209,6 +210,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                             setIsDeleteOpen(true);
                           }}
                           title="Delete Stylist"
+                          aria-label={`Delete profile for stylist ${stylist.name}`}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>

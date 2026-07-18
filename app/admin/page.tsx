@@ -9,11 +9,11 @@ import {
   Calendar,
   Sparkles,
   Award,
-  TrendingDown
+  TrendingDown,
+  AlertTriangle
 } from 'lucide-react';
 import EditTargetDialog from './EditTargetDialog';
 import AdminMonthSelector from './AdminMonthSelector';
-import { getTransactionCategory } from '@/lib/transaction-utils';
 
 // Always fetch fresh data — this is a live analytics dashboard
 export const dynamic = 'force-dynamic';
@@ -28,24 +28,6 @@ interface MonthTxRow {
   type: string;
   employee_name: string;
   profile_id: string | null;
-}
-
-// Helper to paginate fetches and bypass Supabase PostgREST 1000-row limit
-async function fetchAllTransactions<T>(
-  fetchFn: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: any }>
-): Promise<T[]> {
-  let allData: T[] = [];
-  let from = 0;
-  const step = 1000;
-  while (true) {
-    const { data, error } = await fetchFn(from, from + step - 1);
-    if (error) throw error;
-    if (!data || data.length === 0) break;
-    allData = allData.concat(data);
-    if (data.length < step) break;
-    from += step;
-  }
-  return allData;
 }
 
 export default async function AdminDashboardPage({ searchParams }: PageProps) {
@@ -121,10 +103,33 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
   let ytdSales = 0;
   let ytdDeptSalesList: { department: string; sales_sum: number }[] = [];
-  let monthTxRaw: MonthTxRow[] = [];
+  let monthSales = 0;
+  let monthTxCount = 0;
+  const branchMap = {
+    Bangsar: 0,
+    SS2: 0,
+    KLGCC: 0
+  };
+  let alacarteSum = 0;
+  let packageSum = 0;
+  let productSum = 0;
+  let leaderboard: {
+    employee_name: string;
+    amount: number;
+    count: number;
+    branch: string;
+  }[] = [];
+  let hasFetchError = false;
 
   try {
-    const [ytdSalesRes, ytdDeptSalesRes, monthTxRows] = await Promise.all([
+    const [
+      ytdSalesRes,
+      ytdDeptSalesRes,
+      monthSummaryRes,
+      branchSalesRes,
+      salesMixRes,
+      leaderboardRes
+    ] = await Promise.all([
       supabase.rpc('get_sales_sum', {
         start_date: startOfYear,
         end_date: startOfNextYear
@@ -133,96 +138,93 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
         start_date: startOfYear,
         end_date: startOfNextYear
       }),
-      fetchAllTransactions<MonthTxRow>((from, to) =>
-        supabase
-          .from('transactions')
-          .select('amount, branch, type, employee_name, profile_id')
-          .gte('transaction_date', startOfMonth)
-          .lt('transaction_date', startOfNextMonth)
-          .neq('amount', 0) // exclude ESD rows (amount=0); include negative C-type redemptions
-          .range(from, to)
-      ),
+      supabase.rpc('get_monthly_sales_summary', {
+        start_date: startOfMonth,
+        end_date: startOfNextMonth
+      }),
+      supabase.rpc('get_monthly_branch_sales', {
+        start_date: startOfMonth,
+        end_date: startOfNextMonth
+      }),
+      supabase.rpc('get_monthly_sales_mix', {
+        start_date: startOfMonth,
+        end_date: startOfNextMonth
+      }),
+      supabase.rpc('get_monthly_stylist_leaderboard', {
+        start_date: startOfMonth,
+        end_date: startOfNextMonth
+      }),
     ]);
 
     if (ytdSalesRes.error) {
       console.error('[AdminDashboardPage] Failed to fetch YTD sales sum:', ytdSalesRes.error.message);
+      hasFetchError = true;
     } else {
       ytdSales = Number(ytdSalesRes.data || 0);
     }
 
     if (ytdDeptSalesRes.error) {
       console.error('[AdminDashboardPage] Failed to fetch YTD department sales sum:', ytdDeptSalesRes.error.message);
+      hasFetchError = true;
     } else {
       ytdDeptSalesList = ytdDeptSalesRes.data || [];
     }
 
-    monthTxRaw = monthTxRows;
-  } catch (error: any) {
-    console.error('[AdminDashboardPage] Failed to fetch transactions:', error.message || error);
+    if (monthSummaryRes.error) {
+      console.error('[AdminDashboardPage] Failed to fetch monthly sales summary:', monthSummaryRes.error.message);
+      hasFetchError = true;
+    } else {
+      monthSales = Number(monthSummaryRes.data?.[0]?.sales_sum || 0);
+      monthTxCount = Number(monthSummaryRes.data?.[0]?.tx_count || 0);
+    }
+
+    if (branchSalesRes.error) {
+      console.error('[AdminDashboardPage] Failed to fetch branch sales:', branchSalesRes.error.message);
+      hasFetchError = true;
+    } else {
+      branchSalesRes.data?.forEach(row => {
+        if (row.branch in branchMap) {
+          branchMap[row.branch as keyof typeof branchMap] = Number(row.sales_sum);
+        }
+      });
+    }
+
+    if (salesMixRes.error) {
+      console.error('[AdminDashboardPage] Failed to fetch sales mix:', salesMixRes.error.message);
+      hasFetchError = true;
+    } else {
+      salesMixRes.data?.forEach(row => {
+        if (row.category === 'alacarte') alacarteSum = Number(row.sales_sum);
+        else if (row.category === 'packages') packageSum = Number(row.sales_sum);
+        else if (row.category === 'products') productSum = Number(row.sales_sum);
+      });
+    }
+
+    if (leaderboardRes.error) {
+      console.error('[AdminDashboardPage] Failed to fetch stylist leaderboard:', leaderboardRes.error.message);
+      hasFetchError = true;
+    } else {
+      leaderboard = (leaderboardRes.data || []).map(row => ({
+        employee_name: row.employee_name,
+        amount: Number(row.amount),
+        count: Number(row.count),
+        branch: row.branch
+      }));
+    }
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error('[AdminDashboardPage] Failed to fetch dashboard data:', msg);
+    hasFetchError = true;
   }
 
   const hairYTDSales = Number(ytdDeptSalesList.find(d => d.department === 'HAIR')?.sales_sum || 0);
   const nailsYTDSales = Number(ytdDeptSalesList.find(d => d.department === 'NAILS')?.sales_sum || 0);
   const artistryLashYTDSales = Number(ytdDeptSalesList.find(d => d.department === 'ARTISTRY_LASH')?.sales_sum || 0);
 
-  // 1. Monthly stats — amount > 0 already filtered at DB level, so monthTxRaw
-  //    contains only positive-amount (sales) rows.
-  const monthSales = monthTxRaw.reduce((acc, tx) => acc + Number(tx.amount), 0);
-  const monthTxCount = monthTxRaw.length;
-
-  // 2. Branch Breakdown
-  const branchMap = {
-    Bangsar: 0,
-    SS2: 0,
-    KLGCC: 0
-  };
-  monthTxRaw.forEach((tx) => {
-    const amt = Number(tx.amount);
-    const br = tx.branch as keyof typeof branchMap;
-    if (br && branchMap[br] !== undefined) {
-      branchMap[br] += amt;
-    } else {
-      branchMap['Bangsar'] += amt; // fallback for null/unknown branch
-    }
-  });
-
   const branchTotal = branchMap.Bangsar + branchMap.SS2 + branchMap.KLGCC;
-
-  // 3. Sales Mix
-  let alacarteSum = 0;
-  let packageSum = 0;
-  let productSum = 0;
-
-  monthTxRaw.forEach((tx) => {
-    const amt = Number(tx.amount);
-    const cat = getTransactionCategory({ type: tx.type, amount: amt });
-    if (cat === 'alacarte') alacarteSum += amt;
-    else if (cat === 'packages') packageSum += amt;
-    else if (cat === 'products') productSum += amt;
-  });
-
   const mixTotal = alacarteSum + packageSum + productSum;
 
-  // 4. Stylist Leaderboard
-  const stylistMap = new Map<string, { name: string; amount: number; count: number; branch: string }>();
-  monthTxRaw.forEach((tx) => {
-    const name = tx.employee_name;
-    const amt = Number(tx.amount);
-    const br = tx.branch || 'Bangsar';
-
-    const existing = stylistMap.get(name);
-    if (existing) {
-      existing.amount += amt;
-      existing.count += 1;
-    } else {
-      stylistMap.set(name, { name, amount: amt, count: 1, branch: br });
-    }
-  });
-
-  const leaderboard = Array.from(stylistMap.values())
-    .sort((a, b) => b.amount - a.amount);
-
-  // 5. Progress calculations
+  // Progress calculations
   const ytdProgressPercent = annualTarget > 0 ? (ytdSales / annualTarget) * 100 : 0;
   const monthlyMilestone = annualTarget / 12;
   const monthlyProgressPercent = monthlyMilestone > 0 ? (monthSales / monthlyMilestone) * 100 : 0;
@@ -248,7 +250,6 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     month: 'long',
     year: 'numeric'
   });
-
   return (
     <main className="max-w-4xl w-full mx-auto px-6 py-10 space-y-8">
       {/* Header section with month selector and config */}
@@ -263,14 +264,29 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <AdminMonthSelector months={availableMonths} defaultValue={selectedMonthStr} />
           <EditTargetDialog
+            key={`${selYear}-${hairTarget}-${nailsTarget}-${artistryLashTarget}`}
             year={selYear}
-            initialTotal={annualTarget}
             initialHair={hairTarget}
             initialNails={nailsTarget}
             initialArtistryLash={artistryLashTarget}
           />
         </div>
       </div>
+
+      {/* Fetch Error Warning Banner */}
+      {hasFetchError && (
+        <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl text-xs flex flex-col gap-2 shadow-sm font-medium">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-4.5 h-4.5 text-red-650 shrink-0" />
+            <span>We encountered an issue fetching database metrics for this month. Dashboard statistics and leaderboard values may be incomplete or empty.</span>
+          </div>
+          <div>
+            <a href={`/admin?month=${selectedMonthStr}`} className="underline font-bold text-red-700 hover:text-red-950">
+              Try refreshing the page
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Yearly Target Progress Card */}
       <Card className="border-gray-200 bg-white shadow-sm rounded-2xl overflow-hidden">
@@ -324,7 +340,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden relative">
+                  <div
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, ytdProgressPercent)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Yearly Target Progress"
+                    className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden relative"
+                  >
                     {/* Time elapsed marker (dashed indicator overlay) */}
                     {isCurrentYear && (
                       <div
@@ -359,7 +382,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     <span>Hair (HS)</span>
                     <span className="text-gray-550">{(hairTarget > 0 ? (hairYTDSales / hairTarget * 100) : 0).toFixed(1)}%</span>
                   </div>
-                  <div className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100">
+                  <div
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, hairTarget > 0 ? (hairYTDSales / hairTarget * 100) : 0)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Hair department YTD target progress"
+                    className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100"
+                  >
                     {isCurrentYear && (
                       <div
                         className="absolute top-0 bottom-0 border-r border-dashed border-gray-400/50 z-10"
@@ -383,7 +413,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     <span>Nails</span>
                     <span className="text-gray-555">{(nailsTarget > 0 ? (nailsYTDSales / nailsTarget * 100) : 0).toFixed(1)}%</span>
                   </div>
-                  <div className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100">
+                  <div
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, nailsTarget > 0 ? (nailsYTDSales / nailsTarget * 100) : 0)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Nails department YTD target progress"
+                    className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100"
+                  >
                     {isCurrentYear && (
                       <div
                         className="absolute top-0 bottom-0 border-r border-dashed border-gray-400/50 z-10"
@@ -407,7 +444,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     <span>Artistry & Lash</span>
                     <span className="text-gray-555">{(artistryLashTarget > 0 ? (artistryLashYTDSales / artistryLashTarget * 100) : 0).toFixed(1)}%</span>
                   </div>
-                  <div className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100">
+                  <div
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, artistryLashTarget > 0 ? (artistryLashYTDSales / artistryLashTarget * 100) : 0)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Artistry and Lash department YTD target progress"
+                    className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100"
+                  >
                     {isCurrentYear && (
                       <div
                         className="absolute top-0 bottom-0 border-r border-dashed border-gray-400/50 z-10"
@@ -473,7 +517,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
             {annualTarget > 0 && (
               <div className="space-y-1.5 pt-2">
-                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div
+                  role="progressbar"
+                  aria-valuenow={Math.min(100, monthlyProgressPercent)}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label="Monthly Sales Milestone Progress"
+                  className="w-full h-2 bg-gray-100 rounded-full overflow-hidden"
+                >
                   <div
                     className="h-full bg-emerald-600 transition-all duration-550"
                     style={{ width: `${Math.min(100, monthlyProgressPercent)}%` }}
@@ -505,7 +556,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     <span>{branchName}</span>
                     <span>RM {sales.toLocaleString('en-US', { minimumFractionDigits: 2 })} ({percent.toFixed(1)}%)</span>
                   </div>
-                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    role="progressbar"
+                    aria-valuenow={percent}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={`Branch contribution percentage for ${branchName}`}
+                    className="w-full h-2 bg-gray-100 rounded-full overflow-hidden"
+                  >
                     <div
                       className={`h-full transition-all duration-550 ${branchName === 'Bangsar' ? 'bg-slate-800' : branchName === 'SS2' ? 'bg-slate-500' : 'bg-slate-350'
                         }`}
@@ -545,7 +603,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                   <div className="flex items-center justify-between text-[10px] text-gray-400 font-bold select-none">
                     <span>{percent.toFixed(1)}% of sales</span>
                   </div>
-                  <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    role="progressbar"
+                    aria-valuenow={percent}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={`Sales contribution percentage for category ${item.label}`}
+                    className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden"
+                  >
                     <div
                       className="h-full bg-black"
                       style={{ width: `${percent}%` }}
@@ -589,7 +654,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     {leaderboard.map((stylist, index) => {
                       const isTopThree = index < 3;
                       return (
-                        <tr key={stylist.name} className="hover:bg-gray-50/50 transition-colors">
+                        <tr key={stylist.employee_name} className="hover:bg-gray-50/50 transition-colors">
                           <td className="py-3 px-4 text-center font-bold text-gray-400">
                             {isTopThree ? (
                               <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold ${index === 0 ? 'bg-amber-100 text-amber-800' :
@@ -603,7 +668,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                             )}
                           </td>
                           <td className="py-3 px-4 font-bold text-gray-900">
-                            {stylist.name}
+                            {stylist.employee_name}
                           </td>
                           <td className="py-3 px-4 text-gray-500 font-medium">
                             {stylist.branch}

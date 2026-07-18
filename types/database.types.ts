@@ -132,24 +132,49 @@ export type Database = {
           employee_name: string
         }[]
       }
+      get_monthly_branch_sales: {
+        Args: { end_date: string; start_date: string }
+        Returns: {
+          branch: string
+          sales_sum: number
+        }[]
+      }
+      get_monthly_sales_mix: {
+        Args: { end_date: string; start_date: string }
+        Returns: {
+          category: string
+          sales_sum: number
+        }[]
+      }
+      get_monthly_sales_summary: {
+        Args: { end_date: string; start_date: string }
+        Returns: {
+          sales_sum: number
+          tx_count: number
+        }[]
+      }
+      get_monthly_stylist_leaderboard: {
+        Args: { end_date: string; start_date: string }
+        Returns: {
+          amount: number
+          branch: string
+          count: number
+          employee_name: string
+        }[]
+      }
       get_sales_by_department: {
-        Args: {
-          end_date: string
-          start_date: string
-        }
+        Args: { end_date: string; start_date: string }
         Returns: {
           department: string
           sales_sum: number
         }[]
       }
       get_sales_sum: {
-        Args: {
-          end_date: string
-          start_date: string
-        }
+        Args: { end_date: string; start_date: string }
         Returns: number
       }
       is_admin: { Args: never; Returns: boolean }
+      normalize_name_test: { Args: { name: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never

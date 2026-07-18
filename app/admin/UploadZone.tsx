@@ -174,6 +174,7 @@ export default function UploadZone() {
                     removeFile(idx);
                   }}
                   disabled={isPending}
+                  aria-label={`Remove file ${file.name}`}
                   className="text-gray-400 hover:text-red-600 p-1 rounded-md transition-colors cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />

@@ -34,20 +34,10 @@ This document reviews the codebase under [app/admin](file:///c:/Users/alec/OneDr
 
 ## 2. Code Quality & Maintainability
 
-### 🟠 Important: Hardcoded Name Overrides
-* **Location:** [app/admin/actions.ts](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/actions.ts#L44-L50) (`NAME_OVERRIDES`)
-* **Issue:** The stylist aliases dictionary is hardcoded in the codebase:
-  ```typescript
-  const NAME_OVERRIDES: Record<string, string> = {
-    'sven': 'sven tan',
-    'alice': 'alice assist',
-    'jessie': 'jessie cheah',
-    'jingwen': 'jing wen',
-    'williamassist': 'william assist',
-  };
-  ```
-  This is a serious maintainability issue, as adding or correcting a stylist's CSV alias name requires code modifications and a redeployment.
-* **Recommendation:** Since the database schema already includes a GIN-indexed `wess_names` text array column in `profiles` to map aliases dynamically, these overrides should be moved to the database. Remove the hardcoded dictionary and ensure these mappings are configured directly via the Team Manager UI.
+### 🟢 [RESOLVED] Important: Hardcoded Name Overrides
+* **Location:** [app/admin/actions.ts](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/actions.ts) (`NAME_OVERRIDES`)
+* **Issue:** The stylist aliases dictionary was hardcoded in the codebase (`NAME_OVERRIDES`), presenting a maintainability issue because adding or correcting an alias required code modifications and redeployment.
+* **Implementation:** Removed the hardcoded dictionary and modified the name normalization and lookup code to rely exclusively on database-driven mapping via the GIN-indexed `wess_names` array column in the `profiles` table.
 
 ### 🟠 Important: Bloated Component Structure in Team Manager
 * **Location:** [app/admin/team/TeamManager.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/team/TeamManager.tsx)
@@ -67,23 +57,16 @@ This document reviews the codebase under [app/admin](file:///c:/Users/alec/OneDr
 
 ## 3. State & Side Effect Management
 
-### 🟠 Important: Cascading Renders due to Synchronous State Updates in Effect
-* **Location:** [app/admin/EditTargetDialog.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/EditTargetDialog.tsx#L40-L44)
-* **Issue:** ESLint reports: `Error: Calling setState synchronously within an effect can trigger cascading renders`. The component uses `useEffect` to sync incoming initial target props to local state:
-  ```typescript
-  React.useEffect(() => {
-    setHairVal(initialHair.toString());
-    setNailsVal(initialNails.toString());
-    setArtistryLashVal(initialArtistryLash.toString());
-  }, [initialHair, initialNails, initialArtistryLash]);
-  ```
-* **Recommendation:** Avoid setting state in `useEffect` when props change. Instead, key the component instance by the props that determine its state (e.g., using `key={`${selYear}-${hairTarget}-${nailsTarget}-${artistryLashTarget}`}` inside `app/admin/page.tsx` when instantiating `<EditTargetDialog>`). This forces React to discard the old dialog instance and instantiate a new one with correct initial values, eliminating the need for `useEffect` entirely.
+### 🟢 [RESOLVED] Important: Cascading Renders due to Synchronous State Updates in Effect
+* **Location:** [app/admin/EditTargetDialog.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/EditTargetDialog.tsx)
+* **Issue:** ESLint reports: `Error: Calling setState synchronously within an effect can trigger cascading renders`. The component used `useEffect` to sync incoming initial target props to local state.
+* **Implementation:** Resolved by removing the `useEffect` hook entirely and passing a unique `key` prop based on `selYear`, `hairTarget`, `nailsTarget`, and `artistryLashTarget` (i.e. `key={`${selYear}-${hairTarget}-${nailsTarget}-${artistryLashTarget}`}`) when instantiating `<EditTargetDialog>` in [app/admin/page.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/page.tsx). This forces React to discard the old dialog instance and initialize a new one with the correct props. Additionally, we removed the unused `initialTotal` prop from the dialog signature.
 
 ---
 
 ## 4. Performance & Scaling
 
-### 🟠 Important: Client-Side Transaction Aggregation
+### 🟢 [RESOLVED] Important: Client-Side Transaction Aggregation
 * **Location:** [app/admin/page.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/page.tsx#L168-L224)
 * **Issue:** The dashboard uses `fetchAllTransactions` to retrieve all transaction rows for the selected month in chunks of 1000, and then processes them in JS memory to compute categories, stylist rankings, and branch totals. As sales numbers grow over the years, downloading thousands of rows and looping over them will cause network latency, slow down Server Component renders, and waste DB read resources.
 * **Recommendation:** Delegate aggregations to PostgreSQL. Implement Supabase database Views or RPC functions (e.g., `get_monthly_branch_sales(month_str)`, `get_monthly_stylist_leaderboard(month_str)`) so that only small, summarized datasets (e.g., 3 rows for branches, ~20 rows for the leaderboard) are transferred over the network.
@@ -92,7 +75,7 @@ This document reviews the codebase under [app/admin](file:///c:/Users/alec/OneDr
 
 ## 5. UI, Accessibility & User Feedback
 
-### 🟡 Suggestion: Lack of ARIA Attributes on Visual Elements
+### 🟢 [RESOLVED] Suggestion: Lack of ARIA Attributes on Visual Elements
 * **Location:** [app/admin/page.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/page.tsx) (Progress Bars)
 * **Issue:** The annual target progress bars and branch contribution indicators are visual divs without screen-reader accessibility tags.
 * **Recommendation:** Add appropriate ARIA accessibility tags like `role="progressbar"`, `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` to the progress divs.
@@ -107,7 +90,7 @@ This document reviews the codebase under [app/admin](file:///c:/Users/alec/OneDr
   >
   ```
 
-### 💡 Nitpick: Missing `aria-label` on Icon Buttons
+### 🟢 [RESOLVED] Nitpick: Missing `aria-label` on Icon Buttons
 * **Location:** [app/admin/UploadZone.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/UploadZone.tsx#L170-L180), [app/admin/team/TeamManager.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/team/TeamManager.tsx#L187-L215)
 * **Issue:** Icon-only buttons (such as the remove file button in the upload list, and the edit/delete buttons in the stylist table) lack readable names for assistive technologies. They rely on visual icons (like Lucide `X`, `Edit`, `Trash2`), causing screen readers to announce them simply as "button".
 * **Recommendation:** Add explicit `aria-label` descriptors to these buttons.
@@ -122,7 +105,7 @@ This document reviews the codebase under [app/admin](file:///c:/Users/alec/OneDr
   >
   ```
 
-### 🟡 Suggestion: Error State Handling on Dashboard Render
+### 🟢 [RESOLVED] Suggestion: Error State Handling on Dashboard Render
 * **Location:** [app/admin/page.tsx](file:///c:/Users/alec/OneDrive/Desktop/alec176avenue/176-sales-portal/app/admin/page.tsx#L160-L162)
 * **Issue:** If the queries for transactions or YTD sales crash, the catch block logs the details to server console logs, but the UI is silently rendered as if everything is empty (RM 0.00 nett sales, 0 transactions). This can mislead the admin into thinking the portal is empty or data has been deleted.
 * **Recommendation:** Add a top-level error indicator check. If a DB error is detected, show a friendly warning banner on the dashboard page informing the user that data failed to load, along with a retry link.
@@ -135,7 +118,7 @@ The ESLint static analysis identified the following errors and warnings that sho
 
 ### Unused Imports & Variables
 * **`app/admin/page.tsx`**: `createClient` import is defined but never used.
-* **`app/admin/EditTargetDialog.tsx`**: Prop `initialTotal` is destructured but never used.
+* ~~**`app/admin/EditTargetDialog.tsx`**: Prop `initialTotal` is destructured but never used.~~ (Resolved)
 * **`app/admin/actions.ts`**:
   * Unused variables: `_` (assigned in date regex splits), `prepaidIdx`, `focIdx`, `durationIdx`, `valueIdx` (unused columns in Employee Service Detail parser).
   * Use `const` instead of `let` for destructured values on line 59.
@@ -165,5 +148,5 @@ app/admin/
 │
 ├── utils.ts                   <-- [NEW] Pure functions for aggregations
 ├── page.tsx                   <-- [MODIFY] Clean page layout, delegate maths
-└── actions.ts                 <-- [MODIFY] Migrate NAME_OVERRIDES to DB
+└── actions.ts                 <-- [RESOLVED] Removed NAME_OVERRIDES
 ```
