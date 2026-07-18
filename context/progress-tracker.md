@@ -13,6 +13,7 @@ change.
 
 ## Completed
 
+- Added a second main KPI card on the stylist dashboard to display Total Monthly Sales excluding deductions (representing revenue from services, packages, and products), alongside the total including deductions, providing stylists with clear and comprehensive metrics.
 - Implemented a "Danger Zone" section on the Admin dashboard to clear all transaction records. This includes a secure Server Action `clearTransactionsAction` verifying admin authentication, a double-confirmation Dialog prompting the user to type `DELETE` to confirm, and cache revalidation for dashboard route updates.
 - Set up design system and UI primitive components (Button, Card, Dialog, Input, ScrollArea, Tabs, TextArea) and `lib/utils.ts` `cn()` helper.
 - Set up Supabase project, database schema (Profiles & Transactions tables), triggers, RLS policies, and configured client/server/admin/middleware integration.

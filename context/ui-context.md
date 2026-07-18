@@ -9,14 +9,17 @@ The app should feel like a premium, modern salon tool. It must be brutally simpl
 - **Typography:** Sans-serif, clean, highly legible numbers. Focus on typographic hierarchy (big numbers, small labels).
 
 ## Color Tokens (Tailwind)
-*Keep it monochromatic with one accent color for a sleek look.*
+*Keep it monochromatic with elegant accent colors for a sleek, premium look.*
 - **Background:** `bg-gray-50`
-- **Cards/Containers:** `bg-white` with subtle `shadow-sm`
+- **Cards/Containers:** `bg-white` with subtle `shadow-sm` and `rounded-2xl`
 - **Primary Text:** `text-gray-900`
 - **Secondary Text (Labels/Dates):** `text-gray-500`
 - **Accent/Brand:** `text-black` or a muted elegant tone (e.g., `slate-800`).
 - **Success/Positive Data:** Soft green (`text-emerald-600`) for sales numbers.
+- **Deduction/Adjustment Data:** Soft amber (`text-amber-600` text, `bg-amber-50` background, `border-amber-100` border).
 
 ## Components
 - **Metric Card:** A clean white card displaying the category name, total amount, and an icon.
-- **Data Table (Admin):** Clean lines, sticky headers, clear action buttons for editing staff.
+- **Transaction Accordion List (Stylist):** Groups transaction records by local calendar day under interactive accordion headers. Summarizes daily sales count and totals, expanding smoothly to show individual transaction rows.
+- **Searchable Multi-Select Input (Admin):** Dropdown select interface populated from the database with manual override for adding aliases.
+- **Data Table (Admin):** Clean lines, sticky headers, and clear action buttons for managing staff and aliases.
