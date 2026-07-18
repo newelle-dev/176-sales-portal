@@ -5,13 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import {
   TrendingUp,
   Target,
-  DollarSign,
-  Users,
   MapPin,
   Calendar,
   Sparkles,
   Award,
-  CircleCheck,
   TrendingDown
 } from 'lucide-react';
 import EditTargetDialog from './EditTargetDialog';
@@ -490,8 +487,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                           <td className="py-3 px-4 text-center font-bold text-gray-400">
                             {isTopThree ? (
                               <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold ${index === 0 ? 'bg-amber-100 text-amber-800' :
-                                  index === 1 ? 'bg-slate-200 text-slate-800' :
-                                    'bg-orange-100 text-orange-850'
+                                index === 1 ? 'bg-slate-200 text-slate-800' :
+                                  'bg-orange-100 text-orange-850'
                                 }`}>
                                 {index + 1}
                               </span>
