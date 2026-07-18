@@ -1,6 +1,8 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import type { Database } from '@/types/database.types';
+import { cache } from 'react';
+import type { User } from '@supabase/supabase-js';
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -28,3 +30,30 @@ export async function createClient() {
     }
   );
 }
+
+// Request-memoized helper to avoid double auth/profile queries in layouts & pages
+export const getCachedSession = cache(async (): Promise<{
+  user: User | null;
+  profile: { name: string; email: string; role: string } | null;
+}> => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { user: null, profile: null };
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('name, email, role')
+    .eq('id', user.id)
+    .single();
+
+  return {
+    user,
+    profile: profile || null,
+  };
+});
+

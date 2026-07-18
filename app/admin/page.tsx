@@ -15,12 +15,16 @@ export default async function AdminDashboardPage() {
     redirect('/login');
   }
 
-  // Fetch the admin's profile
+  // Defense-in-depth role guard (middleware already protects this route)
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select('role')
     .eq('id', user.id)
     .single();
+
+  if (!profile || profile.role !== 'admin') {
+    redirect('/login');
+  }
 
   return (
     <main className="max-w-4xl w-full mx-auto px-6 py-10 space-y-8">

@@ -7,6 +7,13 @@ export type ActionState = {
   error?: string;
 };
 
+/**
+ * Authenticates a user via email/password and redirects based on role.
+ *
+ * @param prevState - Previous action state (for useActionState compatibility).
+ * @param formData  - FormData containing: email, password.
+ * @returns ActionState with an `error` message on failure, or redirects on success.
+ */
 export async function loginAction(prevState: ActionState | null, formData: FormData): Promise<ActionState> {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -40,6 +47,7 @@ export async function loginAction(prevState: ActionState | null, formData: FormD
   }
 }
 
+/** Signs out the current user and redirects to the login page. */
 export async function logoutAction() {
   const supabase = await createClient();
   await supabase.auth.signOut();

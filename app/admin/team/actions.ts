@@ -8,6 +8,14 @@ export type ActionState = {
   error?: string;
 };
 
+/**
+ * Creates a new stylist account in Supabase Auth and links optional
+ * WessConnect CSV name aliases to their profile.
+ *
+ * @param prevState - Previous action state (for useActionState compatibility).
+ * @param formData  - FormData containing: name, email, password, wess_names (comma-separated).
+ * @returns ActionState with `success: true` or an `error` message.
+ */
 export async function createStylistAction(prevState: ActionState | null, formData: FormData): Promise<ActionState> {
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
@@ -55,6 +63,15 @@ export async function createStylistAction(prevState: ActionState | null, formDat
   }
 }
 
+/**
+ * Updates an existing stylist's profile, email, password, and/or
+ * WessConnect CSV name aliases.
+ *
+ * @param prevState - Previous action state (for useActionState compatibility).
+ * @param payload   - Object containing the stylist `id` and a `formData`
+ *                    with: name, email, password (optional), wess_names.
+ * @returns ActionState with `success: true` or an `error` message.
+ */
 export async function updateStylistAction(
   prevState: ActionState | null,
   payload: { id: string; formData: FormData }
@@ -77,7 +94,7 @@ export async function updateStylistAction(
     const adminClient = createAdminClient();
 
     // Update email or password in auth if needed
-    const updateData: any = {};
+    const updateData: { email?: string; password?: string } = {};
     if (password && password.trim() !== '') {
       updateData.password = password.trim();
     }
@@ -132,6 +149,14 @@ export async function updateStylistAction(
   }
 }
 
+/**
+ * Permanently deletes a stylist from Supabase Auth. The cascade-on-delete
+ * constraint will also remove their `profiles` row. Transactions linked
+ * via `profile_id` will have that column set to NULL (ON DELETE SET NULL).
+ *
+ * @param id - The UUID of the stylist to delete.
+ * @returns ActionState with `success: true` or an `error` message.
+ */
 export async function deleteStylistAction(id: string): Promise<ActionState> {
   if (!id) {
     return { error: 'Stylist ID is required.' };

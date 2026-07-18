@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { getCachedSession } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { logoutAction } from '../login/actions';
 import { Button } from '@/components/ui/button';
@@ -8,26 +8,16 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user, profile } = await getCachedSession();
 
   if (!user) {
     redirect('/login');
   }
 
-  // Fetch the stylist's profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-
   const initials = profile?.name
     ? profile.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)
-    : user.email?.[0].toUpperCase() || 'S';
+    : user?.email?.[0].toUpperCase() || 'S';
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">

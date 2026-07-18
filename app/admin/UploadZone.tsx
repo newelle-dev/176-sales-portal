@@ -98,12 +98,21 @@ export default function UploadZone() {
     <div className="space-y-6 select-none">
       {/* Drag & Drop Area */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Upload CSV files — click or drag and drop"
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
         onClick={triggerFileInput}
-        className={`h-48 flex flex-col items-center justify-center border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 p-6 text-center ${
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            triggerFileInput();
+          }
+        }}
+        className={`h-48 flex flex-col items-center justify-center border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 p-6 text-center focus:outline-none focus:ring-2 focus:ring-black/20 ${
           isDragActive
             ? 'border-black bg-gray-50/80'
             : 'border-gray-200 bg-gray-50/30 hover:bg-gray-50/80 hover:border-gray-300'
@@ -206,7 +215,7 @@ export default function UploadZone() {
                 <div className="space-y-1">
                   <p className="text-xs font-bold">Import Completed Successfully</p>
                   <p className="text-xs font-medium text-emerald-700">
-                    Imported/updated a total of **{result.insertedCount}** transaction records.
+                    Imported/updated a total of <strong>{result.insertedCount}</strong> transaction records.
                   </p>
                 </div>
               </div>
@@ -241,7 +250,7 @@ export default function UploadZone() {
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-amber-900">Unmapped Employees Found</p>
                       <p className="text-xs text-amber-800 leading-relaxed">
-                        The following employee names from your CSV files were imported, but are **not linked** to any active stylist profile in the portal. Stylists won't see these transactions on their dashboards until they are linked in the Team Manager.
+                        The following employee names from your CSV files were imported, but are <strong>not linked</strong> to any active stylist profile in the portal. Stylists won't see these transactions on their dashboards until they are linked in the Team Manager.
                       </p>
                     </div>
                   </div>
