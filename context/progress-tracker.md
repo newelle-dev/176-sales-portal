@@ -13,6 +13,8 @@ change.
 
 ## Completed
 
+- Validated July 2026 sales data: confirmed 100% data consistency between all 6 uploaded CSV files and the Supabase transaction records (rows, nett sales, and deductions match exactly across all branches).
+- Fixed Admin Dashboard data fetching bugs: added paginated query logic (`fetchAllTransactions`) to bypass Supabase's silent 1000-row PostgREST limit; optimized YTD Sales calculation to use a newly created database function `get_sales_sum` (RPC) for scale-resilient sums; and corrected the filter to include negative type-C redemptions while keeping ESD transactions excluded.
 - Implemented Admin Dashboard improvements: registered custom color variables (`gray-150`, `gray-250`, `gray-450`, `gray-405`, `red-650`, `slate-350`, `orange-850`) in Tailwind v4 `@theme inline` block in `app/globals.css` to fix uncompiled color tokens; resolved the off-by-one error in the yearly progress pace calculation; added "Year Not Started" status text for future years; and added server-side query error logging for admin data fetches.
 - Rebuilt the root `/admin` page as a dedicated Overview & Stats Dashboard. It displays annual target progress with a live pacing indicator, monthly milestone achievement metrics, branch contribution meters, a categorical sales mix, and a dynamic stylist leaderboard sorted by Nett Sales (all calculations correctly exclude deduction sales).
 - Split the admin panel layouts by moving the drag-and-drop CSV Upload Zone and Danger Zone components to a separate, dedicated `/admin/upload` page.

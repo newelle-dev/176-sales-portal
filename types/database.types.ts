@@ -126,6 +126,13 @@ export type Database = {
           employee_name: string
         }[]
       }
+      get_sales_sum: {
+        Args: {
+          start_date: string
+          end_date: string
+        }
+        Returns: number
+      }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {

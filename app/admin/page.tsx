@@ -18,6 +18,9 @@ import EditTargetDialog from './EditTargetDialog';
 import AdminMonthSelector from './AdminMonthSelector';
 import { getTransactionCategory } from '@/lib/transaction-utils';
 
+// Always fetch fresh data — this is a live analytics dashboard
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
@@ -28,6 +31,24 @@ interface MonthTxRow {
   type: string;
   employee_name: string;
   profile_id: string | null;
+}
+
+// Helper to paginate fetches and bypass Supabase PostgREST 1000-row limit
+async function fetchAllTransactions<T>(
+  fetchFn: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: any }>
+): Promise<T[]> {
+  let allData: T[] = [];
+  let from = 0;
+  const step = 1000;
+  while (true) {
+    const { data, error } = await fetchFn(from, from + step - 1);
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    allData = allData.concat(data);
+    if (data.length < step) break;
+    from += step;
+  }
+  return allData;
 }
 
 export default async function AdminDashboardPage({ searchParams }: PageProps) {
@@ -84,40 +105,48 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   const supabase = createAdminClient();
 
   // Fetch targets and transactions
-  const [targetRes, ytdTxRes, monthTxRes] = await Promise.all([
-    supabase
-      .from('targets')
-      .select('target_amount')
-      .eq('year', selYear)
-      .maybeSingle(),
-    supabase
-      .from('transactions')
-      .select('amount')
-      .gte('transaction_date', startOfYear)
-      .lt('transaction_date', startOfNextYear)
-      .gt('amount', 0),
-    supabase
-      .from('transactions')
-      .select('amount, branch, type, employee_name, profile_id')
-      .gte('transaction_date', startOfMonth)
-      .lt('transaction_date', startOfNextMonth)
-      .gt('amount', 0)
-      .limit(5000)
-  ]);
+  const targetRes = await supabase
+    .from('targets')
+    .select('target_amount')
+    .eq('year', selYear)
+    .maybeSingle();
 
   if (targetRes.error) {
     console.error('[AdminDashboardPage] Failed to fetch annual target:', targetRes.error.message);
   }
-  if (ytdTxRes.error) {
-    console.error('[AdminDashboardPage] Failed to fetch YTD transactions:', ytdTxRes.error.message);
-  }
-  if (monthTxRes.error) {
-    console.error('[AdminDashboardPage] Failed to fetch monthly transactions:', monthTxRes.error.message);
-  }
 
   const annualTarget = targetRes.data?.target_amount ? Number(targetRes.data.target_amount) : 0;
-  const ytdSales = ytdTxRes.data?.reduce((acc, tx) => acc + Number(tx.amount || 0), 0) || 0;
-  const monthTxRaw = (monthTxRes.data || []) as unknown as MonthTxRow[];
+
+  let ytdSales = 0;
+  let monthTxRaw: MonthTxRow[] = [];
+
+  try {
+    const [ytdSalesRes, monthTxRows] = await Promise.all([
+      supabase.rpc('get_sales_sum', {
+        start_date: startOfYear,
+        end_date: startOfNextYear
+      }),
+      fetchAllTransactions<MonthTxRow>((from, to) =>
+        supabase
+          .from('transactions')
+          .select('amount, branch, type, employee_name, profile_id')
+          .gte('transaction_date', startOfMonth)
+          .lt('transaction_date', startOfNextMonth)
+          .neq('amount', 0) // exclude ESD rows (amount=0); include negative C-type redemptions
+          .range(from, to)
+      ),
+    ]);
+
+    if (ytdSalesRes.error) {
+      console.error('[AdminDashboardPage] Failed to fetch YTD sales sum:', ytdSalesRes.error.message);
+    } else {
+      ytdSales = Number(ytdSalesRes.data || 0);
+    }
+
+    monthTxRaw = monthTxRows;
+  } catch (error: any) {
+    console.error('[AdminDashboardPage] Failed to fetch transactions:', error.message || error);
+  }
 
   // 1. Monthly stats — amount > 0 already filtered at DB level, so monthTxRaw
   //    contains only positive-amount (sales) rows.
@@ -186,7 +215,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   const isFutureYear = selYear > now.getFullYear();
   const isLeapYear = (selYear % 4 === 0 && selYear % 100 !== 0) || (selYear % 400 === 0);
   const totalDays = isLeapYear ? 366 : 365;
-  
+
   let daysElapsed = totalDays;
   if (isCurrentYear) {
     const startOfYearDate = new Date(selYear, 0, 1);
@@ -234,9 +263,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
               </CardDescription>
             </div>
             {annualTarget > 0 && isCurrentYear && (
-              <span className={`text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 ${
-                paceDifference >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-650'
-              }`}>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 ${paceDifference >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-650'
+                }`}>
                 {paceDifference >= 0 ? (
                   <>
                     <TrendingUp className="w-3.5 h-3.5" />
@@ -273,13 +301,13 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
               <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden relative">
                 {/* Time elapsed marker (dashed indicator overlay) */}
                 {isCurrentYear && (
-                  <div 
+                  <div
                     className="absolute top-0 bottom-0 border-r-2 border-dashed border-gray-400/80 z-10"
                     style={{ left: `${timePassedPercent}%` }}
                     title={`Current day of year: ${timePassedPercent.toFixed(1)}%`}
                   />
                 )}
-                <div 
+                <div
                   className="h-full bg-black transition-all duration-550"
                   style={{ width: `${Math.min(100, ytdProgressPercent)}%` }}
                 />
@@ -343,7 +371,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
             {annualTarget > 0 && (
               <div className="space-y-1.5 pt-2">
                 <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-emerald-600 transition-all duration-550"
                     style={{ width: `${Math.min(100, monthlyProgressPercent)}%` }}
                   />
@@ -375,10 +403,9 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     <span>RM {sales.toLocaleString('en-US', { minimumFractionDigits: 2 })} ({percent.toFixed(1)}%)</span>
                   </div>
                   <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full transition-all duration-550 ${
-                        branchName === 'Bangsar' ? 'bg-slate-800' : branchName === 'SS2' ? 'bg-slate-500' : 'bg-slate-350'
-                      }`}
+                    <div
+                      className={`h-full transition-all duration-550 ${branchName === 'Bangsar' ? 'bg-slate-800' : branchName === 'SS2' ? 'bg-slate-500' : 'bg-slate-350'
+                        }`}
                       style={{ width: `${percent}%` }}
                     />
                   </div>
@@ -416,7 +443,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     <span>{percent.toFixed(1)}% of sales</span>
                   </div>
                   <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-black"
                       style={{ width: `${percent}%` }}
                     />
@@ -462,11 +489,10 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                         <tr key={stylist.name} className="hover:bg-gray-50/50 transition-colors">
                           <td className="py-3 px-4 text-center font-bold text-gray-400">
                             {isTopThree ? (
-                              <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold ${
-                                index === 0 ? 'bg-amber-100 text-amber-800' :
-                                index === 1 ? 'bg-slate-200 text-slate-800' :
-                                'bg-orange-100 text-orange-850'
-                              }`}>
+                              <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold ${index === 0 ? 'bg-amber-100 text-amber-800' :
+                                  index === 1 ? 'bg-slate-200 text-slate-800' :
+                                    'bg-orange-100 text-orange-850'
+                                }`}>
                                 {index + 1}
                               </span>
                             ) : (
