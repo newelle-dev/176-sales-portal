@@ -17,6 +17,7 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          department: string | null
           email: string
           id: string
           name: string
@@ -25,6 +26,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          department?: string | null
           email: string
           id: string
           name: string
@@ -33,6 +35,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          department?: string | null
           email?: string
           id?: string
           name?: string
@@ -43,67 +46,70 @@ export type Database = {
       }
       targets: {
         Row: {
-          year: number
-          target_amount: number
           created_at: string
+          department: string
+          target_amount: number
+          year: number
         }
         Insert: {
-          year: number
-          target_amount?: number
           created_at?: string
+          department?: string
+          target_amount?: number
+          year: number
         }
         Update: {
-          year?: number
-          target_amount?: number
           created_at?: string
+          department?: string
+          target_amount?: number
+          year?: number
         }
         Relationships: []
       }
       transactions: {
         Row: {
           amount: number
-          deduction: number
+          branch: string | null
           created_at: string
           customer_name: string
+          deduction: number
+          employee_name: string
           id: string
           item_description: string
           profile_id: string | null
+          quantity: number | null
           reference_no: string
           transaction_date: string
           type: string
-          employee_name: string
-          branch: string | null
-          quantity: number
         }
         Insert: {
-          amount: number
-          deduction?: number
+          amount?: number
+          branch?: string | null
           created_at?: string
           customer_name: string
+          deduction?: number
+          employee_name: string
           id?: string
           item_description: string
           profile_id?: string | null
+          quantity?: number | null
           reference_no: string
           transaction_date: string
           type: string
-          employee_name: string
-          branch?: string | null
-          quantity?: number
         }
         Update: {
           amount?: number
-          deduction?: number
+          branch?: string | null
           created_at?: string
           customer_name?: string
+          deduction?: number
+          employee_name?: string
           id?: string
           item_description?: string
           profile_id?: string | null
+          quantity?: number | null
           reference_no?: string
           transaction_date?: string
           type?: string
-          employee_name?: string
-          branch?: string | null
-          quantity?: number
         }
         Relationships: [
           {
@@ -126,10 +132,20 @@ export type Database = {
           employee_name: string
         }[]
       }
+      get_sales_by_department: {
+        Args: {
+          end_date: string
+          start_date: string
+        }
+        Returns: {
+          department: string
+          sales_sum: number
+        }[]
+      }
       get_sales_sum: {
         Args: {
-          start_date: string
           end_date: string
+          start_date: string
         }
         Returns: number
       }

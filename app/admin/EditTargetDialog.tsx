@@ -17,31 +17,53 @@ import { Settings2, Loader2 } from 'lucide-react';
 
 interface EditTargetDialogProps {
   year: number;
-  initialTarget: number;
+  initialTotal: number;
+  initialHair: number;
+  initialNails: number;
+  initialArtistryLash: number;
 }
 
-export default function EditTargetDialog({ year, initialTarget }: EditTargetDialogProps) {
+export default function EditTargetDialog({
+  year,
+  initialTotal,
+  initialHair,
+  initialNails,
+  initialArtistryLash,
+}: EditTargetDialogProps) {
   const [open, setOpen] = React.useState(false);
-  const [targetVal, setTargetVal] = React.useState(initialTarget.toString());
+  const [hairVal, setHairVal] = React.useState(initialHair.toString());
+  const [nailsVal, setNailsVal] = React.useState(initialNails.toString());
+  const [artistryLashVal, setArtistryLashVal] = React.useState(initialArtistryLash.toString());
   const [isPending, startTransition] = React.useTransition();
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    setTargetVal(initialTarget.toString());
-  }, [initialTarget]);
+    setHairVal(initialHair.toString());
+    setNailsVal(initialNails.toString());
+    setArtistryLashVal(initialArtistryLash.toString());
+  }, [initialHair, initialNails, initialArtistryLash]);
+
+  const hairNum = parseFloat(hairVal) || 0;
+  const nailsNum = parseFloat(nailsVal) || 0;
+  const artistryLashNum = parseFloat(artistryLashVal) || 0;
+  const totalVal = hairNum + nailsNum + artistryLashNum;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    const numericVal = parseFloat(targetVal);
 
-    if (isNaN(numericVal) || numericVal < 0) {
-      setError('Please enter a valid positive number');
+    if (hairNum < 0 || nailsNum < 0 || artistryLashNum < 0) {
+      setError('Targets must be positive numbers');
       return;
     }
 
     startTransition(async () => {
-      const res = await updateYearlyTargetAction(year, numericVal);
+      const res = await updateYearlyTargetAction(year, {
+        TOTAL: totalVal,
+        HAIR: hairNum,
+        NAILS: nailsNum,
+        ARTISTRY_LASH: artistryLashNum,
+      });
       if (res.error) {
         setError(res.error);
       } else {
@@ -62,30 +84,77 @@ export default function EditTargetDialog({ year, initialTarget }: EditTargetDial
           Configure Target
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-white border border-gray-150 rounded-xl shadow-lg p-5">
+      <DialogContent className="sm:max-w-lg bg-white border border-gray-150 rounded-xl shadow-lg p-5">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
-            <DialogTitle className="text-base font-bold text-gray-900">Set Sales Target</DialogTitle>
+            <DialogTitle className="text-base font-bold text-gray-900">Configure Sales Targets</DialogTitle>
             <DialogDescription className="text-xs text-gray-400">
-              Configure the overall salon yearly sales target for the year {year}. (Excluding deductions).
+              Configure department-level yearly targets for the year {year}. (Excluding deductions).
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-1">
-            <label htmlFor="target-input" className="text-xs font-bold text-gray-500 block uppercase tracking-wider">
-              Year {year} Target (RM)
-            </label>
-            <Input
-              id="target-input"
-              type="number"
-              step="any"
-              min="0"
-              placeholder="e.g. 1200000"
-              value={targetVal}
-              onChange={(e) => setTargetVal(e.target.value)}
-              disabled={isPending}
-              className="bg-white border-gray-200 focus:border-black text-gray-900 rounded-lg text-sm px-3 h-10 w-full"
-            />
+          <div className="space-y-4 mb-2">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="space-y-1">
+                <label htmlFor="hair-target" className="text-[10px] font-bold text-gray-500 block uppercase tracking-wider">
+                  Hair (RM)
+                </label>
+                <Input
+                  id="hair-target"
+                  type="number"
+                  step="any"
+                  min="0"
+                  placeholder="e.g. 5044500"
+                  value={hairVal}
+                  onChange={(e) => setHairVal(e.target.value)}
+                  disabled={isPending}
+                  className="bg-white border-gray-200 focus:border-black text-gray-900 rounded-lg text-xs px-3 h-9 w-full"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label htmlFor="nails-target" className="text-[10px] font-bold text-gray-500 block uppercase tracking-wider">
+                  Nails (RM)
+                </label>
+                <Input
+                  id="nails-target"
+                  type="number"
+                  step="any"
+                  min="0"
+                  placeholder="e.g. 1561500"
+                  value={nailsVal}
+                  onChange={(e) => setNailsVal(e.target.value)}
+                  disabled={isPending}
+                  className="bg-white border-gray-200 focus:border-black text-gray-900 rounded-lg text-xs px-3 h-9 w-full"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label htmlFor="lash-target" className="text-[10px] font-bold text-gray-500 block uppercase tracking-wider">
+                  Artistry/Lash (RM)
+                </label>
+                <Input
+                  id="lash-target"
+                  type="number"
+                  step="any"
+                  min="0"
+                  placeholder="e.g. 2394000"
+                  value={artistryLashVal}
+                  onChange={(e) => setArtistryLashVal(e.target.value)}
+                  disabled={isPending}
+                  className="bg-white border-gray-200 focus:border-black text-gray-900 rounded-lg text-xs px-3 h-9 w-full"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1 bg-gray-50 p-3 rounded-lg border border-gray-150">
+              <span className="text-[10px] font-bold text-gray-450 block uppercase tracking-wider">
+                Calculated Total Target (RM)
+              </span>
+              <div className="text-base font-extrabold text-gray-900 select-none">
+                RM {totalVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+            </div>
           </div>
 
           {error && <p className="text-xs font-semibold text-red-500">{error}</p>}
@@ -106,7 +175,7 @@ export default function EditTargetDialog({ year, initialTarget }: EditTargetDial
               className="bg-black hover:bg-gray-800 text-white h-9 text-xs flex items-center gap-1.5 px-4 font-semibold rounded-lg"
             >
               {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              Save Target
+              Save Targets
             </Button>
           </DialogFooter>
         </form>

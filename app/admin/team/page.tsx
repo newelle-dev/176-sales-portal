@@ -13,11 +13,11 @@ export default async function TeamPage() {
     redirect('/login');
   }
 
-  // Fetch all profiles where role is stylist
+  // Fetch all profiles (admins and stylists)
   const { data: stylists } = await supabase
     .from('profiles')
     .select('*')
-    .eq('role', 'stylist')
+    .order('role', { ascending: true })
     .order('name', { ascending: true });
 
   // Fetch distinct employee names from transactions

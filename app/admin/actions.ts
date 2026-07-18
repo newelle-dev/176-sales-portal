@@ -577,12 +577,17 @@ export async function clearTransactionsAction(): Promise<{ success?: boolean; er
 }
 
 /**
- * Server Action: Updates or inserts the sales target for a specific year.
+ * Server Action: Updates or inserts the sales targets for a specific year and its departments.
  * Only callable by authenticated admin users.
  */
 export async function updateYearlyTargetAction(
   year: number,
-  amount: number
+  targets: {
+    TOTAL: number;
+    HAIR: number;
+    NAILS: number;
+    ARTISTRY_LASH: number;
+  }
 ): Promise<{ success?: boolean; error?: string }> {
   try {
     const supabase = await createClient();
@@ -604,9 +609,16 @@ export async function updateYearlyTargetAction(
       return { error: 'Unauthorized: Only admins can manage targets.' };
     }
 
+    const rows = [
+      { year, department: 'TOTAL', target_amount: targets.TOTAL },
+      { year, department: 'HAIR', target_amount: targets.HAIR },
+      { year, department: 'NAILS', target_amount: targets.NAILS },
+      { year, department: 'ARTISTRY_LASH', target_amount: targets.ARTISTRY_LASH },
+    ];
+
     const { error } = await supabase
       .from('targets')
-      .upsert({ year, target_amount: amount }, { onConflict: 'year' });
+      .upsert(rows, { onConflict: 'year,department' });
 
     if (error) {
       return { error: `Failed to update target: ${error.message}` };

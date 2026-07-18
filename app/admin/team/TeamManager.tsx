@@ -137,6 +137,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                   <th scope="col" className="px-6 py-3">Stylist Name</th>
                   <th scope="col" className="px-6 py-3">Email Address</th>
                   <th scope="col" className="px-6 py-3 hidden md:table-cell">Role</th>
+                  <th scope="col" className="px-6 py-3 hidden md:table-cell">Department</th>
                   <th scope="col" className="px-6 py-3 hidden sm:table-cell">Joined Date</th>
                   <th scope="col" className="px-6 py-3 text-right">Actions</th>
                 </tr>
@@ -164,6 +165,15 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600 uppercase tracking-wider select-none">
                         {stylist.role}
                       </span>
+                    </td>
+                    <td className="px-6 py-3.5 hidden md:table-cell">
+                      {stylist.department ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 uppercase tracking-wider select-none">
+                          {stylist.department === 'ARTISTRY_LASH' ? 'Artistry & Lash' : stylist.department}
+                        </span>
+                      ) : (
+                        <span className="text-gray-455 italic font-medium select-none">—</span>
+                      )}
                     </td>
                     <td className="px-6 py-3.5 text-gray-400 hidden sm:table-cell">
                       {new Date(stylist.created_at).toLocaleDateString('en-US', {
@@ -295,6 +305,38 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                 />
               </div>
 
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="add-role" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Role</label>
+                  <select
+                    id="add-role"
+                    name="role"
+                    required
+                    defaultValue="stylist"
+                    className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                    disabled={isAddPending}
+                  >
+                    <option value="stylist">Stylist</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="add-department" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Department</label>
+                  <select
+                    id="add-department"
+                    name="department"
+                    className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                    disabled={isAddPending}
+                  >
+                    <option value="">None (Admin/Unassigned)</option>
+                    <option value="HAIR">Hair</option>
+                    <option value="NAILS">Nails</option>
+                    <option value="ARTISTRY_LASH">Artistry & Lash</option>
+                  </select>
+                </div>
+              </div>
+
               <WessNameSelector
                 transactionNames={transactionNames}
                 selectedNames={selectedWessNames}
@@ -409,6 +451,39 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                     disabled={isEditPending}
                   />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label htmlFor="edit-role" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Role</label>
+                    <select
+                      id="edit-role"
+                      name="role"
+                      required
+                      defaultValue={selectedStylist.role}
+                      className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                      disabled={isEditPending}
+                    >
+                      <option value="stylist">Stylist</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label htmlFor="edit-department" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Department</label>
+                    <select
+                      id="edit-department"
+                      name="department"
+                      defaultValue={selectedStylist.department || ''}
+                      className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                      disabled={isEditPending}
+                    >
+                      <option value="">None (Admin/Unassigned)</option>
+                      <option value="HAIR">Hair</option>
+                      <option value="NAILS">Nails</option>
+                      <option value="ARTISTRY_LASH">Artistry & Lash</option>
+                    </select>
+                  </div>
                 </div>
 
                 <WessNameSelector
