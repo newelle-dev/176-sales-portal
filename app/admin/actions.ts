@@ -361,3 +361,45 @@ export async function uploadCsvAction(formData: FormData): Promise<UploadState> 
     return { error: error.message || 'An unexpected error occurred during import.' };
   }
 }
+
+export async function clearTransactionsAction(): Promise<{ success?: boolean; error?: string }> {
+  try {
+    // 1. Authenticate user and verify admin role
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: 'Unauthorized: No active session.' };
+    }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (!profile || profile.role !== 'admin') {
+      return { error: 'Unauthorized: Only admins can clear transactions.' };
+    }
+
+    // 2. Clear all transactions using the admin client
+    const adminClient = createAdminClient();
+    const { error: deleteError } = await adminClient
+      .from('transactions')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000');
+
+    if (deleteError) {
+      return { error: `Failed to clear transactions: ${deleteError.message}` };
+    }
+
+    revalidatePath('/admin');
+    revalidatePath('/dashboard');
+    return { success: true };
+  } catch (error: any) {
+    return { error: error.message || 'An unexpected error occurred while clearing transactions.' };
+  }
+}
+

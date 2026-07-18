@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import UploadZone from './UploadZone';
+import DangerZone from './DangerZone';
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
@@ -37,6 +38,9 @@ export default async function AdminDashboardPage() {
           <UploadZone />
         </CardContent>
       </Card>
+
+      <DangerZone />
     </main>
   );
 }
+
