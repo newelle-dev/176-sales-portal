@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Search, Plus, Edit, Trash2, User, Loader2, AlertCircle } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, User, Loader2, AlertCircle, ChevronDown } from 'lucide-react';
 import { createStylistAction, updateStylistAction, deleteStylistAction } from './actions';
 import WessNameSelector from '@/components/admin/WessNameSelector';
 import type { Tables } from '@/types/database.types';
@@ -48,7 +48,8 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
   const filteredStylists = initialStylists.filter(
     (stylist) =>
       stylist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stylist.email.toLowerCase().includes(searchQuery.toLowerCase()),
+      stylist.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      stylist.username.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -111,7 +112,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             className="pl-9 bg-gray-50/50 border-gray-200 focus-visible:bg-white w-full h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Search stylists by name or email"
+            aria-label="Search stylists by name, email, or username"
           />
         </div>
         <Button
@@ -151,7 +152,12 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                           {stylist.name[0].toUpperCase()}
                         </div>
                         <div>
-                          <div className="font-semibold text-gray-900 text-sm">{stylist.name}</div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-gray-900 text-sm">{stylist.name}</span>
+                            <span className="text-[10px] font-bold text-gray-450 bg-gray-50 px-1.5 py-0.5 rounded border border-gray-150 select-all">
+                              @{stylist.username}
+                            </span>
+                          </div>
                           {stylist.wess_names && stylist.wess_names.length > 0 && (
                             <div className="text-[10px] text-gray-400 font-medium select-all mt-0.5">
                               Matches: {stylist.wess_names.join(', ')}
@@ -250,8 +256,14 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
           }
         }}
       >
-        <DialogContent className="bg-white border border-gray-200 rounded-xl p-6 max-w-md w-full gap-0 select-none">
+        <DialogContent className="bg-white border border-gray-200 rounded-xl p-6 max-w-lg w-full gap-0 select-none">
           <form onSubmit={handleAddSubmit}>
+            {/* Dummy inputs to capture autofill */}
+            <div className="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+              <input type="text" tabIndex={-1} autoComplete="username" />
+              <input type="password" tabIndex={-1} autoComplete="current-password" />
+            </div>
+
             <DialogHeader className="mb-4">
               <DialogTitle className="text-gray-900 font-bold text-lg">Add New Stylist</DialogTitle>
               <DialogDescription className="text-gray-400 text-xs mt-1">
@@ -266,7 +278,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
               </div>
             )}
 
-            <div className="space-y-4 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3.5 mb-5">
               <div className="space-y-1.5">
                 <label htmlFor="add-name" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Full Name</label>
                 <Input
@@ -277,6 +289,21 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                   placeholder="e.g. Bangsar Stylist"
                   className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                   disabled={isAddPending}
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="add-username" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Username</label>
+                <Input
+                  id="add-username"
+                  name="username"
+                  type="text"
+                  required
+                  placeholder="e.g. bangsar_stylist"
+                  className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
+                  disabled={isAddPending}
+                  autoComplete="new-username"
                 />
               </div>
 
@@ -290,6 +317,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                   placeholder="e.g. stylist@176avenue.com"
                   className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                   disabled={isAddPending}
+                  autoComplete="new-email"
                 />
               </div>
 
@@ -304,31 +332,35 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                   placeholder="Minimum 6 characters"
                   className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                   disabled={isAddPending}
+                  autoComplete="new-password"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label htmlFor="add-role" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Role</label>
+              <div className="space-y-1.5">
+                <label htmlFor="add-role" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Role</label>
+                <div className="relative">
                   <select
                     id="add-role"
                     name="role"
                     required
                     defaultValue="stylist"
-                    className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                    className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 appearance-none cursor-pointer"
                     disabled={isAddPending}
                   >
                     <option value="stylist">Stylist</option>
                     <option value="admin">Admin</option>
                   </select>
+                  <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
                 </div>
+              </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="add-department" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Department</label>
+              <div className="space-y-1.5">
+                <label htmlFor="add-department" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Department</label>
+                <div className="relative">
                   <select
                     id="add-department"
                     name="department"
-                    className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                    className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 appearance-none cursor-pointer"
                     disabled={isAddPending}
                   >
                     <option value="">None (Admin/Unassigned)</option>
@@ -336,17 +368,20 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                     <option value="NAILS">Nails</option>
                     <option value="ARTISTRY_LASH">Artistry & Lash</option>
                   </select>
+                  <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
                 </div>
               </div>
 
-              <WessNameSelector
-                transactionNames={transactionNames}
-                selectedNames={selectedWessNames}
-                onSelectionChange={setSelectedWessNames}
-                searchValue={wessSearch}
-                onSearchChange={setWessSearch}
-                disabled={isAddPending}
-              />
+              <div className="sm:col-span-2 mt-1">
+                <WessNameSelector
+                  transactionNames={transactionNames}
+                  selectedNames={selectedWessNames}
+                  onSelectionChange={setSelectedWessNames}
+                  searchValue={wessSearch}
+                  onSearchChange={setWessSearch}
+                  disabled={isAddPending}
+                />
+              </div>
             </div>
 
             <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">
@@ -396,9 +431,15 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
           }
         }}
       >
-        <DialogContent className="bg-white border border-gray-200 rounded-xl p-6 max-w-md w-full gap-0 select-none">
+        <DialogContent className="bg-white border border-gray-200 rounded-xl p-6 max-w-lg w-full gap-0 select-none">
           {selectedStylist && (
             <form onSubmit={handleEditSubmit}>
+              {/* Dummy inputs to capture autofill */}
+              <div className="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+                <input type="text" tabIndex={-1} autoComplete="username" />
+                <input type="password" tabIndex={-1} autoComplete="current-password" />
+              </div>
+
               <DialogHeader className="mb-4">
                 <DialogTitle className="text-gray-900 font-bold text-lg">Edit Stylist Profile</DialogTitle>
                 <DialogDescription className="text-gray-400 text-xs mt-1">
@@ -413,7 +454,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                 </div>
               )}
 
-              <div className="space-y-4 mb-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3.5 mb-5">
                 <div className="space-y-1.5">
                   <label htmlFor="edit-name" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Full Name</label>
                   <Input
@@ -424,6 +465,21 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                     defaultValue={selectedStylist.name}
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                     disabled={isEditPending}
+                    autoComplete="off"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="edit-username" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Username</label>
+                  <Input
+                    id="edit-username"
+                    name="username"
+                    type="text"
+                    required
+                    defaultValue={selectedStylist.username}
+                    className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
+                    disabled={isEditPending}
+                    autoComplete="new-username"
                   />
                 </div>
 
@@ -437,6 +493,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                     defaultValue={selectedStylist.email}
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                     disabled={isEditPending}
+                    autoComplete="new-email"
                   />
                 </div>
 
@@ -452,32 +509,36 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                     placeholder="Leave blank to keep current"
                     className="bg-gray-50/50 border-gray-200 h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
                     disabled={isEditPending}
+                    autoComplete="new-password"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label htmlFor="edit-role" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Role</label>
+                <div className="space-y-1.5">
+                  <label htmlFor="edit-role" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Role</label>
+                  <div className="relative">
                     <select
                       id="edit-role"
                       name="role"
                       required
                       defaultValue={selectedStylist.role}
-                      className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                      className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 appearance-none cursor-pointer"
                       disabled={isEditPending}
                     >
                       <option value="stylist">Stylist</option>
                       <option value="admin">Admin</option>
                     </select>
+                    <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
                   </div>
+                </div>
 
-                  <div className="space-y-1.5">
-                    <label htmlFor="edit-department" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Department</label>
+                <div className="space-y-1.5">
+                  <label htmlFor="edit-department" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Department</label>
+                  <div className="relative">
                     <select
                       id="edit-department"
                       name="department"
                       defaultValue={selectedStylist.department || ''}
-                      className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
+                      className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 appearance-none cursor-pointer"
                       disabled={isEditPending}
                     >
                       <option value="">None (Admin/Unassigned)</option>
@@ -485,17 +546,20 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                       <option value="NAILS">Nails</option>
                       <option value="ARTISTRY_LASH">Artistry & Lash</option>
                     </select>
+                    <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
-                <WessNameSelector
-                  transactionNames={transactionNames}
-                  selectedNames={selectedWessNames}
-                  onSelectionChange={setSelectedWessNames}
-                  searchValue={wessSearch}
-                  onSearchChange={setWessSearch}
-                  disabled={isEditPending}
-                />
+                <div className="sm:col-span-2 mt-1">
+                  <WessNameSelector
+                    transactionNames={transactionNames}
+                    selectedNames={selectedWessNames}
+                    onSelectionChange={setSelectedWessNames}
+                    searchValue={wessSearch}
+                    onSearchChange={setWessSearch}
+                    disabled={isEditPending}
+                  />
+                </div>
               </div>
 
               <DialogFooter className="gap-2 pt-2 border-t border-gray-100 flex flex-row justify-end items-center">

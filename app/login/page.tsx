@@ -38,19 +38,19 @@ export default function LoginPage() {
             <form action={formAction} className="space-y-4">
               <div className="space-y-1.5">
                 <label 
-                  htmlFor="email" 
+                  htmlFor="username" 
                   className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block"
                 >
-                  Email Address
+                  Username
                 </label>
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="name@176avenue.com"
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder="e.g. grace"
                   required
                   autoFocus
-                  autoComplete="email"
+                  autoComplete="username"
                   disabled={isPending}
                   className="h-10 px-3 bg-gray-50/50 border-gray-200 focus-visible:border-black focus-visible:ring-black/5 text-sm"
                 />

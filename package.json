@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync-stylists": "node scripts/sync_stylists.js",
+    "create-admin": "node scripts/create_admin.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

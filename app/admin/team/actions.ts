@@ -37,13 +37,20 @@ export async function createStylistAction(prevState: ActionState | null, formDat
 
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
+  const usernameRaw = formData.get('username') as string;
   const password = formData.get('password') as string;
   const wessNamesRaw = formData.get('wess_names') as string;
   const department = (formData.get('department') as string) || null;
   const role = (formData.get('role') as string) || 'stylist';
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !usernameRaw) {
     return { error: 'All fields are required.' };
+  }
+
+  const username = usernameRaw.trim().toLowerCase();
+  const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
+  if (!usernameRegex.test(username)) {
+    return { error: 'Username must be between 3 and 20 characters and contain only letters, numbers, underscores, or hyphens.' };
   }
 
   if (department && !['HAIR', 'NAILS', 'ARTISTRY_LASH'].includes(department)) {
@@ -61,11 +68,22 @@ export async function createStylistAction(prevState: ActionState | null, formDat
   try {
     const adminClient = createAdminClient();
 
+    // Check if username is already taken
+    const { data: existingUser } = await adminClient
+      .from('profiles')
+      .select('id')
+      .eq('username', username)
+      .maybeSingle();
+
+    if (existingUser) {
+      return { error: 'Username is already taken.' };
+    }
+
     // Create the user in auth.users
     const { data, error } = await adminClient.auth.admin.createUser({
       email,
       password,
-      user_metadata: { name, role, department },
+      user_metadata: { name, role, department, username },
       email_confirm: true,
     });
 
@@ -77,6 +95,7 @@ export async function createStylistAction(prevState: ActionState | null, formDat
       const { error: dbUpdateError } = await adminClient
         .from('profiles')
         .update({ 
+          username,
           wess_names: wessNamesArray,
           department,
           role
@@ -123,13 +142,20 @@ export async function updateStylistAction(
   const { id, formData } = payload;
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
+  const usernameRaw = formData.get('username') as string;
   const password = formData.get('password') as string; // Optional
   const wessNamesRaw = formData.get('wess_names') as string;
   const department = (formData.get('department') as string) || null;
   const role = (formData.get('role') as string) || 'stylist';
 
-  if (!name || !email) {
-    return { error: 'Name and email are required.' };
+  if (!name || !email || !usernameRaw) {
+    return { error: 'Name, email, and username are required.' };
+  }
+
+  const username = usernameRaw.trim().toLowerCase();
+  const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
+  if (!usernameRegex.test(username)) {
+    return { error: 'Username must be between 3 and 20 characters and contain only letters, numbers, underscores, or hyphens.' };
   }
 
   if (department && !['HAIR', 'NAILS', 'ARTISTRY_LASH'].includes(department)) {
@@ -147,8 +173,20 @@ export async function updateStylistAction(
   try {
     const adminClient = createAdminClient();
 
+    // Check if username is already taken by another user
+    const { data: existingUser } = await adminClient
+      .from('profiles')
+      .select('id')
+      .eq('username', username)
+      .neq('id', id)
+      .maybeSingle();
+
+    if (existingUser) {
+      return { error: 'Username is already taken.' };
+    }
+
     // Update email, password, and user_metadata in auth
-    const updateData: { email?: string; password?: string; user_metadata?: { name: string; role: string; department: string | null } } = {};
+    const updateData: { email?: string; password?: string; user_metadata?: { name: string; role: string; department: string | null; username: string } } = {};
     if (password && password.trim() !== '') {
       updateData.password = password.trim();
     }
@@ -169,7 +207,7 @@ export async function updateStylistAction(
     }
 
     // Always keep Auth metadata synced
-    updateData.user_metadata = { name, role, department };
+    updateData.user_metadata = { name, role, department, username };
 
     const { error: authError } = await adminClient.auth.admin.updateUserById(id, updateData);
     if (authError) {
@@ -187,10 +225,10 @@ export async function updateStylistAction(
       }
     }
 
-    // Update name, role, department and wess_names in profiles
+    // Update name, role, department, username and wess_names in profiles
     const { error: nameError } = await adminClient
       .from('profiles')
-      .update({ name, role, department, wess_names: wessNamesArray })
+      .update({ name, role, department, username, wess_names: wessNamesArray })
       .eq('id', id);
 
     if (nameError) {

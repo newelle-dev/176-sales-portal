@@ -22,6 +22,7 @@ export type Database = {
           id: string
           name: string
           role: string
+          username: string
           wess_names: string[]
         }
         Insert: {
@@ -31,6 +32,7 @@ export type Database = {
           id: string
           name: string
           role?: string
+          username: string
           wess_names?: string[]
         }
         Update: {
@@ -40,6 +42,7 @@ export type Database = {
           id?: string
           name?: string
           role?: string
+          username?: string
           wess_names?: string[]
         }
         Relationships: []
