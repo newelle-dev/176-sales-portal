@@ -7,7 +7,7 @@ change.
 
 - V1 Core Setup
 
-## Current Goal
+## Current Goal 
 
 - Build foundation & implement authentication/database integration
 
