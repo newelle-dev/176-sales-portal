@@ -37,8 +37,8 @@ export default function LoginPage() {
           <CardContent>
             <form action={formAction} className="space-y-4">
               <div className="space-y-1.5">
-                <label 
-                  htmlFor="username" 
+                <label
+                  htmlFor="username"
                   className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block"
                 >
                   Username
@@ -47,7 +47,7 @@ export default function LoginPage() {
                   id="username"
                   name="username"
                   type="text"
-                  placeholder="e.g. grace"
+                  placeholder="Username"
                   required
                   autoFocus
                   autoComplete="username"
@@ -56,8 +56,8 @@ export default function LoginPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label 
-                  htmlFor="password" 
+                <label
+                  htmlFor="password"
                   className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block"
                 >
                   Password
@@ -66,7 +66,7 @@ export default function LoginPage() {
                   id="password"
                   name="password"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="•••••••••••••••"
                   required
                   autoComplete="current-password"
                   disabled={isPending}
@@ -75,7 +75,7 @@ export default function LoginPage() {
               </div>
 
               {state?.error && (
-                <div 
+                <div
                   className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-xs text-destructive animate-in fade-in slide-in-from-top-1 duration-200"
                   role="alert"
                 >

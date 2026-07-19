@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { logoutAction } from '@/app/login/actions';
+import { ChangePasswordDialog } from '@/components/ChangePasswordDialog';
+import { Key } from 'lucide-react';
 
 export default function AdminHeader() {
   const pathname = usePathname();
@@ -43,11 +45,21 @@ export default function AdminHeader() {
           Team Management
         </Link>
       </nav>
-      <form action={logoutAction} className="sm:ml-0">
-        <Button variant="outline" size="sm" className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-8 w-full sm:w-auto">
-          Sign Out
-        </Button>
-      </form>
+      <div className="flex items-center gap-2 w-full sm:w-auto sm:ml-0">
+        <ChangePasswordDialog
+          trigger={
+            <Button variant="outline" size="sm" className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-8 w-full sm:w-auto flex items-center justify-center gap-1.5 cursor-pointer">
+              <Key className="w-3.5 h-3.5" />
+              <span>Password</span>
+            </Button>
+          }
+        />
+        <form action={logoutAction} className="w-full sm:w-auto">
+          <Button variant="outline" size="sm" className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-8 w-full sm:w-auto cursor-pointer">
+            Sign Out
+          </Button>
+        </form>
+      </div>
     </header>
   );
 }

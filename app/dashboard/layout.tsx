@@ -2,6 +2,8 @@ import { getCachedSession } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { logoutAction } from '../login/actions';
 import { Button } from '@/components/ui/button';
+import { ChangePasswordDialog } from '@/components/ChangePasswordDialog';
+import { Key } from 'lucide-react';
 
 export default async function DashboardLayout({
   children,
@@ -39,6 +41,15 @@ export default async function DashboardLayout({
           <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-xs font-bold text-gray-700 tracking-wider">
             {initials}
           </div>
+          
+          <ChangePasswordDialog
+            trigger={
+              <Button variant="outline" size="sm" className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-2 sm:px-3 h-8 cursor-pointer flex items-center gap-1.5">
+                <Key className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Password</span>
+              </Button>
+            }
+          />
           
           <form action={logoutAction}>
             <Button variant="outline" size="sm" className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-2.5 sm:px-3 h-8 cursor-pointer">

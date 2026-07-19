@@ -68,3 +68,61 @@ export async function logoutAction() {
   await supabase.auth.signOut();
   redirect('/login');
 }
+
+/**
+ * Re-authenticates the user with their current password and updates it to the new password.
+ * Logs the user out on success to force re-login.
+ */
+export async function changePasswordAction(
+  prevState: ActionState | null,
+  formData: FormData
+): Promise<ActionState> {
+  const currentPassword = formData.get('currentPassword') as string;
+  const newPassword = formData.get('newPassword') as string;
+  const confirmPassword = formData.get('confirmPassword') as string;
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return { error: 'All fields are required.' };
+  }
+
+  if (newPassword.length < 8) {
+    return { error: 'New password must be at least 8 characters long.' };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return { error: 'New passwords do not match.' };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user || !user.email) {
+    return { error: 'Not authenticated.' };
+  }
+
+  // Re-authenticate user to verify current password
+  const { error: verifyError } = await supabase.auth.signInWithPassword({
+    email: user.email,
+    password: currentPassword,
+  });
+
+  if (verifyError) {
+    return { error: 'Incorrect current password. Please try again.' };
+  }
+
+  // Update password
+  const { error: updateError } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (updateError) {
+    return { error: updateError.message };
+  }
+
+  // Log out and redirect
+  await supabase.auth.signOut();
+  redirect('/login');
+}
+
