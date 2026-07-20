@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Search, Plus, Edit, Trash2, User, Loader2, AlertCircle, ChevronDown } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, User, Loader2, AlertCircle, ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { createStylistAction, updateStylistAction, deleteStylistAction } from './actions';
 import WessNameSelector from '@/components/admin/WessNameSelector';
 import type { Tables } from '@/types/database.types';
@@ -26,6 +26,9 @@ interface TeamManagerProps {
 
 export default function TeamManager({ initialStylists, transactionNames }: TeamManagerProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [departmentFilter, setDepartmentFilter] = useState('all');
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -44,13 +47,68 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
   const [wessSearch, setWessSearch] = useState('');
   const [selectedWessNames, setSelectedWessNames] = useState<string[]>([]);
 
-  // Filter stylists based on search query
-  const filteredStylists = initialStylists.filter(
-    (stylist) =>
+  // Filter stylists based on search query, role, and department
+  const filteredStylists = initialStylists.filter((stylist) => {
+    const matchesSearch =
       stylist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       stylist.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stylist.username.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+      stylist.username.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesRole = roleFilter === 'all' || stylist.role === roleFilter;
+
+    const matchesDepartment =
+      departmentFilter === 'all' ||
+      (departmentFilter === 'unassigned' && !stylist.department) ||
+      stylist.department === departmentFilter;
+
+    return matchesSearch && matchesRole && matchesDepartment;
+  });
+
+  // Pagination calculations
+  const ITEMS_PER_PAGE = 10;
+  const totalPages = Math.max(1, Math.ceil(filteredStylists.length / ITEMS_PER_PAGE));
+  const activePage = Math.min(currentPage, totalPages);
+  const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedStylists = filteredStylists.slice(startIndex, endIndex);
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      let start = Math.max(2, activePage - 1);
+      let end = Math.min(totalPages - 1, activePage + 1);
+      
+      if (activePage <= 2) {
+        end = 3;
+      } else if (activePage >= totalPages - 1) {
+        start = totalPages - 2;
+      }
+      
+      if (start > 2) {
+        pages.push('ellipsis-start');
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (end < totalPages - 1) {
+        pages.push('ellipsis-end');
+      }
+      
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
 
   const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,19 +160,65 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
 
   return (
     <div className="space-y-6">
-      {/* Search & Actions Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm">
-        <div className="relative w-full sm:max-w-xs">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-          <Input
-            type="search"
-            placeholder="Search stylists..."
-            className="pl-9 bg-gray-50/50 border-gray-200 focus-visible:bg-white w-full h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Search stylists by name, email, or username"
-          />
+      {/* Search, Filters & Actions Bar */}
+      <div className="flex flex-col lg:flex-row gap-3.5 justify-between items-start lg:items-center bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto flex-1 items-stretch sm:items-center">
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            <Input
+              type="search"
+              placeholder="Search stylists..."
+              className="pl-9 bg-gray-50/50 border-gray-200 focus-visible:bg-white w-full h-9 text-xs focus-visible:border-black focus-visible:ring-black/5"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
+              aria-label="Search stylists by name, email, or username"
+            />
+          </div>
+
+          <div className="flex flex-row gap-2.5 items-center w-full sm:w-auto">
+            {/* Role Filter */}
+            <div className="relative w-1/2 sm:w-36">
+              <select
+                value={roleFilter}
+                onChange={(e) => {
+                  setRoleFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 text-gray-900 appearance-none cursor-pointer"
+                aria-label="Filter stylists by role"
+              >
+                <option value="all">All Roles</option>
+                <option value="stylist">Stylists Only</option>
+                <option value="admin">Admins Only</option>
+              </select>
+              <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+            </div>
+
+            {/* Department Filter */}
+            <div className="relative w-1/2 sm:w-44">
+              <select
+                value={departmentFilter}
+                onChange={(e) => {
+                  setDepartmentFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 text-gray-900 appearance-none cursor-pointer"
+                aria-label="Filter stylists by department"
+              >
+                <option value="all">All Departments</option>
+                <option value="HAIR">Hair</option>
+                <option value="NAILS">Nails</option>
+                <option value="ARTISTRY_LASH">Artistry & Lash</option>
+                <option value="unassigned">None (Unassigned)</option>
+              </select>
+              <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+            </div>
+          </div>
         </div>
+
         <Button
           onClick={() => {
             setAddError(null);
@@ -122,7 +226,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             setSelectedWessNames([]);
             setIsAddOpen(true);
           }}
-          className="w-full sm:w-auto bg-black text-white hover:bg-slate-800 gap-1.5 h-9 px-4 text-xs font-semibold shadow-sm transition-all"
+          className="w-full lg:w-auto bg-black text-white hover:bg-slate-800 gap-1.5 h-9 px-4 text-xs font-semibold shadow-sm transition-all shrink-0 cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" /> Add Stylist
         </Button>
@@ -131,7 +235,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
       {/* Stylists Table/Grid */}
       <Card className="border-gray-200 bg-white shadow-sm overflow-hidden rounded-xl">
         <div className="overflow-x-auto">
-          {filteredStylists.length > 0 ? (
+          {paginatedStylists.length > 0 ? (
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-gray-150 bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-wider select-none">
@@ -144,7 +248,7 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-xs">
-                {filteredStylists.map((stylist) => (
+                {paginatedStylists.map((stylist) => (
                   <tr key={stylist.id} className="hover:bg-gray-50/30 transition-colors">
                     <td className="px-6 py-3.5">
                       <div className="flex items-center gap-3">
@@ -240,6 +344,117 @@ export default function TeamManager({ initialStylists, transactionNames }: TeamM
             </div>
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-3.5 border-t border-gray-150 bg-gray-50/20 text-xs text-gray-500 select-none">
+            {/* Mobile Layout */}
+            <div className="flex flex-row justify-between w-full sm:hidden gap-3.5">
+              <Button
+                variant="outline"
+                className="w-1/2 h-10 border-gray-200 text-gray-700 font-semibold text-xs flex items-center justify-center gap-1 cursor-pointer bg-white"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={activePage === 1}
+              >
+                <ChevronLeft className="h-3.5 w-3.5" /> Previous
+              </Button>
+              <Button
+                variant="outline"
+                className="w-1/2 h-10 border-gray-200 text-gray-700 font-semibold text-xs flex items-center justify-center gap-1 cursor-pointer bg-white"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={activePage === totalPages}
+              >
+                Next <ChevronRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between w-full">
+              <div>
+                <p className="text-xs text-gray-500 font-medium">
+                  Showing <span className="font-semibold text-gray-900">{startIndex + 1}</span> to{' '}
+                  <span className="font-semibold text-gray-900">
+                    {Math.min(endIndex, filteredStylists.length)}
+                  </span>{' '}
+                  of <span className="font-semibold text-gray-900">{filteredStylists.length}</span> stylists
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  className="border-gray-200 text-gray-500 hover:text-black hover:bg-gray-50 cursor-pointer bg-white"
+                  onClick={() => setCurrentPage(1)}
+                  disabled={activePage === 1}
+                  title="First Page"
+                >
+                  <ChevronsLeft className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  className="border-gray-200 text-gray-500 hover:text-black hover:bg-gray-50 cursor-pointer bg-white"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={activePage === 1}
+                  title="Previous Page"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                </Button>
+
+                {getPageNumbers().map((page, idx) => {
+                  if (page === 'ellipsis-start' || page === 'ellipsis-end') {
+                    return (
+                      <span
+                        key={`ellipsis-${idx}`}
+                        className="w-7 h-7 flex items-center justify-center text-gray-400 select-none text-xs font-semibold"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
+
+                  const isCurrent = activePage === page;
+                  return (
+                    <Button
+                      key={page}
+                      variant={isCurrent ? 'default' : 'outline'}
+                      size="icon-sm"
+                      className={
+                        isCurrent
+                          ? 'bg-black text-white hover:bg-slate-800 font-bold border-black cursor-pointer'
+                          : 'border-gray-200 text-gray-600 hover:text-black hover:bg-gray-50 font-medium cursor-pointer bg-white'
+                      }
+                      onClick={() => setCurrentPage(page as number)}
+                    >
+                      {page}
+                    </Button>
+                  );
+                })}
+
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  className="border-gray-200 text-gray-500 hover:text-black hover:bg-gray-50 cursor-pointer bg-white"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={activePage === totalPages}
+                  title="Next Page"
+                >
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  className="border-gray-200 text-gray-500 hover:text-black hover:bg-gray-50 cursor-pointer bg-white"
+                  onClick={() => setCurrentPage(totalPages)}
+                  disabled={activePage === totalPages}
+                  title="Last Page"
+                >
+                  <ChevronsRight className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* ------------------------------------------------------------------ */}
