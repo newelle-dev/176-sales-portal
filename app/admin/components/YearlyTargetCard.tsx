@@ -74,6 +74,15 @@ export default async function YearlyTargetCard({
   const ytdProgressPercent = annualTarget > 0 ? (ytdSales / annualTarget) * 100 : 0;
   const paceDifference = ytdProgressPercent - timePassedPercent;
 
+  const hairPct = hairTarget > 0 ? (hairYTDSales / hairTarget * 100) : 0;
+  const hairPaceDiff = hairPct - timePassedPercent;
+
+  const nailsPct = nailsTarget > 0 ? (nailsYTDSales / nailsTarget * 100) : 0;
+  const nailsPaceDiff = nailsPct - timePassedPercent;
+
+  const artistryLashPct = artistryLashTarget > 0 ? (artistryLashYTDSales / artistryLashTarget * 100) : 0;
+  const artistryLashPaceDiff = artistryLashPct - timePassedPercent;
+
   return (
     <Card className="border-gray-200 bg-white shadow-sm rounded-2xl overflow-hidden">
       <CardHeader className="pb-4">
@@ -118,44 +127,68 @@ export default async function YearlyTargetCard({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">YTD Nett Sales</span>
-                  <div className="text-3xl font-extrabold tracking-tight text-gray-900">
+                  <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
                     RM {ytdSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
                 </div>
                 <div className="space-y-1 sm:text-right">
                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Overall Salon Target</span>
-                  <div className="text-2xl font-extrabold text-gray-700">
+                  <div className="text-xl sm:text-2xl font-extrabold text-gray-700">
                     RM {annualTarget.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </div>
+                  {annualTarget > 0 && (
+                    <span className="text-[10px] sm:text-xs font-semibold text-gray-400 block select-none">
+                      (RM {(annualTarget / 312).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} / day)
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <div
-                  role="progressbar"
-                  aria-valuenow={Math.min(100, ytdProgressPercent)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label="Yearly Target Progress"
-                  className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden relative"
-                >
-                  {/* Time elapsed marker (dashed indicator overlay) */}
+                {/* Visual Legend */}
+                {isCurrentYear && (
+                  <div className="flex items-center justify-end gap-3 text-[10px] text-gray-400 font-bold select-none pb-0.5">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2.5 h-2 bg-black rounded-sm" />
+                      <span>YTD Sales</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-0.5 h-2.5 bg-slate-400 animate-pulse" />
+                      <span>Pace Target ({timePassedPercent.toFixed(1)}%)</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="relative py-1">
+                  {/* Progress bar container */}
+                  <div
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, ytdProgressPercent)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Yearly Target Progress"
+                    className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden"
+                  >
+                    <div
+                      className="h-full bg-black transition-all duration-550"
+                      style={{ width: `${Math.min(100, ytdProgressPercent)}%` }}
+                    />
+                  </div>
+                  {/* Time elapsed marker (Today indicator) extending above and below */}
                   {isCurrentYear && (
                     <div
-                      className="absolute top-0 bottom-0 border-r-2 border-dashed border-gray-450 z-10"
+                      className="absolute top-0 bottom-0 w-0.5 z-10 flex flex-col items-center justify-center animate-pulse"
                       style={{ left: `${timePassedPercent}%` }}
-                      title={`Current day of year: ${timePassedPercent.toFixed(1)}%`}
-                    />
+                      title={`Pace Target: ${timePassedPercent.toFixed(1)}%`}
+                    >
+                      <div className="w-0.5 h-[18px] bg-slate-400 shadow-[0_0_2px_rgba(255,255,255,1)] rounded-full" />
+                    </div>
                   )}
-                  <div
-                    className="h-full bg-black transition-all duration-550"
-                    style={{ width: `${Math.min(100, ytdProgressPercent)}%` }}
-                  />
                 </div>
                 <div className="flex items-center justify-between text-[11px] text-gray-400 font-semibold select-none">
                   <span>{ytdProgressPercent.toFixed(1)}% Achieved</span>
                   {isCurrentYear ? (
-                    <span>Day {daysElapsed} of {totalDays} ({timePassedPercent.toFixed(1)}% of year elapsed)</span>
+                    <span>Day {daysElapsed} of {totalDays}</span>
                   ) : isFutureYear ? (
                     <span>Year Not Started</span>
                   ) : (
@@ -166,97 +199,163 @@ export default async function YearlyTargetCard({
             </div>
 
             {/* Department Breakdown Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-1">
-              {/* HAIR Progress */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-800">
-                  <span>Hair (HS)</span>
-                  <span className="text-gray-555">{(hairTarget > 0 ? (hairYTDSales / hairTarget * 100) : 0).toFixed(1)}%</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+              {/* HAIR Progress Card */}
+              <div className="bg-gray-50/35 border border-gray-100 rounded-2xl p-4 md:p-5 space-y-4 hover:bg-gray-50/70 hover:border-gray-200 transition-all duration-300 shadow-[0_1px_2px_rgba(0,0,0,0.01)] flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-800">Hair (HS)</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-gray-900">{hairPct.toFixed(1)}%</span>
+                      {isCurrentYear && (
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          hairPaceDiff >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-650'
+                        }`}>
+                          {hairPaceDiff >= 0 ? `+${hairPaceDiff.toFixed(1)}%` : `${hairPaceDiff.toFixed(1)}%`}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">YTD Nett Sales</span>
+                    <div className="text-xl font-extrabold text-gray-900 tracking-tight">
+                      RM {hairYTDSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </div>
+                  </div>
                 </div>
-                <div
-                  role="progressbar"
-                  aria-valuenow={Math.min(100, hairTarget > 0 ? (hairYTDSales / hairTarget * 100) : 0)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label="Hair department YTD target progress"
-                  className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100"
-                >
-                  {isCurrentYear && (
-                    <div
-                      className="absolute top-0 bottom-0 border-r border-dashed border-gray-400/50 z-10"
-                      style={{ left: `${timePassedPercent}%` }}
-                    />
-                  )}
+
+                <div className="space-y-3 pt-1">
                   <div
-                    className="h-full bg-slate-800 transition-all duration-550"
-                    style={{ width: `${Math.min(100, hairTarget > 0 ? (hairYTDSales / hairTarget * 100) : 0)}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400 font-semibold">
-                  <span>RM {hairYTDSales.toLocaleString('en-US', { maximumFractionDigits: 0 })} YTD</span>
-                  <span>RM {hairTarget.toLocaleString('en-US', { maximumFractionDigits: 0 })} target</span>
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, hairPct)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Hair department YTD target progress"
+                    className="w-full h-2 bg-gray-100 rounded-full overflow-hidden"
+                  >
+                    <div
+                      className="h-full bg-slate-900 transition-all duration-550 rounded-full"
+                      style={{ width: `${Math.min(100, hairPct)}%` }}
+                    />
+                  </div>
+                  
+                  <div className="border-t border-gray-100/70 pt-2.5 flex justify-between items-center text-[10px] text-gray-400 font-bold tracking-wider select-none">
+                    <div>
+                      <span className="block text-[9px] text-gray-400">ANNUAL TARGET</span>
+                      <span className="text-gray-700 font-extrabold text-xs">RM {hairTarget.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="block text-[9px] text-gray-400">DAILY TARGET</span>
+                      <span className="text-gray-700 font-extrabold text-xs">RM {(hairTarget / 312).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* NAILS Progress */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-800">
-                  <span>Nails</span>
-                  <span className="text-gray-555">{(nailsTarget > 0 ? (nailsYTDSales / nailsTarget * 100) : 0).toFixed(1)}%</span>
+              {/* NAILS Progress Card */}
+              <div className="bg-gray-50/35 border border-gray-100 rounded-2xl p-4 md:p-5 space-y-4 hover:bg-gray-50/70 hover:border-gray-200 transition-all duration-300 shadow-[0_1px_2px_rgba(0,0,0,0.01)] flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-800">Nails</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-gray-900">{nailsPct.toFixed(1)}%</span>
+                      {isCurrentYear && (
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          nailsPaceDiff >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-650'
+                        }`}>
+                          {nailsPaceDiff >= 0 ? `+${nailsPaceDiff.toFixed(1)}%` : `${nailsPaceDiff.toFixed(1)}%`}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">YTD Nett Sales</span>
+                    <div className="text-xl font-extrabold text-gray-900 tracking-tight">
+                      RM {nailsYTDSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </div>
+                  </div>
                 </div>
-                <div
-                  role="progressbar"
-                  aria-valuenow={Math.min(100, nailsTarget > 0 ? (nailsYTDSales / nailsTarget * 100) : 0)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label="Nails department YTD target progress"
-                  className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100"
-                >
-                  {isCurrentYear && (
-                    <div
-                      className="absolute top-0 bottom-0 border-r border-dashed border-gray-400/50 z-10"
-                      style={{ left: `${timePassedPercent}%` }}
-                    />
-                  )}
+
+                <div className="space-y-3 pt-1">
                   <div
-                    className="h-full bg-slate-800 transition-all duration-550"
-                    style={{ width: `${Math.min(100, nailsTarget > 0 ? (nailsYTDSales / nailsTarget * 100) : 0)}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400 font-semibold">
-                  <span>RM {nailsYTDSales.toLocaleString('en-US', { maximumFractionDigits: 0 })} YTD</span>
-                  <span>RM {nailsTarget.toLocaleString('en-US', { maximumFractionDigits: 0 })} target</span>
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, nailsPct)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Nails department YTD target progress"
+                    className="w-full h-2 bg-gray-100 rounded-full overflow-hidden"
+                  >
+                    <div
+                      className="h-full bg-slate-900 transition-all duration-550 rounded-full"
+                      style={{ width: `${Math.min(100, nailsPct)}%` }}
+                    />
+                  </div>
+                  
+                  <div className="border-t border-gray-100/70 pt-2.5 flex justify-between items-center text-[10px] text-gray-400 font-bold tracking-wider select-none">
+                    <div>
+                      <span className="block text-[9px] text-gray-400">ANNUAL TARGET</span>
+                      <span className="text-gray-700 font-extrabold text-xs">RM {nailsTarget.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="block text-[9px] text-gray-400">DAILY TARGET</span>
+                      <span className="text-gray-700 font-extrabold text-xs">RM {(nailsTarget / 312).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* ARTISTRY & LASH Progress */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-800">
-                  <span>Artistry & Lash</span>
-                  <span className="text-gray-555">{(artistryLashTarget > 0 ? (artistryLashYTDSales / artistryLashTarget * 100) : 0).toFixed(1)}%</span>
+              {/* ARTISTRY & LASH Progress Card */}
+              <div className="bg-gray-50/35 border border-gray-100 rounded-2xl p-4 md:p-5 space-y-4 hover:bg-gray-50/70 hover:border-gray-200 transition-all duration-300 shadow-[0_1px_2px_rgba(0,0,0,0.01)] flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-800">Artistry & Lash</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-gray-900">{artistryLashPct.toFixed(1)}%</span>
+                      {isCurrentYear && (
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          artistryLashPaceDiff >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-650'
+                        }`}>
+                          {artistryLashPaceDiff >= 0 ? `+${artistryLashPaceDiff.toFixed(1)}%` : `${artistryLashPaceDiff.toFixed(1)}%`}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">YTD Nett Sales</span>
+                    <div className="text-xl font-extrabold text-gray-900 tracking-tight">
+                      RM {artistryLashYTDSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </div>
+                  </div>
                 </div>
-                <div
-                  role="progressbar"
-                  aria-valuenow={Math.min(100, artistryLashTarget > 0 ? (artistryLashYTDSales / artistryLashTarget * 100) : 0)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label="Artistry and Lash department YTD target progress"
-                  className="w-full h-2 bg-gray-50 rounded-full overflow-hidden relative border border-gray-100"
-                >
-                  {isCurrentYear && (
-                    <div
-                      className="absolute top-0 bottom-0 border-r border-dashed border-gray-400/50 z-10"
-                      style={{ left: `${timePassedPercent}%` }}
-                    />
-                  )}
+
+                <div className="space-y-3 pt-1">
                   <div
-                    className="h-full bg-slate-800 transition-all duration-550"
-                    style={{ width: `${Math.min(100, artistryLashTarget > 0 ? (artistryLashYTDSales / artistryLashTarget * 100) : 0)}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400 font-semibold">
-                  <span>RM {artistryLashYTDSales.toLocaleString('en-US', { maximumFractionDigits: 0 })} YTD</span>
-                  <span>RM {artistryLashTarget.toLocaleString('en-US', { maximumFractionDigits: 0 })} target</span>
+                    role="progressbar"
+                    aria-valuenow={Math.min(100, artistryLashPct)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label="Artistry and Lash department YTD target progress"
+                    className="w-full h-2 bg-gray-100 rounded-full overflow-hidden"
+                  >
+                    <div
+                      className="h-full bg-slate-900 transition-all duration-550 rounded-full"
+                      style={{ width: `${Math.min(100, artistryLashPct)}%` }}
+                    />
+                  </div>
+                  
+                  <div className="border-t border-gray-100/70 pt-2.5 flex justify-between items-center text-[10px] text-gray-400 font-bold tracking-wider select-none">
+                    <div>
+                      <span className="block text-[9px] text-gray-400">ANNUAL TARGET</span>
+                      <span className="text-gray-700 font-extrabold text-xs">RM {artistryLashTarget.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="block text-[9px] text-gray-400">DAILY TARGET</span>
+                      <span className="text-gray-700 font-extrabold text-xs">RM {(artistryLashTarget / 312).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
