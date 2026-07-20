@@ -3,7 +3,7 @@ import { getCachedSession } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Calendar, AlertTriangle } from 'lucide-react';
 import EditTargetDialog from './EditTargetDialog';
-import AdminMonthSelector from './AdminMonthSelector';
+import PopoverDateFilter from '@/components/dashboard/PopoverDateFilter';
 import { Suspense } from 'react';
 import YearlyTargetCard from './components/YearlyTargetCard';
 import MonthlySalesCard from './components/MonthlySalesCard';
@@ -67,20 +67,48 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   }
   availableMonths.reverse();
 
-  const defaultMonthStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`;
-  const selectedMonthStr =
-    typeof resolvedParams?.month === 'string' && /^\d{4}-\d{2}$/.test(resolvedParams.month)
-      ? resolvedParams.month
-      : defaultMonthStr;
+  const currentMonthStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`;
+  
+  // Calculate Last Month
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+  const lastMonthVal = currentMonth === 0 ? 12 : currentMonth;
+  const lastMonthStr = `${lastMonthYear}-${lastMonthVal.toString().padStart(2, '0')}`;
 
-  const [selYear, selMonth] = selectedMonthStr.split('-').map(Number);
+  let resolvedMonthType: 'this-month' | 'last-month' | 'range' = 'this-month';
+  let selStartMonthStr = currentMonthStr;
+  let selEndMonthStr = currentMonthStr;
+
+  const paramMonthType = resolvedParams?.monthType;
+  const paramStartMonth = resolvedParams?.startMonth;
+  const paramEndMonth = resolvedParams?.endMonth;
+  const paramLegacyMonth = resolvedParams?.month;
+
+  if (paramMonthType === 'last-month') {
+    resolvedMonthType = 'last-month';
+    selStartMonthStr = lastMonthStr;
+    selEndMonthStr = lastMonthStr;
+  } else if (paramMonthType === 'range') {
+    resolvedMonthType = 'range';
+    const isValidStart = typeof paramStartMonth === 'string' && /^\d{4}-\d{2}$/.test(paramStartMonth);
+    const isValidEnd = typeof paramEndMonth === 'string' && /^\d{4}-\d{2}$/.test(paramEndMonth);
+    selStartMonthStr = isValidStart ? paramStartMonth : currentMonthStr;
+    selEndMonthStr = isValidEnd ? paramEndMonth : currentMonthStr;
+  } else if (typeof paramLegacyMonth === 'string' && /^\d{4}-\d{2}$/.test(paramLegacyMonth)) {
+    resolvedMonthType = 'range';
+    selStartMonthStr = paramLegacyMonth;
+    selEndMonthStr = paramLegacyMonth;
+  }
+
+  const [startYearVal, startMonthVal] = selStartMonthStr.split('-').map(Number);
+  const [endYear, endMonthVal] = selEndMonthStr.split('-').map(Number);
+  const selYear = endYear; // Use the end month's year for target tracking
 
   const startOfYear = `${selYear}-01-01T00:00:00+08:00`;
   const startOfNextYear = `${selYear + 1}-01-01T00:00:00+08:00`;
 
-  const startOfMonth = `${selYear}-${selMonth.toString().padStart(2, '0')}-01T00:00:00+08:00`;
-  const nextMonthYear = selMonth === 12 ? selYear + 1 : selYear;
-  const nextMonthVal = selMonth === 12 ? 1 : selMonth + 1;
+  const startOfMonth = `${startYearVal}-${startMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
+  const nextMonthYear = endMonthVal === 12 ? endYear + 1 : endYear;
+  const nextMonthVal = endMonthVal === 12 ? 1 : endMonthVal + 1;
   const startOfNextMonth = `${nextMonthYear}-${nextMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
 
   const supabase = createAdminClient();
@@ -131,10 +159,26 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
   const timePassedPercent = isFutureYear ? 0 : (daysElapsed / totalDays) * 100;
 
-  const currentMonthName = new Date(selYear, selMonth - 1, 1).toLocaleString('en-US', {
-    month: 'long',
-    year: 'numeric'
-  });
+  const getMonthLabel = (monthStr: string) => {
+    const [y, m] = monthStr.split('-').map(Number);
+    return new Date(y, m - 1, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  };
+
+  let dateRangeLabel = '';
+  if (resolvedMonthType === 'this-month') {
+    dateRangeLabel = getMonthLabel(currentMonthStr);
+  } else if (resolvedMonthType === 'last-month') {
+    dateRangeLabel = getMonthLabel(lastMonthStr);
+  } else {
+    if (selStartMonthStr === selEndMonthStr) {
+      dateRangeLabel = getMonthLabel(selStartMonthStr);
+    } else {
+      dateRangeLabel = `${getMonthLabel(selStartMonthStr)} - ${getMonthLabel(selEndMonthStr)}`;
+    }
+  }
+
+  // Fallback for monthly cards that expect string labels
+  const currentMonthName = dateRangeLabel;
 
   return (
     <main className="max-w-4xl w-full mx-auto px-6 py-10 space-y-8">
@@ -148,7 +192,13 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          <AdminMonthSelector months={availableMonths} defaultValue={selectedMonthStr} />
+          <PopoverDateFilter
+            months={availableMonths}
+            currentMonthType={resolvedMonthType}
+            startMonth={selStartMonthStr}
+            endMonth={selEndMonthStr}
+            basePath="/admin"
+          />
           <EditTargetDialog
             key={`${selYear}-${hairTarget}-${nailsTarget}-${artistryLashTarget}`}
             year={selYear}

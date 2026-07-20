@@ -159,10 +159,17 @@ export type Database = {
       get_monthly_stylist_leaderboard: {
         Args: { end_date: string; start_date: string }
         Returns: {
-          amount: number
-          branch: string
-          count: number
           employee_name: string
+          department: string | null
+          branch: string
+          all_amount: number
+          all_count: number
+          alacarte_amount: number
+          alacarte_count: number
+          packages_amount: number
+          packages_count: number
+          products_amount: number
+          products_count: number
         }[]
       }
       get_sales_by_department: {
