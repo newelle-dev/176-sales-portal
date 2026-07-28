@@ -4,28 +4,51 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChangePasswordDialog } from '@/components/ChangePasswordDialog';
 import { logoutAction } from '@/app/login/actions';
-import { Key } from 'lucide-react';
+import { Key, Scissors, TrendingUp } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 interface StylistHeaderProps {
   email: string;
   name: string;
   initials: string;
+  role?: string;
 }
 
-export default function StylistHeader({ email, name, initials }: StylistHeaderProps) {
+export default function StylistHeader({ email, name, initials, role }: StylistHeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isDeptPage = pathname?.startsWith('/dashboard/department');
 
   return (
     <header className="bg-white border-b border-gray-150 px-4 sm:px-6 py-3 flex items-center justify-between shadow-sm select-none sticky top-0 z-50">
       <div className="flex items-center gap-2">
         <span className="font-extrabold text-base sm:text-lg tracking-wider text-black">176 AVENUE</span>
         <span className="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full bg-black text-white font-bold uppercase tracking-wider">
-          Stylist
+          {role === 'director' ? 'Director' : 'Stylist'}
         </span>
       </div>
 
       {/* Desktop Navigation / User Info & Actions */}
       <div className="hidden sm:flex items-center gap-4">
+        {role === 'director' && (
+          isDeptPage ? (
+            <Button variant="outline" size="sm" asChild className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-8 cursor-pointer flex items-center gap-1.5 animate-in fade-in duration-200">
+              <Link href="/dashboard">
+                <Scissors className="w-3.5 h-3.5" />
+                <span>My Sales</span>
+              </Link>
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" asChild className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-8 cursor-pointer flex items-center gap-1.5 animate-in fade-in duration-200">
+              <Link href="/dashboard/department">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>Department Sales</span>
+              </Link>
+            </Button>
+          )
+        )}
+
         <div className="flex flex-col text-right">
           <span className="text-xs font-bold text-gray-900">{name}</span>
           <span className="text-[10px] text-gray-400 font-medium">{email}</span>
@@ -75,6 +98,35 @@ export default function StylistHeader({ email, name, initials }: StylistHeaderPr
           </div>
           <div className="h-px bg-gray-150 w-full" />
           <div className="flex flex-col gap-2">
+            {role === 'director' && (
+              isDeptPage ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  asChild
+                  className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-9 w-full flex items-center justify-center gap-1.5 cursor-pointer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Link href="/dashboard">
+                    <Scissors className="w-3.5 h-3.5" />
+                    <span>My Sales</span>
+                  </Link>
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  asChild
+                  className="text-gray-500 hover:text-black border-gray-200 text-xs font-semibold px-3 h-9 w-full flex items-center justify-center gap-1.5 cursor-pointer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Link href="/dashboard/department">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    <span>Department Sales</span>
+                  </Link>
+                </Button>
+              )
+            )}
             <ChangePasswordDialog
               trigger={
                 <Button

@@ -23,6 +23,7 @@ export default async function DashboardLayout({
         email={profile?.email || user.email || ''}
         name={profile?.name || 'Stylist'}
         initials={initials}
+        role={profile?.role || 'stylist'}
       />
       
       <div className="flex-1">

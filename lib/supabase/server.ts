@@ -34,7 +34,7 @@ export async function createClient() {
 // Request-memoized helper to avoid double auth/profile queries in layouts & pages
 export const getCachedSession = cache(async (): Promise<{
   user: User | null;
-  profile: { name: string; email: string; role: string } | null;
+  profile: { name: string; email: string; role: string; department: string | null } | null;
 }> => {
   const supabase = await createClient();
   const {
@@ -47,7 +47,7 @@ export const getCachedSession = cache(async (): Promise<{
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('name, email, role')
+    .select('name, email, role, department')
     .eq('id', user.id)
     .single();
 

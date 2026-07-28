@@ -76,7 +76,7 @@ export async function updateSession(request: NextRequest) {
       url.pathname = '/admin';
       return NextResponse.redirect(url);
     }
-    if (role !== 'stylist') {
+    if (role !== 'stylist' && role !== 'director') {
       url.pathname = '/login';
       return NextResponse.redirect(url);
     }

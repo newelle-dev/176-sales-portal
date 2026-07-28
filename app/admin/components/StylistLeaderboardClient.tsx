@@ -20,6 +20,7 @@ interface LeaderboardEntry {
 interface StylistLeaderboardClientProps {
   currentMonthName: string;
   data: LeaderboardEntry[];
+  hideDepartmentFilter?: boolean;
 }
 
 type FilterType = 'all' | 'alacarte' | 'packages' | 'products';
@@ -28,6 +29,7 @@ type DeptType = 'all' | 'HAIR' | 'NAILS' | 'ARTISTRY_LASH';
 export default function StylistLeaderboardClient({
   currentMonthName,
   data,
+  hideDepartmentFilter = false,
 }: StylistLeaderboardClientProps) {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeDept, setActiveDept] = useState<DeptType>('all');
@@ -72,7 +74,9 @@ export default function StylistLeaderboardClient({
 
   return (
     <>
-      <div className="px-6 pb-4 border-b border-gray-100 bg-white grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`px-6 pb-4 border-b border-gray-100 bg-white grid gap-4 ${
+        hideDepartmentFilter ? 'grid-cols-1 max-w-xs' : 'grid-cols-1 sm:grid-cols-2'
+      }`}>
         {/* Category Dropdown */}
         <div className="space-y-1">
           <label htmlFor="category-select" className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block select-none">
@@ -95,25 +99,27 @@ export default function StylistLeaderboardClient({
         </div>
 
         {/* Department Dropdown */}
-        <div className="space-y-1">
-          <label htmlFor="department-select" className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block select-none">
-            Department
-          </label>
-          <div className="relative">
-            <select
-              id="department-select"
-              value={activeDept}
-              onChange={(e) => setActiveDept(e.target.value as DeptType)}
-              className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs font-semibold shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 text-gray-900 appearance-none cursor-pointer"
-            >
-              <option value="all">All Departments</option>
-              <option value="HAIR">Hair</option>
-              <option value="NAILS">Nails</option>
-              <option value="ARTISTRY_LASH">Artistry & Lash</option>
-            </select>
-            <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+        {!hideDepartmentFilter && (
+          <div className="space-y-1">
+            <label htmlFor="department-select" className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block select-none">
+              Department
+            </label>
+            <div className="relative">
+              <select
+                id="department-select"
+                value={activeDept}
+                onChange={(e) => setActiveDept(e.target.value as DeptType)}
+                className="flex h-9 w-full rounded-lg border border-gray-200 bg-gray-50/50 pl-3 pr-8 py-1.5 text-xs font-semibold shadow-sm transition-colors focus-visible:outline-none focus-visible:border-black focus-visible:ring-black/5 text-gray-900 appearance-none cursor-pointer"
+              >
+                <option value="all">All Departments</option>
+                <option value="HAIR">Hair</option>
+                <option value="NAILS">Nails</option>
+                <option value="ARTISTRY_LASH">Artistry & Lash</option>
+              </select>
+              <ChevronDown className="absolute right-2.5 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="p-0 flex-1 flex flex-col justify-between">
