@@ -226,8 +226,8 @@ export function parseWessConnectCsv(
         const branch = getBranchFromRef(rawRef);
         branchesDetected.add(branch);
 
-        // Generate unique prefixed reference number to prevent duplicate keys with standard reports
-        const baseRef = `ESD_${rawRef}`;
+        // Generate unique reference number per item in ticket (unified with standard report)
+        const baseRef = rawRef;
         const count = refCounts.get(baseRef) || 0;
         refCounts.set(baseRef, count + 1);
         const dbRef = `${baseRef}_${count + 1}`;
