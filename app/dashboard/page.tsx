@@ -5,6 +5,7 @@ import { Scissors, Package, ShoppingBag, Percent, Calendar, TrendingUp, DollarSi
 import TransactionsList from './TransactionsList';
 import PopoverDateFilter from '@/components/dashboard/PopoverDateFilter';
 import { getTransactionCategory, cleanItemDescription } from '@/lib/transaction-utils';
+import { resolveDateFilterParams } from '@/lib/date-utils';
 import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
 
 interface PageProps {
@@ -87,82 +88,19 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  // Generate list of available months (from Jan 2026 to current calendar month)
-  const now = new Date();
-  
-  // Get date components in Asia/Kuala_Lumpur timezone to handle server-local timezone mismatch (e.g. UTC server)
-  const klParts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kuala_Lumpur',
-    year: 'numeric',
-    month: 'numeric',
-  }).formatToParts(now);
-  const currentYear = Number(klParts.find(p => p.type === 'year')?.value);
-  const currentMonth = Number(klParts.find(p => p.type === 'month')?.value) - 1; // 0-indexed
-
-  const availableMonths = [];
-  const startYear = 2026;
-  const startMonth = 0; // January
-
-  let y = startYear;
-  let m = startMonth;
-
-  while (y < currentYear || (y === currentYear && m <= currentMonth)) {
-    const dateObj = new Date(y, m, 1);
-    const value = `${y}-${(m + 1).toString().padStart(2, '0')}`;
-    const label = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-    availableMonths.push({ value, label });
-
-    m++;
-    if (m > 11) {
-      m = 0;
-      y++;
-    }
-  }
-  availableMonths.reverse();
-
-  // Parse month query parameters
   const resolvedParams = await searchParams;
-  const currentMonthStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`;
+  const {
+    resolvedMonthType,
+    startDate: startOfMonth,
+    endDate: startOfNextMonth,
+    selStartMonthStr,
+    selEndMonthStr,
+    dateRangeLabel,
+    cutoffLabel,
+    availableMonths,
+  } = resolveDateFilterParams(resolvedParams);
 
-  // Calculate Last Month
-  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-  const lastMonthVal = currentMonth === 0 ? 12 : currentMonth;
-  const lastMonthStr = `${lastMonthYear}-${lastMonthVal.toString().padStart(2, '0')}`;
-
-  let resolvedMonthType: 'this-month' | 'last-month' | 'range' = 'this-month';
-  let selStartMonthStr = currentMonthStr;
-  let selEndMonthStr = currentMonthStr;
-
-  const paramMonthType = resolvedParams?.monthType;
-  const paramStartMonth = resolvedParams?.startMonth;
-  const paramEndMonth = resolvedParams?.endMonth;
-  const paramLegacyMonth = resolvedParams?.month;
-
-  if (paramMonthType === 'last-month') {
-    resolvedMonthType = 'last-month';
-    selStartMonthStr = lastMonthStr;
-    selEndMonthStr = lastMonthStr;
-  } else if (paramMonthType === 'range') {
-    resolvedMonthType = 'range';
-    const isValidStart = typeof paramStartMonth === 'string' && /^\d{4}-\d{2}$/.test(paramStartMonth);
-    const isValidEnd = typeof paramEndMonth === 'string' && /^\d{4}-\d{2}$/.test(paramEndMonth);
-    selStartMonthStr = isValidStart ? paramStartMonth : currentMonthStr;
-    selEndMonthStr = isValidEnd ? paramEndMonth : currentMonthStr;
-  } else if (typeof paramLegacyMonth === 'string' && /^\d{4}-\d{2}$/.test(paramLegacyMonth)) {
-    resolvedMonthType = 'range';
-    selStartMonthStr = paramLegacyMonth;
-    selEndMonthStr = paramLegacyMonth;
-  }
-
-  const [startYearVal, startMonthVal] = selStartMonthStr.split('-').map(Number);
-  const [endYear, endMonthVal] = selEndMonthStr.split('-').map(Number);
-
-  const startOfMonth = `${startYearVal}-${startMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
-  const nextMonthYear = endMonthVal === 12 ? endYear + 1 : endYear;
-  const nextMonthVal = endMonthVal === 12 ? 1 : endMonthVal + 1;
-  const startOfNextMonth = `${nextMonthYear}-${nextMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
-
-  // Fetch transactions for the selected month
+  // Fetch transactions for the selected month or date range
   const { data: transactions, error: txError } = await supabase
     .from('transactions')
     .select('*')
@@ -187,25 +125,6 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   // Aggregations
   const { sums, counts, totalSales, netSales } = aggregateTransactions(txList);
-
-  const getMonthLabel = (monthStr: string) => {
-    const [y, m] = monthStr.split('-').map(Number);
-    return new Date(y, m - 1, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
-  };
-
-  let dateRangeLabel = '';
-  if (resolvedMonthType === 'this-month') {
-    dateRangeLabel = getMonthLabel(currentMonthStr);
-  } else if (resolvedMonthType === 'last-month') {
-    dateRangeLabel = getMonthLabel(lastMonthStr);
-  } else {
-    if (selStartMonthStr === selEndMonthStr) {
-      dateRangeLabel = getMonthLabel(selStartMonthStr);
-    } else {
-      dateRangeLabel = `${getMonthLabel(selStartMonthStr)} - ${getMonthLabel(selEndMonthStr)}`;
-    }
-  }
-
   const currentMonthName = dateRangeLabel;
 
   return (
@@ -228,6 +147,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             startMonth={selStartMonthStr}
             endMonth={selEndMonthStr}
             basePath="/dashboard"
+            cutoffLabel={cutoffLabel}
           />
         </div>
       </div>

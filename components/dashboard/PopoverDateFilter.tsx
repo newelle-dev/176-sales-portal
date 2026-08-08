@@ -11,10 +11,11 @@ interface MonthOption {
 
 interface PopoverDateFilterProps {
   months: MonthOption[];
-  currentMonthType: 'this-month' | 'last-month' | 'range';
+  currentMonthType: 'this-month' | 'last-month' | 'cutoff' | 'range';
   startMonth: string;
   endMonth: string;
   basePath: string; // e.g. '/admin' or '/dashboard'
+  cutoffLabel?: string;
 }
 
 export default function PopoverDateFilter({
@@ -23,6 +24,7 @@ export default function PopoverDateFilter({
   startMonth,
   endMonth,
   basePath,
+  cutoffLabel,
 }: PopoverDateFilterProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -58,6 +60,8 @@ export default function PopoverDateFilter({
   } else if (currentMonthType === 'last-month') {
     const lastMonthStr = months[1]?.value || '';
     activeLabel = lastMonthStr ? `Last Month (${getMonthLabel(lastMonthStr)})` : 'Last Month';
+  } else if (currentMonthType === 'cutoff') {
+    activeLabel = cutoffLabel ? `Cut off (${cutoffLabel})` : 'Cut off (25th - 24th)';
   } else {
     if (startMonth === endMonth) {
       activeLabel = getMonthLabel(startMonth);
@@ -66,17 +70,24 @@ export default function PopoverDateFilter({
     }
   }
 
-  const handleTypeSelect = (type: 'this-month' | 'last-month') => {
+  const navigateWithParams = (params: Record<string, string>) => {
     setIsOpen(false);
     startTransition(() => {
-      router.push(`${basePath}?monthType=${type}`);
+      const separator = basePath.includes('?') ? '&' : '?';
+      const search = new URLSearchParams(params).toString();
+      router.push(`${basePath}${separator}${search}`);
     });
   };
 
+  const handleTypeSelect = (type: 'this-month' | 'last-month' | 'cutoff') => {
+    navigateWithParams({ monthType: type });
+  };
+
   const handleApply = () => {
-    setIsOpen(false);
-    startTransition(() => {
-      router.push(`${basePath}?monthType=range&startMonth=${localStartMonth}&endMonth=${localEndMonth}`);
+    navigateWithParams({
+      monthType: 'range',
+      startMonth: localStartMonth,
+      endMonth: localEndMonth,
     });
   };
 
@@ -118,7 +129,7 @@ export default function PopoverDateFilter({
                 </button>
                 <button
                   onClick={() => handleTypeSelect('last-month')}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold rounded-xl transition-colors text-left h-[38px] ${
+                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold rounded-xl transition-colors text-left h-[38px] cursor-pointer ${
                     currentMonthType === 'last-month'
                       ? 'bg-gray-50 text-gray-900 font-extrabold'
                       : 'text-gray-700 hover:bg-gray-50'
@@ -128,8 +139,19 @@ export default function PopoverDateFilter({
                   {currentMonthType === 'last-month' && <Check className="w-3.5 h-3.5 text-gray-900" />}
                 </button>
                 <button
+                  onClick={() => handleTypeSelect('cutoff')}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold rounded-xl transition-colors text-left h-[38px] cursor-pointer ${
+                    currentMonthType === 'cutoff'
+                      ? 'bg-gray-50 text-gray-900 font-extrabold'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <span>Cut off (25th - 24th)</span>
+                  {currentMonthType === 'cutoff' && <Check className="w-3.5 h-3.5 text-gray-900" />}
+                </button>
+                <button
                   onClick={() => setShowRangePicker(true)}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold rounded-xl transition-colors text-left h-[38px] ${
+                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold rounded-xl transition-colors text-left h-[38px] cursor-pointer ${
                     currentMonthType === 'range'
                       ? 'bg-gray-50 text-gray-900 font-extrabold'
                       : 'text-gray-700 hover:bg-gray-50'

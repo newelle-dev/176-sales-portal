@@ -6,6 +6,7 @@ import { Scissors, Package, ShoppingBag, Percent, Calendar, TrendingUp, Trending
 import PopoverDateFilter from '@/components/dashboard/PopoverDateFilter';
 import { getTransactionCategory, cleanItemDescription } from '@/lib/transaction-utils';
 import { ITEM_DICTIONARY } from '@/lib/item-dictionary';
+import { resolveDateFilterParams } from '@/lib/date-utils';
 import DepartmentTransactionsList from './DepartmentTransactionsList';
 import StylistLeaderboardClient from '@/app/admin/components/StylistLeaderboardClient';
 
@@ -108,78 +109,22 @@ export default async function DepartmentSalesPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  // Generate list of available months (from Jan 2026 to current calendar month)
-  const now = new Date();
-  const klParts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kuala_Lumpur',
-    year: 'numeric',
-    month: 'numeric',
-  }).formatToParts(now);
-  const currentYear = Number(klParts.find(p => p.type === 'year')?.value);
-  const currentMonth = Number(klParts.find(p => p.type === 'month')?.value) - 1; // 0-indexed
-
-  const availableMonths = [];
-  const startYear = 2026;
-  const startMonth = 0; // January
-
-  let y = startYear;
-  let m = startMonth;
-
-  while (y < currentYear || (y === currentYear && m <= currentMonth)) {
-    const dateObj = new Date(y, m, 1);
-    const value = `${y}-${(m + 1).toString().padStart(2, '0')}`;
-    const label = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-    availableMonths.push({ value, label });
-
-    m++;
-    if (m > 11) {
-      m = 0;
-      y++;
-    }
-  }
-  availableMonths.reverse();
-
-  const currentMonthStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`;
-  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-  const lastMonthVal = currentMonth === 0 ? 12 : currentMonth;
-  const lastMonthStr = `${lastMonthYear}-${lastMonthVal.toString().padStart(2, '0')}`;
-
-  let resolvedMonthType: 'this-month' | 'last-month' | 'range' = 'this-month';
-  let selStartMonthStr = currentMonthStr;
-  let selEndMonthStr = currentMonthStr;
-
-  const paramMonthType = resolvedParams?.monthType;
-  const paramStartMonth = resolvedParams?.startMonth;
-  const paramEndMonth = resolvedParams?.endMonth;
-  const paramLegacyMonth = resolvedParams?.month;
-
-  if (paramMonthType === 'last-month') {
-    resolvedMonthType = 'last-month';
-    selStartMonthStr = lastMonthStr;
-    selEndMonthStr = lastMonthStr;
-  } else if (paramMonthType === 'range') {
-    resolvedMonthType = 'range';
-    const isValidStart = typeof paramStartMonth === 'string' && /^\d{4}-\d{2}$/.test(paramStartMonth);
-    const isValidEnd = typeof paramEndMonth === 'string' && /^\d{4}-\d{2}$/.test(paramEndMonth);
-    selStartMonthStr = isValidStart ? paramStartMonth : currentMonthStr;
-    selEndMonthStr = isValidEnd ? paramEndMonth : currentMonthStr;
-  } else if (typeof paramLegacyMonth === 'string' && /^\d{4}-\d{2}$/.test(paramLegacyMonth)) {
-    resolvedMonthType = 'range';
-    selStartMonthStr = paramLegacyMonth;
-    selEndMonthStr = paramLegacyMonth;
-  }
-
-  const [startYearVal, startMonthVal] = selStartMonthStr.split('-').map(Number);
-  const [endYear, endMonthVal] = selEndMonthStr.split('-').map(Number);
-  const selYear = endYear;
+  const {
+    resolvedMonthType,
+    startDate: startOfMonth,
+    endDate: startOfNextMonth,
+    selStartMonthStr,
+    selEndMonthStr,
+    dateRangeLabel,
+    cutoffLabel,
+    selYear,
+    availableMonths,
+    currentYear,
+    currentDay,
+  } = resolveDateFilterParams(resolvedParams);
 
   const startOfYear = `${selYear}-01-01T00:00:00+08:00`;
   const startOfNextYear = `${selYear + 1}-01-01T00:00:00+08:00`;
-
-  const startOfMonth = `${startYearVal}-${startMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
-  const nextMonthYear = endMonthVal === 12 ? endYear + 1 : endYear;
-  const nextMonthVal = endMonthVal === 12 ? 1 : endMonthVal + 1;
-  const startOfNextMonth = `${nextMonthYear}-${nextMonthVal.toString().padStart(2, '0')}-01T00:00:00+08:00`;
 
   // 1. Fetch department stylists (members)
   const { data: departmentMembers, error: membersError } = await supabase
@@ -293,7 +238,7 @@ export default async function DepartmentSalesPage({ searchParams }: PageProps) {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
-    }).formatToParts(now);
+    }).formatToParts(new Date());
     const klYear = Number(klPartsDay.find(p => p.type === 'year')?.value);
     const klMonth = Number(klPartsDay.find(p => p.type === 'month')?.value) - 1;
     const klDay = Number(klPartsDay.find(p => p.type === 'day')?.value);
@@ -306,24 +251,6 @@ export default async function DepartmentSalesPage({ searchParams }: PageProps) {
   const timePassedPercent = isFutureYear ? 0 : (daysElapsed / totalDays) * 100;
   const deptProgressPercent = deptTarget > 0 ? (deptYTDSales / deptTarget) * 100 : 0;
   const paceDifference = deptProgressPercent - timePassedPercent;
-
-  const getMonthLabel = (monthStr: string) => {
-    const [y, m] = monthStr.split('-').map(Number);
-    return new Date(y, m - 1, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
-  };
-
-  let dateRangeLabel = '';
-  if (resolvedMonthType === 'this-month') {
-    dateRangeLabel = getMonthLabel(currentMonthStr);
-  } else if (resolvedMonthType === 'last-month') {
-    dateRangeLabel = getMonthLabel(lastMonthStr);
-  } else {
-    if (selStartMonthStr === selEndMonthStr) {
-      dateRangeLabel = getMonthLabel(selStartMonthStr);
-    } else {
-      dateRangeLabel = `${getMonthLabel(selStartMonthStr)} - ${getMonthLabel(selEndMonthStr)}`;
-    }
-  }
 
   const currentMonthName = dateRangeLabel;
 
@@ -369,7 +296,8 @@ export default async function DepartmentSalesPage({ searchParams }: PageProps) {
             currentMonthType={resolvedMonthType}
             startMonth={selStartMonthStr}
             endMonth={selEndMonthStr}
-            basePath="/dashboard/department"
+            basePath={profile.role === 'admin' ? `/dashboard/department?dept=${department}` : '/dashboard/department'}
+            cutoffLabel={cutoffLabel}
           />
         </div>
       </div>
